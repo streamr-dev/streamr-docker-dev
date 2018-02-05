@@ -1,0 +1,48 @@
+version: "3"
+services:
+    broker:
+        container_name: streamr_dev_broker
+        image: streamr/broker
+        restart: on-failure
+        depends_on:
+            - init_keyspace
+        links:
+            - cassandra
+            - kafka
+            - redis
+    data-api:
+        container_name: streamr_dev_data-api
+        image: streamr/data-api
+        restart: on-failure
+        ports:
+            - "8890:8890"
+        depends_on:
+            - init_keyspace
+        links:
+            - cassandra
+            - kafka
+            - redis
+            - zookeeper
+        environment:
+            STREAMR_URL: http://10.200.10.1:8081/streamr-core
+    twitter-bitcoin:
+        container_name: streamr_dev_twitter-bitcoin
+        image: streamr/twitter-bitcoin
+        restart: on-failure
+        links:
+            - data-api
+    unifina-core:
+        container_name: streamr_dev_unifina-core
+        image: streamr/unifina-core
+        ports:
+            - "8081:8081"
+        depends_on:
+            - init_keyspace
+        links:
+            - cassandra
+            - kafka
+            - redis
+            - zookeeper
+            - broker
+            - data-api
+            - mysql
