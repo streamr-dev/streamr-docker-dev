@@ -1,19 +1,19 @@
 # Streamr development environment
 
-Docker configuration files for setting up local Streamr development
+Docker compose configuration files for setting up a local Streamr cloud development
 environment.
 
 Services included
-- 1 x MySQL instance with databases core\_dev and core\_test
+- 1 x MySQL instance with databases `core_dev` and `core_test`
 - 1 x Apache Zookeeper instance
 - 1 x Apache Kafka instance
 - 1 x Redis instance
-- 1 x Apache Cassandra instance with streamr\_dev keyspace
-- 1 x Broker instance
-- 1 x Data-API instance
-- 1 x engine-and-editor instance
+- 1 x Apache Cassandra instance with `streamr_dev` keyspace
+- 1 x [Cloud Broker](https://github.com/streamr-dev/cloud-broker) instance
+- 1 x [Data API](https://github.com/streamr-dev/data-api) instance
+- 1 x [Engine and Editor](https://github.com/streamr-dev/engine-and-editor) instance
 
-Data of MySQL and Cassandra are persisted on disk.
+Data of MySQL and Cassandra are persisted on host machine disk.
 
 ## Setting up
 
@@ -55,6 +55,7 @@ Data-API.
 | Create and run Data-API + base services          | broker + engine-and-editor     | 2      | `streamr-docker-dev start 2`                  |
 | Create and run Broker + Data-API + base services | engine-and-editor              | 1      | `streamr-docker-dev start 1`                  |
 
+### Commands
 
 To view process list
 `streamr-docker-dev ps [services]`
