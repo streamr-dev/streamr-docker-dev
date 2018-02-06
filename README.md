@@ -1,4 +1,4 @@
-# Streamr development environment
+# Streamr cloud development environment
 
 Docker compose configuration files for setting up a local Streamr cloud development
 environment.
