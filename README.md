@@ -1,7 +1,6 @@
 # Streamr cloud development environment
 
-Docker compose configuration files for setting up a local Streamr cloud development
-environment.
+Docker compose configuration files and command line tool `streamr_docker_dev` for setting up a local Streamr cloud development environment.
 
 Services included
 - 1 x MySQL instance with databases `core_dev` and `core_test`
@@ -125,7 +124,7 @@ I received this error only during `docker login`, after login I could resume usi
 | docker-compose.override.yml | Streamr service stack (Broker, Data-API, and Streamr)          |
 | custom-mysql-settings.cnf   | Custom MySQL settings                                          |
 | mysql\_init\_scripts        | Database dumps used to initalize MySQL databases               |
-| keyspace.cql                | Keyspace definition for Cassandra                              |
+| keyspace.cql                | Keyspace definitions and demo data for Cassandra               |
 | data                        | Persistance of container data                                  |
 
 
