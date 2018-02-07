@@ -121,4 +121,7 @@ I received this error only during `docker login`, after login I could resume usi
 | keyspace.cql                | Keyspace definitions and demo data for Cassandra               |
 | data                        | Persistance of container data                                  |
 
+## License
+
+This software is open source and licensed under [GPLv3](https://www.gnu.org/licenses/gpl.html).
 
