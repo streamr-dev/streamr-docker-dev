@@ -22,7 +22,7 @@ Data of MySQL and Cassandra are persisted on host machine disk.
 2. Increase the amount of memory allocated to Docker VM from 2GB to something
    like 5GB or more (Docker icon -> Preferences -> Advanced). Click Apply & Restart.
 
-3. Set `streamr-docker-dev` into the bin (run from `repository root`/streamr-dev):
+3. Create a symlink to `streamr-docker-dev` into a suitable directory in your PATH (run from repository root):
 ```
 ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ```
@@ -32,12 +32,6 @@ ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ```
 streamr-docker-dev bind-ip
 ```
-
-5. Sign up at https://hub.docker.com/
-
-6. Ask your account to be added into the Docker Hub [Streamr organization](https://hub.docker.com/u/streamr)
-
-7. Bind docker command line tool to your DockerHub credentials: `docker login`
 
 ## Run
 
