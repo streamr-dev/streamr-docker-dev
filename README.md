@@ -1,15 +1,17 @@
 # Streamr cloud development environment
 
-This repository contains Docker compose configuration files and command line tool `streamr_docker_dev` for setting up a local Streamr cloud development environment.
+This repository contains Docker compose files and command line tool `streamr_docker_dev` for setting up a local Streamr cloud development environment. The cloud environment consists of base services (3rd party) and Streamr services (in-house).
 
 ![Streamr cloud architecture](high-level.png)
 
-Services included
+### Base services
 - 1 x MySQL instance with databases `core_dev` and `core_test`
 - 1 x Apache Zookeeper instance
 - 1 x Apache Kafka instance
 - 1 x Redis instance
 - 1 x Apache Cassandra instance with `streamr_dev` keyspace
+
+### Streamr services
 - 1 x [Cloud Broker](https://github.com/streamr-dev/cloud-broker) instance
 - 1 x [Data API](https://github.com/streamr-dev/data-api) instance
 - 1 x [Engine and Editor](https://github.com/streamr-dev/engine-and-editor) instance
@@ -35,17 +37,17 @@ ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 streamr-docker-dev bind-ip
 ```
 
-## Run
+## Running
 
-You will want to run parts of the development service stack depending on what
-service of Streamr you are developing. For example, when developing
-engine-and-editor, you want to run all the base services along with Broker and
-Data-API.
+You will want to run subsets of the Streamr cloud environment depending on what
+service(s) of Streamr you are developing. For example, when developing
+engine-and-editor, you want to run all base services along with Broker and
+Data-API (alias 1).
 
 | Description                                      | When developing           | Alias  | Command                                       |
 |--------------------------------------------------|---------------------------|--------|-----------------------------------------------|
-| Create and run entire stack                      | nothing                   | 5      | `streamr-docker-dev start --all`              |
-| Create and Run (3rd party)  base services        | all 3 services / broker   | 4      | `streamr-docker-dev start 4`                  |
+| Create and run entire service stack                      | nothing                   | 5      | `streamr-docker-dev start --all`              |
+| Create and Run base services        | all 3 services / broker   | 4      | `streamr-docker-dev start 4`                  |
 | Create and run Broker + base services            | data-api (+ engine-and-editor) | 3      | `streamr-docker-dev start 3`                  |
 | Create and run Data-API + base services          | broker + engine-and-editor     | 2      | `streamr-docker-dev start 2`                  |
 | Create and run Broker + Data-API + base services | engine-and-editor              | 1      | `streamr-docker-dev start 1`                  |
