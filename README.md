@@ -14,6 +14,8 @@ Services included
 
 Data of MySQL and Cassandra are persisted on host machine disk.
 
+![Architecture](high-level.png)
+
 ## Setting up
 
 1. Download, install, and run the [Docker Community Edition for
