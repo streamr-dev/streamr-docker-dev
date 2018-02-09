@@ -1,6 +1,8 @@
 # Streamr cloud development environment
 
-Docker compose configuration files and command line tool `streamr_docker_dev` for setting up a local Streamr cloud development environment.
+This repository contains Docker compose configuration files and command line tool `streamr_docker_dev` for setting up a local Streamr cloud development environment.
+
+![Streamr cloud architecture](high-level.png)
 
 Services included
 - 1 x MySQL instance with databases `core_dev` and `core_test`
@@ -13,8 +15,6 @@ Services included
 - 1 x [Engine and Editor](https://github.com/streamr-dev/engine-and-editor) instance
 
 Data of MySQL and Cassandra are persisted on host machine disk.
-
-![Architecture](high-level.png)
 
 ## Setting up
 
