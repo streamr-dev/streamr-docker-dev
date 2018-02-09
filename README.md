@@ -52,7 +52,7 @@ Data-API (alias 1).
 | Create and run Data-API + base services          | broker + engine-and-editor     | 2      | `streamr-docker-dev start 2`                  |
 | Create and run Broker + Data-API + base services | engine-and-editor              | 1      | `streamr-docker-dev start 1`                  |
 
-### Commands
+### Useful Commands
 
 To view process list
 `streamr-docker-dev ps [services]`
@@ -89,7 +89,7 @@ To prune all unused data
 
 ## FAQ
 
-### How to "factory reset" stack?
+### How to do a "factory reset" of the development environment?
 
 To kill all services, remove them, remove their persisted data, and re-build and start the services use:
 ```
