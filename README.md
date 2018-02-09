@@ -29,7 +29,7 @@ Data of MySQL and Cassandra are persisted on host machine disk.
 ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ```
 
-3.  Attach (unused) IP address 10.200.10.1 to network interface lo0 on macOS
+4.  Attach (unused) IP address 10.200.10.1 to network interface lo0 on macOS
 [details](https://docs.docker.com/docker-for-mac/networking/#use-cases-and-workarounds):
 ```
 streamr-docker-dev bind-ip
