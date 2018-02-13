@@ -68,7 +68,7 @@ ps() {
 }
 
 log() {
-    FLAGS+=" -t"
+    FLAGS+=" -t --tail=1000"
     if [ $FOLLOW == 1 ];then
         FLAGS+=" -f"
     fi
