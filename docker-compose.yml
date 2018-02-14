@@ -52,6 +52,11 @@ services:
         image: redis:alpine
         ports:
             - "6379:6379"
+    smtp:
+        container_name: streamr_dev_smtp
+        image: namshi/smtp
+        ports:
+            - "25:25"
     zookeeper:
         container_name: streamr_dev_zookeeper
         image: wurstmeister/zookeeper

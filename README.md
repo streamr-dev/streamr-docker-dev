@@ -10,6 +10,7 @@ This repository contains Docker compose files and command line tool `streamr_doc
 - 1 x Apache Kafka instance
 - 1 x Redis instance
 - 1 x Apache Cassandra instance with `streamr_dev` keyspace
+- 1 x SMTP server
 
 ### Streamr services
 - 1 x [Cloud Broker](https://github.com/streamr-dev/cloud-broker) instance
