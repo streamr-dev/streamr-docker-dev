@@ -21,8 +21,9 @@ Data of MySQL and Cassandra are persisted on host machine disk.
 
 ## Setting up
 
-1. Download, install, and run the [Docker Community Edition for
-   Mac](https://store.docker.com/editions/community/docker-ce-desktop-mac).
+### OS X
+
+1. Download, install, and run [Docker Community Edition for Mac](https://store.docker.com/editions/community/docker-ce-desktop-mac).
 
 2. Increase the amount of memory allocated to Docker VM from 2GB to something
    like 5GB or more (Docker icon -> Preferences -> Advanced). Click Apply & Restart.
@@ -32,10 +33,25 @@ Data of MySQL and Cassandra are persisted on host machine disk.
 ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ```
 
-4.  Attach (unused) IP address 10.200.10.1 to network interface lo0 on macOS
+4.  Attach (unused) IP address 10.200.10.1 to loopback network interface `lo0`
 [details](https://docs.docker.com/docker-for-mac/networking/#use-cases-and-workarounds):
 ```
 streamr-docker-dev bind-ip
+```
+
+### Linux
+
+1. Install and start Docker service.
+
+2. Add `streamr-docker-dev` into a suitable directory in your PATH (run from repository root), e.g.:
+```
+ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
+```
+
+4.  Attach (unused) IP address 10.200.10.1 to loopback network interface (usually named `lo`)
+[details](https://docs.docker.com/docker-for-mac/networking/#use-cases-and-workarounds):
+```
+ip addr add 10.200.10.1 dev lo label lo:1
 ```
 
 ## Running
