@@ -20,7 +20,7 @@ DRY_RUN=0
 FOLLOW=0
 HELP=0
 
-SERVICE_COMBINATIONS=("" "mysql broker data-api" "mysql data-api" "mysql broker")
+SERVICE_COMBINATIONS=("" "mysql broker data-api" "mysql data-api" "mysql broker" "" "cassandra kafka init_keyspace mysql redis smtp zookeeper broker data-api engine-and-editor")
 
 help() {
     $ORIG_DIRNAME/help_scripts.sh
@@ -154,11 +154,9 @@ interactive() {
         do
             temp=""
             case $REPLY in
-                1 | 2 | 3 )         temp=${SERVICE_COMBINATIONS[$REPLY]}
+                1 | 2 | 3 | 5 )         temp=${SERVICE_COMBINATIONS[$REPLY]}
                                     ;;
                 4 )                 FIRST_START_ARGUMENTS+=" -f docker-compose.yml"
-                                    ;;
-                5 )                 ALL=1
                                     ;;
                 * )                 temp=$REPLY
                                     ;;
@@ -227,12 +225,10 @@ else
             esac
         else
             case $1 in
-                1 | 2 | 3)  SERVICES+=" ${SERVICE_COMBINATIONS[$1]}"
+                1 | 2 | 3 | 5)  SERVICES+=" ${SERVICE_COMBINATIONS[$1]}"
                             ;;
                 4 )         FIRST_START_ARGUMENTS+=" -f docker-compose.yml"
                             SERVICES+=" "
-                            ;;
-                5 )         ALL=1
                             ;;
                 * )         SERVICES+=" $1"
                             ;;
