@@ -20,7 +20,14 @@ DRY_RUN=0
 FOLLOW=0
 HELP=0
 
-SERVICE_COMBINATIONS=("" "mysql broker data-api" "mysql data-api" "mysql broker" "" "cassandra kafka init_keyspace mysql redis smtp zookeeper broker data-api engine-and-editor")
+SERVICE_COMBINATIONS=(
+""
+"cassandra kafka init_keyspace mysql redis smtp zookeeper broker data-api"
+"cassandra kafka init_keyspace mysql redis smtp zookeeper data-api"
+"cassandra kafka init_keyspace mysql redis smtp zookeeper broker"
+"cassandra kafka init_keyspace mysql redis smtp zookeeper"
+"cassandra kafka init_keyspace mysql redis smtp zookeeper broker data-api engine-and-editor"
+)
 
 help() {
     $ORIG_DIRNAME/help_scripts.sh
