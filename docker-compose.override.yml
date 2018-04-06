@@ -25,12 +25,6 @@ services:
             - zookeeper
         environment:
             STREAMR_URL: http://10.200.10.1:8081/streamr-core
-    twitter-bitcoin:
-        container_name: streamr_dev_twitter-bitcoin
-        image: streamr/twitter-bitcoin
-        restart: on-failure
-        links:
-            - data-api
     engine-and-editor:
         container_name: streamr_dev_engine-and-editor
         image: streamr/engine-and-editor
@@ -39,10 +33,13 @@ services:
         depends_on:
             - init_keyspace
         links:
+            - mysql
             - cassandra
             - kafka
             - redis
             - zookeeper
             - broker
             - data-api
-            - mysql
+        entrypoint: "grails"
+        command: "-Dstreamr.database.host=mysql -Dstreamr.kafka.bootstrap.servers=kafka:9092 -Dstreamr.redis.hosts=redis -Dstreamr.cassandra.hosts=cassandra run-app"
+
