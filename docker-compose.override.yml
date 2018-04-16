@@ -42,4 +42,11 @@ services:
             - data-api
         entrypoint: "grails"
         command: "-Dstreamr.database.host=mysql -Dstreamr.kafka.bootstrap.servers=kafka:9092 -Dstreamr.redis.hosts=redis -Dstreamr.cassandra.hosts=cassandra test run-app"
-
+    ethereum-watcher:
+        container_name: streamr_dev_ethereum_watcher
+        image: streamr/ethereum-watcher
+        depends_on:
+            - engine-and-editor
+        links:
+            - engine-and-editor
+        command: 'index.js --streamrApiURL="http://engine-and-editor:8081/streamr-core/api/v1" --ethereumServerURL="wss://rinkeby.infura.io/ws" --marketplaceAddress="0x1994925b5da03929f8f51cf3891aee199656ec72" --devopsKey="devops-user-key" --verbose=1'
