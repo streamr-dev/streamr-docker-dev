@@ -27,7 +27,7 @@ services:
             STREAMR_URL: http://10.200.10.1:8081/streamr-core
     engine-and-editor:
         container_name: streamr_dev_engine-and-editor
-        image: streamr/engine-and-editor
+        image: streamr/engine-and-editor:latest
         ports:
             - "8081:8081"
         depends_on:
@@ -41,7 +41,7 @@ services:
             - broker
             - data-api
         entrypoint: "grails"
-        command: "-Dstreamr.database.host=mysql -Dstreamr.kafka.bootstrap.servers=kafka:9092 -Dstreamr.redis.hosts=redis -Dstreamr.cassandra.hosts=cassandra run-app"
+        command: "-Dstreamr.database.host=mysql -Dstreamr.kafka.bootstrap.servers=kafka:9092 -Dstreamr.redis.hosts=redis -Dstreamr.cassandra.hosts=cassandra test run-app"
     ethereum-watcher:
         container_name: streamr_dev_ethereum_watcher
         image: streamr/ethereum-watcher
