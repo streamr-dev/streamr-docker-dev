@@ -37,7 +37,7 @@ services:
             - cassandra
     mysql:
         container_name: streamr_dev_mysql
-        image: mysql
+        image: mysql:5.7.22
         ports:
             - "3306:3306"
         volumes:
