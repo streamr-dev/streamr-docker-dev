@@ -54,6 +54,17 @@ ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ip addr add 10.200.10.1 dev lo label lo:1
 ```
 
+### Setting up image upload through AWS (Optional)
+
+You need to follow these steps if you want AWS S3 dependent features (i.e.
+image upload) to be available through engine-and-editor.
+
+1. copy `.env.example` as `.env` and change the values to correct ones
+(Note: `.env` file is in `.gitignore`)
+
+2. Restart engine-and-editor and S3 services should work. You can debug any
+   potential issues with `streamr-docker-dev log -f engine-and-editor`.
+
 ## Running
 
 You will want to run subsets of the Streamr cloud environment depending on what
