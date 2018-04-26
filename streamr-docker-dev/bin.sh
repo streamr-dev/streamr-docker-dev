@@ -174,7 +174,7 @@ interactive() {
 
         if [ "$OPERATION" == "stop" ] || [ "$OPERATION" == "restart" ]; then
             if [ $ALL == 0 ]; then
-                printf "Stop other services also? [Y/n] > "
+                printf "Stop other services also? [y/n] > "
                 read response
                 if [ "$response" == "Y" ] || [ "$response" == "y" ]; then
                     KILL_ALL=1
@@ -182,14 +182,14 @@ interactive() {
             fi
             printf "\n"
 
-            printf "Remove persistent data? [Y/n] > "
+            printf "Remove persistent data? [y/n] > "
             read response
             if [ "$response" == "Y" ] || [ "$response" == "y" ]; then
                 REMOVE_DATA=1
             fi
             printf "\n"
         elif [ "$OPERATION" == "log" ]; then
-            printf "Follow log? [Y/n] > "
+            printf "Follow log? [y/n] > "
             read response
             if [ "$response" == "Y" ] || [ "$response" == "y" ]; then
                 FOLLOW=1
