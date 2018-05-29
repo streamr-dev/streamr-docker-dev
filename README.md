@@ -106,6 +106,11 @@ To show docker disk usage statistics
 To prune all unused data
 `docker system prune`
 
+### NGINX reverse proxy
+
+When running engine-and-editor during Marketplace development, an nginx reverse proxy is available to map marketplace (default :3333) and engine-and-editor (default :8081) to localhost:80: `streamr-docker-dev start nginx`
+
+
 ## Accounts
 
 | Service           | Username                 | Password                 | Misc                                                       |

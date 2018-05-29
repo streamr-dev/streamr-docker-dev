@@ -1,5 +1,13 @@
 version: "3"
 services:
+    nginx:
+        container_name: streamr_nginx_reverse
+        image: nginx:1.14-alpine
+        restart: on-failure
+        ports:
+          - "80:80"
+        volumes:
+          - ./custom-nginx-reverse-proxy.conf:/etc/nginx/nginx.conf:ro
     broker:
         container_name: streamr_dev_broker
         image: streamr/broker
