@@ -72,13 +72,13 @@ service(s) of Streamr you are developing. For example, when developing
 engine-and-editor, you want to run all base services along with Broker and
 Data-API (alias 1).
 
-| Description                                      | When developing           | Alias  | Command                                       |
-|--------------------------------------------------|---------------------------|--------|-----------------------------------------------|
-| Create and run entire service stack                      | nothing                   | 5      | `streamr-docker-dev start --all`              |
-| Create and Run base services        | all 3 services / broker   | 4      | `streamr-docker-dev start 4`                  |
-| Create and run Broker + base services            | data-api (+ engine-and-editor) | 3      | `streamr-docker-dev start 3`                  |
-| Create and run Data-API + base services          | broker + engine-and-editor     | 2      | `streamr-docker-dev start 2`                  |
-| Create and run Broker + Data-API + base services | engine-and-editor              | 1      | `streamr-docker-dev start 1`                  |
+| Description                                         | When developing                | Alias  | Command                            |
+|-----------------------------------------------------|--------------------------------|--------|------------------------------------|
+| Create and run entire service stack (incl. `nginx`) | -                              | 5      | `streamr-docker-dev start --all`   |
+| Create and Run base services                        | all 3 services / broker        | 4      | `streamr-docker-dev start 4`       |
+| Create and run Broker + base services               | data-api (+ engine-and-editor) | 3      | `streamr-docker-dev start 3`       |
+| Create and run Data-API + base services             | broker + engine-and-editor     | 2      | `streamr-docker-dev start 2`       |
+| Create and run Broker + Data-API + base services    | engine-and-editor              | 1      | `streamr-docker-dev start 1`       |
 
 ### Useful Commands
 
