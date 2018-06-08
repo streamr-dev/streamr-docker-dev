@@ -22,11 +22,11 @@ HELP=0
 
 SERVICE_COMBINATIONS=(
 ""
-"cassandra kafka init_keyspace mysql redis smtp zookeeper broker data-api"
-"cassandra kafka init_keyspace mysql redis smtp zookeeper data-api"
-"cassandra kafka init_keyspace mysql redis smtp zookeeper broker"
-"cassandra kafka init_keyspace mysql redis smtp zookeeper"
-"cassandra kafka init_keyspace mysql redis smtp zookeeper broker data-api engine-and-editor"
+"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx broker data-api"
+"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx data-api"
+"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx broker"
+"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx"
+"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx broker data-api engine-and-editor"
 )
 
 help() {
@@ -46,7 +46,7 @@ start() {
     [[ $DETACHED == 1 ]] && FLAGS+=" -d"
     [[ $SERVICES == "" ]] && msg="Starting all" || msg="Starting$SERVICES"
     COMMANDS_TO_RUN+=("echo $msg")
-    
+
     COMMANDS_TO_RUN+=("docker-compose$FIRST_START_ARGUMENTS up$FLAGS$SERVICES")
 }
 
@@ -90,10 +90,10 @@ bind_ip() {
 interactive() {
     PS3="Operation: [type or select from list] > "
     options=(
-        "start" 
-        "stop" 
-        "restart" 
-        "ps" 
+        "start"
+        "stop"
+        "restart"
+        "ps"
         "log"
         "bind-ip"
         "help"
@@ -221,7 +221,7 @@ else
                 -k | --kill-all )           KILL_ALL=1
                                             ;;
                 -f | --follow )             FOLLOW=1
-                                            ;;                                
+                                            ;;
                 --dry-run )                 DRY_RUN=1
                                             ;;
                 --attached )                DETACHED=0
@@ -266,10 +266,10 @@ case $OPERATION in
     "bind-ip" )                     bind_ip
                                     ;;
 esac
-    
+
 
 pushd $ROOT_DIR > /dev/null
-for command in "${COMMANDS_TO_RUN[@]}" 
+for command in "${COMMANDS_TO_RUN[@]}"
 do
     if [ $DRY_RUN == 1 ]; then
         echo "$command"
