@@ -108,7 +108,17 @@ To prune all unused data
 
 ### NGINX reverse proxy
 
-When running engine-and-editor during Marketplace development, an nginx reverse proxy is available to map marketplace (default :3333) and engine-and-editor (default :8081) to localhost:80: `streamr-docker-dev start nginx`
+When running `engine-and-editor` during some UI app development that requires to be run in the same domain (eg. because of cookies), 
+an nginx reverse proxy is available to map the urls to `localhost:80`. 
+The reverse proxy can be started with `streamr-docker-dev start nginx`.
+
+Url mappings:
+
+| Service             | Original localhost url              | New url after `nginx`         |
+|---------------------|-------------------------------------|-------------------------------| 
+| `engine-and-editor` | http://localhost:8081/streamr-core  | http://localhost/streamr-core | 
+| `marketplace`       | http://localhost:3333               | http://localhost/marketplace  | 
+| `editor`            | http://localhost:6666               | http://localhost/editor       | 
 
 
 ## Accounts
