@@ -118,7 +118,7 @@ Url mappings:
 |---------------------|-------------------------------------|-------------------------------| 
 | `engine-and-editor` | http://localhost:8081/streamr-core  | http://localhost/streamr-core | 
 | `marketplace`       | http://localhost:3333               | http://localhost/marketplace  | 
-| `editor`            | http://localhost:6666               | http://localhost/editor       | 
+| `editor`            | http://localhost:5555               | http://localhost/editor       | 
 
 
 ## Accounts
