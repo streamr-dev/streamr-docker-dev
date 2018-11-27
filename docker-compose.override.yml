@@ -69,7 +69,3 @@ services:
             METRICS: "false"
         volumes:
             - ./data/ethereum-watcher/:/app/logs
-
-#            entrypoint: "grails"
-#                    command: "-Dstreamr.database.host=mysql -Dstreamr.kafka.bootstrap.servers=kafka:9092 -Dstreamr.redis.hosts=redis -Dstreamr.cassandra.hosts=cassandra test run-app"
-
