@@ -41,7 +41,7 @@ services:
               - data-api
     engine-and-editor:
         container_name: streamr_dev_engine-and-editor
-        image: streamr/engine-and-editor:latest
+        image: streamr/engine-and-editor:dev
         ports:
             - "8081:8081"
         depends_on:
@@ -53,8 +53,6 @@ services:
             - redis
             - zookeeper
             - broker
-        entrypoint: "grails"
-        command: "-Dstreamr.database.host=mysql -Dstreamr.kafka.bootstrap.servers=kafka:9092 -Dstreamr.redis.hosts=redis -Dstreamr.cassandra.hosts=cassandra test run-app"
         environment:
             AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
             AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
@@ -71,3 +69,7 @@ services:
             METRICS: "false"
         volumes:
             - ./data/ethereum-watcher/:/app/logs
+
+#            entrypoint: "grails"
+#                    command: "-Dstreamr.database.host=mysql -Dstreamr.kafka.bootstrap.servers=kafka:9092 -Dstreamr.redis.hosts=redis -Dstreamr.cassandra.hosts=cassandra test run-app"
+
