@@ -10,7 +10,7 @@ services:
           - ./custom-nginx-reverse-proxy.conf:/etc/nginx/nginx.conf:ro
     broker:
         container_name: streamr_dev_broker
-        image: streamr/broker
+        image: streamr/cloud-broker
         restart: on-failure
         depends_on:
             - init_keyspace
