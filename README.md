@@ -117,7 +117,7 @@ Url mappings:
 | Service             | Original localhost url              | New url after `nginx`         |
 |---------------------|-------------------------------------|-------------------------------| 
 | `engine-and-editor` | http://localhost:8081/streamr-core  | http://localhost/streamr-core | 
-| `platform`          | http://localhost:3333               | http://localhost/platform     | 
+| `platform`          | http://localhost:3333               | http://localhost/             | 
 
 
 ## Accounts
