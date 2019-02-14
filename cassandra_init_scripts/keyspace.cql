@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS stream_data (
     ts timestamp,
     sequence_no int,
     publisher_id varchar,
+    msg_chain_id varchar,
     payload blob,
-    PRIMARY KEY ((id, partition), ts, sequence_no, publisher_id)
+    PRIMARY KEY ((id, partition), ts, sequence_no, publisher_id, msg_chain_id)
 );
