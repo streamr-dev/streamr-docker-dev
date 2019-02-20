@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS stream_data (
     id varchar,
     partition int,
     ts timestamp,
-    sequence_no int,
+    sequence_no bigint,
     publisher_id varchar,
     msg_chain_id varchar,
     payload blob,
