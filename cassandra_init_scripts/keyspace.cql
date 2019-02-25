@@ -21,9 +21,6 @@ CREATE TABLE IF NOT EXISTS stream_timestamps (
     PRIMARY KEY ((stream, stream_partition), ts)
 );
 
-COPY stream_events FROM '/init_scripts/hsl-demo-data.csv' WITH DELIMITER = '|' AND HEADER = true;
-COPY stream_timestamps FROM '/init_scripts/hsl-demo-data-ts.csv' WITH DELIMITER = '|' AND HEADER = true;
-
 /* new messageID version */
 CREATE TABLE IF NOT EXISTS stream_data (
     id varchar,
@@ -35,3 +32,8 @@ CREATE TABLE IF NOT EXISTS stream_data (
     payload blob,
     PRIMARY KEY ((id, partition), ts, sequence_no, publisher_id, msg_chain_id)
 );
+
+
+COPY stream_events FROM '/init_scripts/hsl-demo-data.csv' WITH DELIMITER = '|' AND HEADER = true;
+COPY stream_timestamps FROM '/init_scripts/hsl-demo-data-ts.csv' WITH DELIMITER = '|' AND HEADER = true;
+
