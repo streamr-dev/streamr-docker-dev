@@ -29,7 +29,7 @@ services:
     init_keyspace:
         container_name: streamr_dev_init_keyspace
         image: cassandra
-        command: bash -c "sleep 2 && cqlsh cassandra -f /init_scripts/keyspace.cql && echo keyspace initialized && sleep infinity"
+        command: bash -c "sleep 30 && cqlsh cassandra -f /init_scripts/keyspace.cql && echo keyspace initialized && sleep infinity"
         restart: on-failure
         volumes:
             - ./cassandra_init_scripts:/init_scripts
