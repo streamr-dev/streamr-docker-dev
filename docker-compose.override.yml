@@ -10,7 +10,7 @@ services:
           - ./custom-nginx-reverse-proxy.conf:/etc/nginx/nginx.conf:ro
     broker:
         container_name: streamr_dev_broker
-        image: streamr/cloud-broker:stg
+        image: streamr/cloud-broker:dev
         restart: on-failure
         depends_on:
             - init_keyspace
@@ -20,7 +20,7 @@ services:
             - redis
     data-api:
         container_name: streamr_dev_data-api
-        image: streamr/data-api
+        image: streamr/data-api:dev
         restart: on-failure
         ports:
             - "8890:8890"
