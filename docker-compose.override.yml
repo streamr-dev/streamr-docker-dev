@@ -53,6 +53,7 @@ services:
             - redis
             - zookeeper
             - broker
+            - streamr-web3
         environment:
             AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
             AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
@@ -69,3 +70,8 @@ services:
             METRICS: "false"
         volumes:
             - ./data/ethereum-watcher/:/app/logs
+    streamr-web3:
+        container_name: streamr_dev_streamr_web3
+        image: streamr/streamr-web3:dev
+        ports:
+            - "3001:3001"

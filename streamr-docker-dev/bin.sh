@@ -22,11 +22,11 @@ HELP=0
 
 SERVICE_COMBINATIONS=(
 ""
-"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx broker data-api"
-"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx data-api"
-"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx broker"
+"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx streamr-web3 broker data-api"
+"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx streamr-web3 data-api"
+"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx streamr-web3 broker"
 "cassandra kafka init_keyspace mysql redis smtp zookeeper nginx"
-"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx broker data-api engine-and-editor"
+"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx streamr-web3 broker data-api engine-and-editor"
 )
 
 help() {
