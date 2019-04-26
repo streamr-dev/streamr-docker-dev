@@ -62,6 +62,7 @@ services:
         image: wurstmeister/zookeeper
         ports:
             - "2181:2181"
+        restart: on-failure
 volumes:
     data:
     mysql_init_scripts:
