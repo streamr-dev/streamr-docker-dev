@@ -69,3 +69,27 @@ services:
             METRICS: "false"
         volumes:
             - ./data/ethereum-watcher/:/app/logs
+    ganache:
+        container_name: streamr_dev_ganache
+        image: trufflesuite/ganache-cli
+        ports:
+          - "8545:8545"
+        restart: on-failure
+        entrypoint:
+          - node
+          - /app/ganache-core.docker.cli.js
+          - -m
+          - arrest sheriff sorry require bench weapon cube artist wish gather tonight glide
+    community-product:
+        container_name: streamr_dev_cp
+        image: streamr/streamr-community-products:dev
+        ports:
+          - "8085:8085"
+        depends_on:
+            - ganache
+        environment:
+            ETHEREUM_SERVER: http://ganache:8545
+            ETHEREUM_PRIVATE_KEY: 472e4b208b044caad25f9716b330c3a21f711315eb8c8773e2f6c78a1ae72285
+            STREAMR_WS_URL: ws://localhost:8890/api/v1/ws
+            STREAMR_HTTP_URL: http://localhost:8081/streamr-core/api/v1
+
