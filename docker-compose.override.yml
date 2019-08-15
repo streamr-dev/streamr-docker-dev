@@ -53,6 +53,11 @@ services:
             - redis
             - zookeeper
             - broker
+        healthcheck:
+            test: ["CMD", "curl", "-sS", "http://localhost:8081/streamr-core/login/auth"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
         environment:
             AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
             AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
@@ -71,24 +76,31 @@ services:
             - ./data/ethereum-watcher/:/app/logs
     ganache:
         container_name: streamr_dev_ganache
-        image: streamr-ganache
+        image: streamr/streamr-ganache:dev
         ports:
           - "8545:8545"
         restart: on-failure
         environment:
             EE_URL: http://engine-and-editor:8081/streamr-core
-        depends_on:
+        links:
             - engine-and-editor
+        healthcheck:
+            test: ["CMD", "curl", "-sS", "http://localhost:8545"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
     community-product:
         container_name: streamr_dev_cp
         image: streamr/streamr-community-products:dev
         ports:
           - "8085:8085"
-        depends_on:
+        restart: on-failure
+        links:
             - ganache
+            - engine-and-editor
         environment:
-            ETHEREUM_SERVER: http://ganache:8545
-            ETHEREUM_PRIVATE_KEY: 472e4b208b044caad25f9716b330c3a21f711315eb8c8773e2f6c78a1ae72285
-            STREAMR_WS_URL: ws://localhost:8890/api/v1/ws
-            STREAMR_HTTP_URL: http://localhost:8081/streamr-core/api/v1
+            ETHEREUM_SERVER: http://10.200.10.1:8545
+            ETHEREUM_PRIVATE_KEY: 6E340F41A1C6E03E6E0A4E9805D1CEA342F6A299E7C931D6F3DA6DD34CB6E17D
+            STREAMR_WS_URL: ws://10.200.10.1:8890/api/v1/ws
+            STREAMR_HTTP_URL: http://10.200.10.1r:8081/streamr-core/api/v1
 
