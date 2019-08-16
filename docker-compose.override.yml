@@ -65,8 +65,6 @@ services:
         container_name: streamr_dev_ethereum_watcher
         image: streamr/ethereum-watcher
         restart: on-failure
-        depends_on:
-            - engine-and-editor
         links:
             - engine-and-editor
         environment:
@@ -82,6 +80,7 @@ services:
         restart: on-failure
         environment:
             EE_URL: http://engine-and-editor:8081/streamr-core
+            NETWORK_ID: 1111
         links:
             - engine-and-editor
         healthcheck:
@@ -89,6 +88,21 @@ services:
             interval: 1m30s
             timeout: 10s
             retries: 3
+    ethereum-watcher-local: # uses local ganache
+        container_name: streamr_dev_ethereum_watcher_local
+        image: streamr/ethereum-watcher
+        restart: on-failure
+        links:
+            - engine-and-editor
+            - ganache
+        environment:
+            STREAMR_API_URL: http://engine-and-editor:8081/streamr-core/api/v1
+            METRICS: "false"
+            ETHEREUM_SERVER_URL: "http://ganache:8545"
+            NETWORK_ID: "1111"
+            MARKETPLACE_ADDRESS: "eaa002f7dc60178b6103f8617be45a9d3df659b6"
+        volumes:
+            - ./data/ethereum-watcher-local/:/app/logs
     community-product:
         container_name: streamr_dev_cp
         image: streamr/streamr-community-products:dev
@@ -100,7 +114,7 @@ services:
             - engine-and-editor
         environment:
             ETHEREUM_SERVER: http://10.200.10.1:8545
-            ETHEREUM_PRIVATE_KEY: 6E340F41A1C6E03E6E0A4E9805D1CEA342F6A299E7C931D6F3DA6DD34CB6E17D
+            ETHEREUM_PRIVATE_KEY: 5e98cce00cff5dea6b454889f359a4ec06b9fa6b88e9d69b86de8e1c81887da0
             STREAMR_WS_URL: ws://10.200.10.1:8890/api/v1/ws
             STREAMR_HTTP_URL: http://10.200.10.1r:8081/streamr-core/api/v1
 
