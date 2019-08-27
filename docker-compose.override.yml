@@ -117,4 +117,5 @@ services:
             ETHEREUM_PRIVATE_KEY: 5e98cce00cff5dea6b454889f359a4ec06b9fa6b88e9d69b86de8e1c81887da0
             STREAMR_WS_URL: ws://10.200.10.1:8890/streamr-core/api/v1/ws
             STREAMR_HTTP_URL: http://10.200.10.1:8081/streamr-core/api/v1
+            TOKEN_ADDRESS: baa81a0179015be47ad439566374f2bae098686f
 
