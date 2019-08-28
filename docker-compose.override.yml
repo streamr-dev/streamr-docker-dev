@@ -119,3 +119,4 @@ services:
             STREAMR_HTTP_URL: http://10.200.10.1:8081/streamr-core/api/v1
             TOKEN_ADDRESS: "0xbaa81a0179015be47ad439566374f2bae098686f"
             DEVELOPER_MODE: "x"
+            REMOTE_SECRETS: "false"
