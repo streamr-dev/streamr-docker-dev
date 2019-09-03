@@ -42,9 +42,9 @@ check_services_from_arguments() {
 }
 
 start() {
-    ip_lines=$( ifconfig | grep 10.200.10.1 | wc -l )
+    ip_lines=$(ifconfig | grep -c 10.200.10.1)
     if [ "$ip_lines" -eq "0" ]; then
-       echo "WARNING: bind-ip is not set! Setting it now.";
+       echo "WARNING: bind-ip is not set! Setting it now."
        bind_ip
     fi
     check_services_from_arguments
