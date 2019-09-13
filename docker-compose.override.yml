@@ -39,6 +39,20 @@ services:
           restart: on-failure
           links:
               - data-api
+    ganache:
+        container_name: streamr_dev_ganache
+        image: streamr/streamr-ganache:dev
+        ports:
+          - "8545:8545"
+        restart: on-failure
+        environment:
+            EE_URL: http://engine-and-editor:8081/streamr-core
+            NETWORK_ID: 1111
+        healthcheck:
+            test: ["CMD", "curl", "-sS", "http://localhost:8545"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
     engine-and-editor:
         container_name: streamr_dev_engine-and-editor
         image: streamr/engine-and-editor:dev
@@ -53,6 +67,7 @@ services:
             - redis
             - zookeeper
             - broker
+            - ganache
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8081/streamr-core/login/auth"]
             interval: 1m30s
@@ -72,20 +87,6 @@ services:
             METRICS: "false"
         volumes:
             - ./data/ethereum-watcher/:/app/logs
-    ganache:
-        container_name: streamr_dev_ganache
-        image: streamr/streamr-ganache:dev
-        ports:
-          - "8545:8545"
-        restart: on-failure
-        environment:
-            EE_URL: http://engine-and-editor:8081/streamr-core
-            NETWORK_ID: 1111
-        healthcheck:
-            test: ["CMD", "curl", "-sS", "http://localhost:8545"]
-            interval: 1m30s
-            timeout: 10s
-            retries: 3
     ethereum-watcher-local: # uses local ganache
         container_name: streamr_dev_ethereum_watcher_local
         image: streamr/ethereum-watcher
