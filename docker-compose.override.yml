@@ -81,8 +81,6 @@ services:
         environment:
             EE_URL: http://engine-and-editor:8081/streamr-core
             NETWORK_ID: 1111
-        links:
-            - engine-and-editor
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8545"]
             interval: 1m30s
