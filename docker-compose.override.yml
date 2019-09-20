@@ -18,6 +18,29 @@ services:
             - cassandra
             - kafka
             - redis
+    tracker:
+        container_name: streamr_dev_tracker
+        image: streamr/tracker:dev
+        restart: on-failure
+        depends_on:
+            - init_keyspace
+        ports:
+            - "30300:30300"
+    broker-node:
+        container_name: streamr_dev_broker-node
+        image: streamr/broker-node:dev
+        restart: on-failure
+        ports:
+            - "8890:8890"
+            - "8891:8891"
+            - "9000:9000"
+            - "30315:30315"
+        depends_on:
+            - init_keyspace
+        links:
+            - cassandra
+        environment:
+            STREAMR_URL: http://10.200.10.1:8081/streamr-core
     data-api:
         container_name: streamr_dev_data-api
         image: streamr/data-api:dev
