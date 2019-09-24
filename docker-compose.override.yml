@@ -61,6 +61,7 @@ services:
         environment:
             AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
             AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+            CP_URL: "http://10.200.10.1:8085/communities/"
     ethereum-watcher:
         container_name: streamr_dev_ethereum_watcher
         image: streamr/ethereum-watcher
@@ -119,4 +120,3 @@ services:
             STREAMR_HTTP_URL: http://10.200.10.1:8081/streamr-core/api/v1
             TOKEN_ADDRESS: "0xbaa81a0179015be47ad439566374f2bae098686f"
             REMOTE_SECRETS: "false"
-            CP_URL: "http://host.docker.internal:8085/communities/"
