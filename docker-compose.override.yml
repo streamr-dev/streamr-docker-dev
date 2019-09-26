@@ -91,14 +91,14 @@ services:
             retries: 3
     ethereum-watcher-local: # uses local ganache
         container_name: streamr_dev_ethereum_watcher_local
-        image: streamr/ethereum-watcher
+        image: streamr/ethereum-watcher:dev
         restart: on-failure
         links:
             - engine-and-editor
             - ganache
         environment:
             STREAMR_API_URL: http://engine-and-editor:8081/streamr-core/api/v1
-            METRICS: "false"
+            METRICS: null
             ETHEREUM_SERVER_URL: "http://ganache:8545"
             MARKETPLACE_ADDRESS: "0x0af64558670a3b761B57e465Cb80B62254b39619"
             DEVOPS_KEY: "devops-user-key"
