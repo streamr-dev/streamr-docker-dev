@@ -13,21 +13,6 @@ services:
             JVM_OPTS: "-Xms256M -Xmx512M"
         volumes:
             - ./data/cassandra:/var/lib/cassandra
-    kafka:
-        container_name: streamr_dev_kafka
-        image: wurstmeister/kafka
-        depends_on:
-            - zookeeper
-        ports:
-            - "9092:9092"
-        environment:
-            KAFKA_ADVERTISED_HOST_NAME: 10.200.10.1
-            KAFKA_VERSION: "0.9.0.1"
-            SCALA_VERSION: "2.11"
-            KAFKA_CREATE_TOPICS: "data-dev:10:1"
-            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
     init_keyspace:
         container_name: streamr_dev_init_keyspace
         image: cassandra
@@ -59,12 +44,6 @@ services:
         image: namshi/smtp
         ports:
             - "25:25"
-    zookeeper:
-        container_name: streamr_dev_zookeeper
-        image: wurstmeister/zookeeper
-        ports:
-            - "2181:2181"
-        restart: on-failure
 volumes:
     data:
     mysql_init_scripts:

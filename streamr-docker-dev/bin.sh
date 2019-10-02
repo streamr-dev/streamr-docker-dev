@@ -22,11 +22,11 @@ HELP=0
 
 SERVICE_COMBINATIONS=(
 ""
-"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx broker data-api"
-"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx data-api"
-"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx broker"
-"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx"
-"cassandra kafka init_keyspace mysql redis smtp zookeeper nginx broker data-api engine-and-editor"
+"cassandra init_keyspace mysql redis smtp nginx tracker broker-node"
+"cassandra init_keyspace mysql redis smtp nginx broker-node"
+"cassandra init_keyspace mysql redis smtp nginx tracker"
+"cassandra init_keyspace mysql redis smtp nginx"
+"cassandra init_keyspace mysql redis smtp nginx tracker broker-node engine-and-editor"
 )
 
 help() {
@@ -156,9 +156,9 @@ interactive() {
     if [[ " ${ask_for_services[@]} " =~ " ${OPERATION} " ]]; then
         PS3="Services: [type or select bundle from list] > "
         options=(
-            "Broker + Data-API + base services"
-            "Data-API + base services"
-            "Broker + base services"
+            "Tracker + Broker node + base services"
+            "Broker node + base services"
+            "Tracker + base services"
             "3rd party + base services"
             "entire stack"
         )
