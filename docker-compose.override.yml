@@ -32,12 +32,6 @@ services:
         environment:
             STREAMR_URL: http://10.200.10.1:8081/streamr-core
             CASSANDRA_HOST: 10.200.10.1:9042
-    twitter-bitcoin:
-          container_name: streamr_dev_twitter-bitcoin
-          image: streamr/twitter-bitcoin
-          restart: on-failure
-          links:
-              - broker-node
     engine-and-editor:
         container_name: streamr_dev_engine-and-editor
         image: streamr/engine-and-editor:dev
