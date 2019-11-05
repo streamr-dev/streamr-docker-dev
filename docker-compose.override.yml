@@ -16,8 +16,8 @@ services:
             - init_keyspace
         ports:
             - "30300:30300"
-    broker-node:
-        container_name: streamr_dev_broker-node
+    broker-node-storage-1:
+        container_name: streamr_dev_broker-node-storage-1
         image: streamr/broker-node:dev
         restart: on-failure
         ports:
@@ -32,6 +32,31 @@ services:
         environment:
             STREAMR_URL: http://10.200.10.1:8081/streamr-core
             CASSANDRA_HOST: 10.200.10.1:9042
+            CONFIG_FILE: configs/docker-1.env.json
+    broker-node-no-storage-1:
+        container_name: streamr_dev_broker-node-no-storage-1
+        image: streamr/broker-node:dev
+        restart: on-failure
+        ports:
+            - "8790:8790"
+            - "8791:8791"
+            - "9100:9100"
+            - "30316:30316"
+        environment:
+            STREAMR_URL: http://10.200.10.1:8081/streamr-core
+            CONFIG_FILE: configs/docker-2.env.json
+    broker-node-no-storage-2:
+        container_name: streamr_dev_broker-node-no-storage-2
+        image: streamr/broker-node:dev
+        restart: on-failure
+        ports:
+            - "8690:8690"
+            - "8691:8691"
+            - "9200:9200"
+            - "30317:30317"
+        environment:
+            STREAMR_URL: http://10.200.10.1:8081/streamr-core
+            CONFIG_FILE: configs/docker-3.env.json
     engine-and-editor:
         container_name: streamr_dev_engine-and-editor
         image: streamr/engine-and-editor:dev
@@ -43,7 +68,9 @@ services:
             - mysql
             - cassandra
             - redis
-            - broker-node
+            - broker-node-storage-1
+            - broker-node-no-storage-1
+            - broker-node-no-storage-2
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8081/streamr-core/api/v1/products"]
             interval: 1m30s
