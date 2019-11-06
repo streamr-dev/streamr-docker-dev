@@ -12,8 +12,6 @@ services:
         container_name: streamr_dev_tracker
         image: streamr/tracker:dev
         restart: on-failure
-        depends_on:
-            - init_keyspace
         ports:
             - "30300:30300"
     broker-node-storage-1:
