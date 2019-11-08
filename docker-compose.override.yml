@@ -77,6 +77,7 @@ services:
         environment:
             AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
             AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+            S3_BUCKET: "${S3_BUCKET}"
             STREAMR_URL: "http://10.200.10.1"
             CP_URL: "http://10.200.10.1:8085/communities/"
     ethereum-watcher:
