@@ -24,7 +24,7 @@ SERVICE_COMBINATIONS=(
 ""
 "cassandra init_keyspace mysql redis smtp nginx tracker broker-node-storage-1 broker-node-no-storage-1 broker-node-no-storage-2"
 "cassandra init_keyspace mysql redis smtp nginx broker-node-storage-1 broker-node-no-storage-1 broker-node-no-storage-2"
-"cassandra init_keyspace mysql redis smtp nginx tracker"
+"cassandra init_keyspace mysql redis smtp nginx tracker engine-and-editor"
 "cassandra init_keyspace mysql redis smtp nginx "
 "cassandra init_keyspace mysql redis smtp nginx tracker tracker broker-node-storage-1 broker-node-no-storage-1 broker-node-no-storage-2 engine-and-editor"
 )
@@ -158,7 +158,7 @@ interactive() {
         options=(
             "Tracker + Broker node + base services"
             "Broker node + base services"
-            "Tracker + base services"
+            "Tracker + EE + base services"
             "3rd party + base services"
             "entire stack"
         )
