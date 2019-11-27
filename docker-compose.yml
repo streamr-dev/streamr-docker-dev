@@ -20,7 +20,7 @@ services:
         restart: on-failure
         volumes:
             - ./cassandra_init_scripts:/init_scripts
-        links:
+        depends_on:
             - cassandra
     mysql:
         container_name: streamr_dev_mysql

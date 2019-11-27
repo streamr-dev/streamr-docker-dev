@@ -25,7 +25,6 @@ services:
             - "30315:30315"
         depends_on:
             - init_keyspace
-        links:
             - cassandra
         environment:
             STREAMR_URL: http://10.200.10.1:8081/streamr-core
@@ -63,7 +62,6 @@ services:
         depends_on:
             - init_keyspace
             - smtp
-        links:
             - mysql
             - cassandra
             - redis
@@ -84,7 +82,7 @@ services:
         container_name: streamr_dev_ethereum_watcher
         image: streamr/ethereum-watcher
         restart: on-failure
-        links:
+        depends_on:
             - engine-and-editor
         environment:
             STREAMR_API_URL: http://engine-and-editor:8081/streamr-core/api/v1
@@ -100,7 +98,7 @@ services:
         environment:
             EE_URL: http://engine-and-editor:8081/streamr-core
             NETWORK_ID: 1111
-        links:
+        depends_on:
             - engine-and-editor
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8545"]
@@ -111,9 +109,9 @@ services:
         container_name: streamr_dev_ethereum_watcher_local
         image: streamr/ethereum-watcher:dev
         restart: on-failure
-        links:
-            - engine-and-editor
+        depends_on:
             - ganache
+            - engine-and-editor
         environment:
             STREAMR_API_URL: http://engine-and-editor:8081/streamr-core/api/v1
             METRICS: null
@@ -128,7 +126,7 @@ services:
         ports:
           - "8085:8085"
         restart: on-failure
-        links:
+        depends_on:
             - ganache
             - engine-and-editor
         environment:
