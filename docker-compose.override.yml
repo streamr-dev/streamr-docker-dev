@@ -117,7 +117,7 @@ services:
             STREAMR_API_URL: http://engine-and-editor:8081/streamr-core/api/v1
             METRICS: null
             ETHEREUM_SERVER_URL: "http://ganache:8545"
-            MARKETPLACE_ADDRESS: "0xeaa002f7dc60178b6103f8617be45a9d3df659b6"
+            MARKETPLACE_ADDRESS: "0xf1371c0f40528406dc4f4caf89924ea9da49e866"
             DEVOPS_KEY: "devops-user-key"
         volumes:
             - ./data/ethereum-watcher-local/:/app/logs
