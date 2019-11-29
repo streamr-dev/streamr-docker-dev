@@ -26,7 +26,8 @@ SERVICE_COMBINATIONS=(
 "cassandra init_keyspace mysql redis smtp nginx broker-node-storage-1 broker-node-no-storage-1 broker-node-no-storage-2"
 "cassandra init_keyspace mysql redis smtp nginx tracker engine-and-editor"
 "cassandra init_keyspace mysql redis smtp nginx "
-"cassandra init_keyspace mysql redis smtp nginx tracker tracker broker-node-storage-1 broker-node-no-storage-1 broker-node-no-storage-2 engine-and-editor"
+"cassandra init_keyspace mysql redis smtp nginx tracker broker-node-storage-1 broker-node-no-storage-1 broker-node-no-storage-2 engine-and-editor"
+"cassandra init_keyspace mysql redis smtp nginx tracker broker-node-storage-1 broker-node-no-storage-1 broker-node-no-storage-2 engine-and-editor platform"
 )
 
 help() {
@@ -160,13 +161,14 @@ interactive() {
             "Broker node + base services"
             "Tracker + EE + base services"
             "3rd party + base services"
+            "back-end services + base services"
             "entire stack"
         )
         select opt in "${options[@]}"
         do
             temp=""
             case $REPLY in
-                1 | 2 | 3 | 5 )         temp=${SERVICE_COMBINATIONS[$REPLY]}
+                1 | 2 | 3 | 5 | 6 )         temp=${SERVICE_COMBINATIONS[$REPLY]}
                                     ;;
                 4 )                 FIRST_START_ARGUMENTS+=" -f docker-compose.yml"
                                     ;;
@@ -237,7 +239,7 @@ else
             esac
         else
             case $1 in
-                1 | 2 | 3 | 5)  SERVICES+=" ${SERVICE_COMBINATIONS[$1]}"
+                1 | 2 | 3 | 5 | 6)  SERVICES+=" ${SERVICE_COMBINATIONS[$1]}"
                             ;;
                 4 )         FIRST_START_ARGUMENTS+=" -f docker-compose.yml"
                             SERVICES+=" "
