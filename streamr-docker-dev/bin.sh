@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git pull
+
 ORIG_FILENAME="$(readlink "$0" -f)"
 ORIG_DIRNAME=$(dirname "$ORIG_FILENAME")
 ROOT_DIR="$ORIG_DIRNAME/.."
