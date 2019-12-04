@@ -1,6 +1,13 @@
 #!/bin/bash
 
-git pull
+git fetch
+LOCAL=`git show master |head -n 1`
+REMOTE=`git show origin/master |head -n 1`
+if [ "$LOCAL" != "$REMOTE" ]; then
+    git pull
+    echo "Update complete, please try the same command again"
+    exit
+fi
 
 ORIG_FILENAME="$(readlink "$0" -f)"
 ORIG_DIRNAME=$(dirname "$ORIG_FILENAME")
