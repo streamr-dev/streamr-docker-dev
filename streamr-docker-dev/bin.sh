@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# https://stackoverflow.com/questions/59895/get-the-source-directory-of-a-bash-script-from-within-the-script-itself
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+
+pushd $DIR > /dev/null
 git fetch
 LOCAL=`git show master |head -n 1`
 REMOTE=`git show origin/master |head -n 1`
@@ -8,6 +18,7 @@ if [ "$LOCAL" != "$REMOTE" ]; then
     echo "Update complete, please try the same command again"
     exit
 fi
+popd > /dev/null
 
 ORIG_FILENAME="$(readlink "$0" -f)"
 ORIG_DIRNAME=$(dirname "$ORIG_FILENAME")
