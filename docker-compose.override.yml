@@ -76,7 +76,8 @@ services:
             retries: 3
         environment:
             AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
-            AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+            AWS_SECRET_KEY: "${AWS_SECRET_ACCESS_KEY}"
+            FILEUPLOAD_S3_BUCKET: "${FILEUPLOAD_S3_BUCKET}"
             STREAMR_URL: "http://10.200.10.1"
             CPS_URL: "http://10.200.10.1:8085/communities/"
     ethereum-watcher:
