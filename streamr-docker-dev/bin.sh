@@ -93,6 +93,14 @@ bind_ip() {
     COMMANDS_TO_RUN+=("sudo ifconfig lo0 alias 10.200.10.1/24")
 }
 
+pull() {
+    # Pull latest images define on docker compose
+    # --all for all services, Service name for specific service
+    check_services_from_arguments
+    COMMANDS_TO_RUN+=("docker-compose pull $SERVICES")
+}
+
+
 interactive() {
     PS3="Operation: [type or select from list] > "
     options=(
@@ -102,6 +110,7 @@ interactive() {
         "ps"
         "log"
         "bind-ip"
+        "pull"
         "help"
     )
     select opt in "${options[@]}"; do
@@ -131,6 +140,10 @@ interactive() {
                 break
                 ;;
             7 )
+                OPERATION="pull"
+                break
+                ;;
+            8 )
                 help
                 break
                 ;;
@@ -206,6 +219,9 @@ interactive() {
         bind_ip
     elif [ "$OPERATION" == "help" ]; then
         help
+    elif [ "$OPERATION" == "pull" ]; then
+        ALL=1
+        pull
     fi
 }
 
