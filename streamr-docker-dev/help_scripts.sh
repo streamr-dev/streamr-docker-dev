@@ -17,7 +17,8 @@ Commands:
     restart             stop and start services 
     ps                  list docker containers
     bind-ip             attach (unused) IP address 10.200.10.1 to network interface lo0 on macOS details
-    log  			    show logs
+    log                 show logs
+    pull                pulls images
 
 Options:
     -h --help           command help
@@ -105,6 +106,16 @@ Options:
 "
 }
 
+pull_help() {
+echo "
+Pulls images defined in docker-compose files
+
+Usage: streamr-docker-dev pull [ [--] <service>...]
+    streamr-docker-dev pull --all
+    streamr-docker-dev pull broker ganache
+"
+}
+
 case $1 in
     "start" )
         start_help
@@ -123,6 +134,9 @@ case $1 in
         ;;
     "log" )
         log_help
+        ;;
+    "pull" )
+        pull_help
         ;;
     * ) common_help
         ;;
