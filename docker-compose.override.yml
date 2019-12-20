@@ -17,7 +17,7 @@ services:
         command: node tracker.js
     broker-node-storage-1:
         container_name: streamr_dev_broker-node-storage-1
-        image: streamr/broker-node:dev
+        image: streamr/broker-node:nightly-2019-12-17
         restart: on-failure
         ports:
             - "8890:8890"
@@ -33,7 +33,7 @@ services:
             CONFIG_FILE: configs/docker-1.env.json
     broker-node-no-storage-1:
         container_name: streamr_dev_broker-node-no-storage-1
-        image: streamr/broker-node:dev
+        image: streamr/broker-node:nightly-2019-12-17
         restart: on-failure
         ports:
             - "8790:8790"
@@ -45,7 +45,7 @@ services:
             CONFIG_FILE: configs/docker-2.env.json
     broker-node-no-storage-2:
         container_name: streamr_dev_broker-node-no-storage-2
-        image: streamr/broker-node:dev
+        image: streamr/broker-node:nightly-2019-12-17
         restart: on-failure
         ports:
             - "8690:8690"
