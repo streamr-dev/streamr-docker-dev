@@ -140,6 +140,11 @@ services:
             REMOTE_SECRETS: "false"
     platform:
         container_name: streamr_dev_platform
-        image: streamr/platform:development
+        image: streamr/platform:dev
+        healthcheck:
+            test: ["CMD", "curl", "-sS", "http://localhost"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
         ports:
             - "3333:80"
