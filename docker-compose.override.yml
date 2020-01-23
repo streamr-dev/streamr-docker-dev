@@ -14,7 +14,13 @@ services:
         restart: on-failure
         ports:
             - "30300:30300"
-        command: node tracker.js
+            - "11111:11111"
+        command: node tracker.js --endpointServerPort=11111
+        healthcheck:
+            test: ["CMD", "curl", "-sS", "http://localhost:11111/topology/"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
     broker-node-storage-1:
         container_name: streamr_dev_broker-node-storage-1
         image: streamr/broker-node:dev
@@ -31,6 +37,11 @@ services:
             STREAMR_URL: http://10.200.10.1:8081/streamr-core
             CASSANDRA_HOST: 10.200.10.1:9042
             CONFIG_FILE: configs/docker-1.env.json
+        healthcheck:
+            test: ["CMD", "curl", "-sS", "http://localhost:8891/api/v1/volume"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
     broker-node-no-storage-1:
         container_name: streamr_dev_broker-node-no-storage-1
         image: streamr/broker-node:dev
@@ -43,6 +54,11 @@ services:
         environment:
             STREAMR_URL: http://10.200.10.1:8081/streamr-core
             CONFIG_FILE: configs/docker-2.env.json
+        healthcheck:
+            test: ["CMD", "curl", "-sS", "http://localhost:8791/api/v1/volume"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
     broker-node-no-storage-2:
         container_name: streamr_dev_broker-node-no-storage-2
         image: streamr/broker-node:dev
@@ -55,6 +71,11 @@ services:
         environment:
             STREAMR_URL: http://10.200.10.1:8081/streamr-core
             CONFIG_FILE: configs/docker-3.env.json
+        healthcheck:
+            test: ["CMD", "curl", "-sS", "http://localhost:8691/api/v1/volume"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
     engine-and-editor:
         container_name: streamr_dev_engine-and-editor
         image: streamr/engine-and-editor:dev
