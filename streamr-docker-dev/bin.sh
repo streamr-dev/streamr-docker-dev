@@ -286,6 +286,8 @@ case $OPERATION in
                                     ;;
     log )                           log
                                     ;;
+    pull )                          pull
+                                    ;;
     "bind-ip" )                     bind_ip
                                     ;;
 esac
