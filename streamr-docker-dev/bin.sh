@@ -99,6 +99,9 @@ pull() {
     COMMANDS_TO_RUN+=("docker-compose pull $SERVICES")
 }
 
+clean() {
+    docker system prune --all --force --volumes
+}
 
 interactive() {
     PS3="Operation: [type or select from list] > "
@@ -288,6 +291,8 @@ case $OPERATION in
     pull )                          pull
                                     ;;
     "bind-ip" )                     bind_ip
+                                    ;;
+    clean)                          clean
                                     ;;
 esac
 
