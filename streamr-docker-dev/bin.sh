@@ -12,7 +12,6 @@ FIRST_START_ARGUMENTS=""
 SERVICES=""
 FLAGS=""
 DETACHED=1
-RESTART=0
 REMOVE_DATA=0
 KILL_ALL=0
 ALL=0
@@ -100,6 +99,11 @@ pull() {
     COMMANDS_TO_RUN+=("docker-compose pull $SERVICES")
 }
 
+clean() {
+    COMMANDS_TO_RUN+=("echo Stopping all")
+    COMMANDS_TO_RUN+=("docker-compose kill")
+    COMMANDS_TO_RUN+=("docker system prune --all --force --volumes")
+}
 
 interactive() {
     PS3="Operation: [type or select from list] > "
@@ -289,6 +293,8 @@ case $OPERATION in
     pull )                          pull
                                     ;;
     "bind-ip" )                     bind_ip
+                                    ;;
+    clean)                          clean
                                     ;;
 esac
 
