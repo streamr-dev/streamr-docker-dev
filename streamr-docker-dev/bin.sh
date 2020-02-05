@@ -100,7 +100,9 @@ pull() {
 }
 
 clean() {
-    docker system prune --all --force --volumes
+    COMMANDS_TO_RUN+=("echo Stopping all")
+    COMMANDS_TO_RUN+=("docker-compose kill")
+    COMMANDS_TO_RUN+=("docker system prune --all --force --volumes")
 }
 
 interactive() {
