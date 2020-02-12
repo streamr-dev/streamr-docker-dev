@@ -21,7 +21,7 @@ HELP=0
 
 SERVICE_COMBINATIONS=(
 ""
-"cassandra init_keyspace mysql redis smtp nginx tracker broker-node-storage-1 broker-node-no-storage-1 broker-node-no-storage-2"
+"cassandra init_keyspace mysql redis smtp nginx tracker broker-node-storage-1 broker-node-no-storage-1 broker-node-no-storage-2 community-product"
 "cassandra init_keyspace mysql redis smtp nginx broker-node-storage-1 broker-node-no-storage-1 broker-node-no-storage-2"
 "cassandra init_keyspace mysql redis smtp nginx tracker engine-and-editor"
 "cassandra init_keyspace mysql redis smtp nginx "

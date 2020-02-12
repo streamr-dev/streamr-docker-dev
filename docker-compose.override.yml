@@ -90,6 +90,7 @@ services:
             - broker-node-storage-1
             - broker-node-no-storage-1
             - broker-node-no-storage-2
+            - community-product
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8081/streamr-core/api/v1/products"]
             interval: 1m30s
@@ -121,8 +122,6 @@ services:
         environment:
             EE_URL: http://engine-and-editor:8081/streamr-core
             NETWORK_ID: 1111
-        depends_on:
-            - engine-and-editor
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8545"]
             interval: 1m30s
@@ -151,7 +150,6 @@ services:
         restart: on-failure
         depends_on:
             - ganache
-            - engine-and-editor
         environment:
             ETHEREUM_SERVER: http://10.200.10.1:8545
             ETHEREUM_PRIVATE_KEY: 5e98cce00cff5dea6b454889f359a4ec06b9fa6b88e9d69b86de8e1c81887da0
