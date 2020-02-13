@@ -5,91 +5,77 @@ echo "
 streamr-docker-dev – Streamr Docker Developer Environment.
 
 Usage: streamr-docker-dev [<command> [options] [--] <service>...]
-    streamr-docker-dev
-    streamr-docker-dev start --all
-    streamr-docker-dev stop -r broker data-api
-    streamr-docker-dev restart 1
+    streamr-docker-dev start
+    streamr-docker-dev stop -r tracker
+    streamr-docker-dev pull
 
 Commands:
     help                show this screen
     start               start services
     stop                stop services
-    restart             stop and start services 
+    restart             stop and start services
     ps                  list docker containers
-    bind-ip             attach (unused) IP address 10.200.10.1 to network interface lo0 on macOS details
     log                 show logs
     pull                pulls images
     clean               removes images and generated files
 
 Options:
     -h --help           command help
-    --dry-run   
+    --dry-run
 
-Show command-spesific options:
-	streamr-docker-dev <command> -h               
+Show command-specific options:
+	streamr-docker-dev <command> -h
 "
 }
 
 start_help() {
 echo "
-Starts the given services
+Starts the given services, or all services if none are specified.
 
-Usage: streamr-docker-dev start [options] [--] <service>...
-    streamr-docker-dev start --all
-    streamr-docker-dev start broker data-api
+Usage: streamr-docker-dev start [--] <service>...
+    streamr-docker-dev start
+    streamr-docker-dev start tracker ganache
 
 Options:
-    -a --all           apply to all services         
+    --attached          start in attached mode
 "
 }
 
 stop_help() {
 echo "
-Stops the given services
+Stops the given services, or all services if none are specified.
 
 Usage: streamr-docker-dev stop [options] [--] <service>...
-    streamr-docker-dev stop --all
-    streamr-docker-dev stop broker data-api
-    streamr-docker-dev stop -r broker data-api
+    streamr-docker-dev stop
+    streamr-docker-dev stop tracker
+    streamr-docker-dev stop -r tracker ganache
 
 Options:
-    -a --all        	    apply to all services
-    -r --remove-data    	remove persistent data      	
+    -r --remove-data    	remove persistent data
 "
 }
 
 restart_help() {
 echo "
-Restarts the given services
+Restarts the given services, or all services if none are specified
 
 Usage: streamr-docker-dev restart [options] [--] <service>...
-    streamr-docker-dev restart --all
-    streamr-docker-dev restart broker data-api
-    streamr-docker-dev restart -r -k broker data-api
+    streamr-docker-dev restart
+    streamr-docker-dev restart tracker
+    streamr-docker-dev restart -r tracker ganache
 
 Options:
-    -a --all        	    apply both stop and start to all services
     -r --remove-data    	remove persistent data
-    -k --kill-all			apply stop to all services (does nothing with --all)      	
 "
 }
 
 ps_help() {
 echo "
-Shows current services. If no services given, shows all
+Shows currently running services. If no services given, shows all
 
 Usage: streamr-docker-dev ps [<service>...]
     streamr-docker-dev ps
-    streamr-docker-dev ps broker data-api
-"
-}
-
-bind_ip_help() {
-echo "
-Attach (unused) IP address 10.200.10.1 to network interface lo0 on macOS details
-More info in https://docs.docker.com/docker-for-mac/networking/#use-cases-and-workarounds
-
-Usage: streamr-docker-dev bind-ip
+    streamr-docker-dev ps tracker
 "
 }
 
@@ -99,21 +85,21 @@ Shows the logs of the given services
 
 Usage: streamr-docker-dev log [[options] [--] <service>...]
     streamr-docker-dev log
-    streamr-docker-dev log broker data-api
-    streamr-docker-dev log -f broker data-api
+    streamr-docker-dev log tracker ganache
+    streamr-docker-dev log -f tracker ganache
 
 Options:
-    -f --follow        	    follow log in realtime     	
+    -f --follow        	    follow log in realtime
 "
 }
 
 pull_help() {
 echo "
-Pulls images defined in docker-compose files
+Pulls images defined in docker-compose files. If no services are given, pulls all of them.
 
 Usage: streamr-docker-dev pull [ [--] <service>...]
-    streamr-docker-dev pull --all
-    streamr-docker-dev pull broker ganache
+    streamr-docker-dev pull
+    streamr-docker-dev pull tracker ganache
 "
 }
 
@@ -137,9 +123,6 @@ case $1 in
         ;;
     "ps" )
         ps_help
-        ;;
-    "bind-ip" )
-        bind_ip_help
         ;;
     "log" )
         log_help

@@ -1,23 +1,24 @@
-# Streamr cloud development environment
+# Streamr development environment
 
-This repository contains Docker compose files and command line tool `streamr_docker_dev` for setting up a local Streamr cloud development environment. The cloud environment consists of base services (3rd party) and Streamr services (in-house).
+This repository contains Docker compose files and command line tool `streamr_docker_dev` for setting up a local Streamr development environment. The environment consists of Streamr services and supporting (3rd party) services.
 
-![Streamr cloud architecture](high-level.png)
+### Streamr services
+- 3 x [Broker](https://github.com/streamr-dev/broker) nodes (2 normal ones + 1 storage node)
+- 1 x [Tracker](https://github.com/streamr-dev/network)
+- 1 x [Core frontend](https://github.com/streamr-dev/streamr-platform/app)
+- 1 x [Core backend](https://github.com/streamr-dev/engine-and-editor)
+- 1 x [Data Union Server](https://github.com/streamr-dev/streamr-community-products)
+- 1 x [ethereum-watcher](https://github.com/streamr-dev/streamr-ethereum-watcher)
 
-### Base services
+### Supporting services
 - 1 x MySQL instance with databases `core_dev` and `core_test`
-- 1 x Apache Zookeeper instance
-- 1 x Apache Kafka instance
 - 1 x Redis instance
 - 1 x Apache Cassandra instance with `streamr_dev` keyspace
 - 1 x SMTP server
+- 1 x ganache
+- 1 x nginx
 
-### Streamr services
-- 1 x [Cloud Broker](https://github.com/streamr-dev/cloud-broker) instance
-- 1 x [Data API](https://github.com/streamr-dev/data-api) instance
-- 1 x [Engine and Editor](https://github.com/streamr-dev/engine-and-editor) instance
-
-Data of MySQL and Cassandra are persisted on host machine disk.
+Data of the services is persisted on host machine disk.
 
 ## Setting up
 
@@ -33,12 +34,6 @@ Data of MySQL and Cassandra are persisted on host machine disk.
 ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ```
 
-4.  Attach (unused) IP address 10.200.10.1 to loopback network interface `lo0`
-[details](https://docs.docker.com/docker-for-mac/networking/#use-cases-and-workarounds):
-```
-streamr-docker-dev bind-ip
-```
-
 ### Linux
 
 1. Install and start Docker service.
@@ -48,7 +43,7 @@ streamr-docker-dev bind-ip
 ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ```
 
-4.  Attach (unused) IP address 10.200.10.1 to loopback network interface (usually named `lo`)
+3.  Attach (unused) IP address 10.200.10.1 to loopback network interface (usually named `lo`)
 [details](https://docs.docker.com/docker-for-mac/networking/#use-cases-and-workarounds):
 ```
 ip addr add 10.200.10.1 dev lo label lo:1
@@ -57,100 +52,90 @@ ip addr add 10.200.10.1 dev lo label lo:1
 ### Setting up image upload through AWS (Optional)
 
 You need to follow these steps if you want AWS S3 dependent features (i.e.
-image upload) to be available through engine-and-editor.
+image upload) to be available through the Core backend.
 
 1. copy `.env.example` as `.env` and change the values to correct ones
 (Note: `.env` file is in `.gitignore`)
 
-2. Restart engine-and-editor and S3 services should work. You can debug any
+2. Restart `engine-and-editor` and S3 services should work. You can debug any
    potential issues with `streamr-docker-dev log -f engine-and-editor`.
 
 ## Running
 
-You will want to run subsets of the Streamr cloud environment depending on what
-service(s) of Streamr you are developing. For example, when developing
-engine-and-editor, you want to run all base services along with Broker and
-Data-API (alias 1).
+### `start`
 
-| Description                                         | When developing                | Alias  | Command                            |
-|-----------------------------------------------------|--------------------------------|--------|------------------------------------|
-| Create and run entire service stack (incl. `nginx`) | -                              | 5      | `streamr-docker-dev start --all`   |
-| Create and Run base services                        | all 3 services / broker        | 4      | `streamr-docker-dev start 4`       |
-| Create and run Broker + base services               | data-api (+ engine-and-editor) | 3      | `streamr-docker-dev start 3`       |
-| Create and run Data-API + base services             | broker + engine-and-editor     | 2      | `streamr-docker-dev start 2`       |
-| Create and run Broker + Data-API + base services    | engine-and-editor              | 1      | `streamr-docker-dev start 1`       |
+Start all services: `streamr-docker-dev start`
 
-### Useful Commands
+Start particular services: `streamr-docker-dev start [services]`
 
-To view process list
-`streamr-docker-dev ps [services]`
+### `stop`
 
-To view all logs
-`streamr-docker-dev log [services]`
+Stop all services: `streamr-docker-dev stop`
 
-To view logs of certain service
-`docker-compose logs -tf mysql`
+Stop particular services: `streamr-docker-dev stop [services]`
 
-To start Docker services
-`streamr-docker-dev start [<services> | --all]`
+### `ps`
 
-To stop Docker services
-`streamr-docker-dev stop [<services> | --all]`
+View process list: `streamr-docker-dev ps [services]`
 
-To SSH into a service
-`docker exec -i -t <CONTAINER_ID> /bin/sh`
+### `log`
 
-To show docker disk usage statistics
-`docker system df -v`
+View all logs: `streamr-docker-dev log [-f]`
 
-To prune all unused data
-`docker system prune`
+View logs of certain services: `streamr-docker-dev log [-f] [services]`
 
-### NGINX reverse proxy
+### `pull`
 
-When running `engine-and-editor` during some UI app development that requires to be run in the same domain (eg. because of cookies), 
-an nginx reverse proxy is available to map the urls to `localhost:80`. 
-The reverse proxy can be started with `streamr-docker-dev start nginx`.
+Pull latest images of all services: `streamr-docker-dev pull`
 
-Url mappings:
+Pull latest images of certain services: `streamr-docker-dev pull [services]`
 
-| Service             | Original localhost url              | New url after `nginx`         |
-|---------------------|-------------------------------------|-------------------------------| 
-| `engine-and-editor` | http://localhost:8081/streamr-core  | http://localhost/streamr-core | 
-| `platform`          | http://localhost:3333               | http://localhost/             | 
+### `clean`
 
+Remove all images and persisted data: `streamr-docker-dev clean` 
 
-## Accounts
+## Accessing the Core app and Streamr API
 
-| Service           | Username                 | Password                 | Misc                                                       |
-|-------------------|--------------------------|--------------------------|------------------------------------------------------------|
-| MySQL             | root                     | password                 | `mysql -h127.0.0.1 -uroot -ppassword core_dev`             |
-| engine-and-editor | tester1@streamr.com      | tester1TESTER1           | API key:  tester1-api-key                                  |
-| engine-and-editor | tester2@streamr.com      | tester2                  | API key:  tester2-api-key                                  |
-| engine-and-editor | tester-admin@streamr.com | tester-adminTESTER-ADMIN | API key:  tester-admin-api-key                             |
+Once the services are running, browse to [http://localhost](http://localhost) to use Core.
 
-## FAQ
+The API root is at `http://localhost/api/v1`.
 
-### How to do a "factory reset" of the development environment?
+### Accounts
 
-To kill all services, remove them, remove their persisted data, and re-build and start the services use:
+## Core
+
+The environment ships with some predefined user accounts.
+
+| Username                 | Password                 | Misc                                                       |
+|--------------------------|--------------------------|------------------------------------------------------------|
+| tester1@streamr.com      | tester1TESTER1           | API key:  tester1-api-key                                  |
+| tester2@streamr.com      | tester2                  | API key:  tester2-api-key                                  |
+| tester-admin@streamr.com | tester-adminTESTER-ADMIN | API key:  tester-admin-api-key                             |
+
+## MySQL
+
+`root` / `password`
+
+## Using in Streamr development
+
+When you're developing one of the Streamr components, you'll want to use the `streamr-docker-dev` tool to run all other services except the one you're developing. To do this, simply start all services, then stop the one you're planning to develop:
+
 ```
-streamr-docker-dev restart -r -k [<services> | --all]
+streamr-docker-dev start
+streamr-docker-dev stop [service]
 ```
 
-### How to use streamr-docker-dev?
-Run either
-```
-streamr-docker-dev help
-```
-or
-```
-streamr-docker-dev <command> --help
-```
+## Using in testing and CI
+
+For integration tests of one of the services, do the same as above (stop the docker version of the service under test), then start your tests. In CI, you may want to add some checks to ensure that the services are started before launching your tests.
+
+When running testing the SDKs or running other end-to-end tests, just start the full stack with `streamr-docker-dev start` before running your tests.
 
 ## Troubleshooting
 
-#### Error response from daemon: Get https://registry-1.docker.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+```
+Error response from daemon: Get https://registry-1.docker.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)`
+```
 
 This is a connection issue; could be DNS settings, could be firewall. For me, changing to another wlan helped.
 
@@ -160,8 +145,8 @@ I received this error only during `docker login`, after login I could resume usi
 
 | File                        | Description                                                    |
 |-----------------------------|----------------------------------------------------------------|
-| docker-compose.yml          | Base service stack (MySQL, Cassandra, Zookeeper, Kafka, Redis) |
-| docker-compose.override.yml | Streamr service stack (Broker, Data-API, and Streamr)          |
+| docker-compose.yml          | Supporting services stack (MySQL, Cassandra, Redis, etc.)      |
+| docker-compose.override.yml | Streamr service stack                                          |
 | custom-mysql-settings.cnf   | Custom MySQL settings                                          |
 | mysql\_init\_scripts        | Database dumps used to initalize MySQL databases               |
 | keyspace.cql                | Keyspace definitions and demo data for Cassandra               |
