@@ -83,8 +83,6 @@ The API root is at `http://localhost/api/v1`.
 
 ### Accounts
 
-## Core
-
 The environment ships with some predefined user accounts.
 
 | Username                 | Password                 | Misc                                                       |
@@ -93,11 +91,9 @@ The environment ships with some predefined user accounts.
 | tester2@streamr.com      | tester2                  | API key:  tester2-api-key                                  |
 | tester-admin@streamr.com | tester-adminTESTER-ADMIN | API key:  tester-admin-api-key                             |
 
-## MySQL
+The MySQL credentials are `root` / `password`.
 
-`root` / `password`
-
-## Using in Streamr development
+## Usage in Streamr development
 
 When you're developing one of the Streamr components, you'll want to use the `streamr-docker-dev` tool to run all other services except the one you're developing. To do this, simply start all services, then stop the one you're planning to develop:
 
@@ -106,12 +102,11 @@ streamr-docker-dev start
 streamr-docker-dev stop [service]
 ```
 
-## Using in testing and CI
+## Usage in testing and CI
 
 For integration tests of one of the services, do the same as above (stop the docker version of the service under test), then start your tests. In CI, you may want to add some checks to ensure that the services are started before launching your tests.
 
 When running testing the SDKs or running other end-to-end tests, just start the full stack with `streamr-docker-dev start` before running your tests.
-
 
 ## Included services
 
