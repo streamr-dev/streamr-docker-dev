@@ -122,9 +122,6 @@ case $1 in
     "restart" )
         restart_help
         ;;
-    "wipe" )
-        wipe_help
-        ;;
     "ps" )
         ps_help
         ;;
@@ -133,6 +130,9 @@ case $1 in
         ;;
     "pull" )
         pull_help
+        ;;
+    "wipe" )
+        wipe_help
         ;;
     "factory-reset" )
         factory-reset_help
