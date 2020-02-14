@@ -71,7 +71,7 @@ Pull latest images of certain services: `streamr-docker-dev pull [services]`
 
 Wipe the persisted data of all services: `streamr-docker-dev wipe`
 
-### `clean`
+### `factory-reset`
 
 "Factory reset" the environment by removing all images and persisted data: `streamr-docker-dev clean` 
 

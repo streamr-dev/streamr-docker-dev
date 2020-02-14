@@ -45,12 +45,6 @@ restart() {
     stop && COMMANDS_TO_RUN+=("printf \n") && start
 }
 
-wipe() {
-    stop
-    COMMANDS_TO_RUN+=("echo Wiping persistent data of services")
-    COMMANDS_TO_RUN+=("rm -rf ./data")
-}
-
 ps() {
     COMMANDS_TO_RUN+=("docker-compose ps $SERVICES")
 }
@@ -68,7 +62,13 @@ pull() {
     COMMANDS_TO_RUN+=("docker-compose pull $SERVICES")
 }
 
-clean() {
+wipe() {
+    stop
+    COMMANDS_TO_RUN+=("echo Wiping persistent data of services")
+    COMMANDS_TO_RUN+=("rm -rf ./data")
+}
+
+factory-reset() {
     wipe
     COMMANDS_TO_RUN+=("echo Pruning docker images. This may take a while...")
     COMMANDS_TO_RUN+=("docker system prune --all --force --volumes")
@@ -114,15 +114,15 @@ case $OPERATION in
                                     ;;
     restart )                       restart
                                     ;;
-    wipe )                          wipe
-                                    ;;
     ps )                            ps
                                     ;;
     log )                           log
                                     ;;
     pull )                          pull
                                     ;;
-    clean)                          clean
+    wipe )                          wipe
+                                    ;;
+    factory-reset)                  factory-reset
                                     ;;
     * )                             $ORIG_DIRNAME/help_scripts.sh
                                     exit
