@@ -3,7 +3,6 @@
 ORIG_FILENAME="$(readlink "$0" -f)"
 ORIG_DIRNAME=$(dirname "$ORIG_FILENAME")
 ROOT_DIR="$ORIG_DIRNAME/.."
-ARGUMENTS=$#
 
 OPERATION=
 COMMANDS_TO_RUN=()
@@ -12,13 +11,10 @@ FIRST_START_ARGUMENTS=""
 SERVICES=""
 FLAGS=""
 DETACHED=1
-REMOVE_DATA=0
 ALL=0
 DRY_RUN=0
 FOLLOW=0
 HELP=0
-
-echo "Arguments: $ARGUMENTS"
 
 help() {
     $ORIG_DIRNAME/help_scripts.sh
@@ -34,25 +30,24 @@ start() {
     [[ $DETACHED == 1 ]] && FLAGS+=" -d"
     [[ $SERVICES == "" ]] && msg="Starting all" || msg="Starting$SERVICES"
     COMMANDS_TO_RUN+=("echo $msg")
-
-    COMMANDS_TO_RUN+=("docker-compose$FIRST_START_ARGUMENTS up$FLAGS$SERVICES")
+    COMMANDS_TO_RUN+=("docker-compose $FIRST_START_ARGUMENTS up $FLAGS $SERVICES")
 }
 
 stop() {
-    [[ $ARGUMENTS == "" ]] && msg="Stopping all" || msg="Stopping$ARGUMENTS"
+    [[ $SERVICES == "" ]] && msg="Stopping all" || msg="Stopping$SERVICES"
     COMMANDS_TO_RUN+=("echo $msg")
-
-    COMMANDS_TO_RUN+=("docker-compose kill$ARGUMENTS")
-    COMMANDS_TO_RUN+=("docker-compose rm -f$ARGUMENTS")
-
-    if [ $REMOVE_DATA == 1 ]; then
-        COMMANDS_TO_RUN+=("echo Deleting persistent data")
-        COMMANDS_TO_RUN+=("rm -rf ./data")
-    fi
+    COMMANDS_TO_RUN+=("docker-compose kill $SERVICES")
+    COMMANDS_TO_RUN+=("docker-compose rm -f $SERVICES")
 }
 
 restart() {
     stop && COMMANDS_TO_RUN+=("printf \n") && start
+}
+
+wipe() {
+    stop
+    COMMANDS_TO_RUN+=("echo Deleting persistent data")
+    COMMANDS_TO_RUN+=("rm -rf ./data")
 }
 
 ps() {
@@ -92,8 +87,6 @@ while [ $# -gt 0 ]; do # if there are arguments
         case $1 in
             -h | --help )               HELP=1
                                         ;;
-            -r | --remove-data )        REMOVE_DATA=1
-                                        ;;
             -f | --follow )             FOLLOW=1
                                         ;;
             --dry-run )                 DRY_RUN=1
@@ -115,6 +108,7 @@ if [ $HELP == 1 ]; then
     exit
 fi
 
+# Populate COMMANDS_TO_RUN by executing the relevant method
 case $OPERATION in
     help | -h | --help )            help
                                     ;;
@@ -123,6 +117,8 @@ case $OPERATION in
     stop )                          stop
                                     ;;
     restart )                       restart
+                                    ;;
+    wipe )                          wipe
                                     ;;
     ps )                            ps
                                     ;;
@@ -137,6 +133,7 @@ case $OPERATION in
                                     ;;
 esac
 
+# Run or dry-run COMMANDS_TO_RUN
 pushd $ROOT_DIR > /dev/null
 for command in "${COMMANDS_TO_RUN[@]}"
 do

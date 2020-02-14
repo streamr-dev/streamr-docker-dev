@@ -21,7 +21,7 @@ Commands:
 
 Options:
     -h --help           command help
-    --dry-run
+    --dry-run           echo commands instead of executing them
 
 Show command-specific options:
 	streamr-docker-dev <command> -h
@@ -49,9 +49,6 @@ Usage: streamr-docker-dev stop [options] [--] <service>...
     streamr-docker-dev stop
     streamr-docker-dev stop tracker
     streamr-docker-dev stop -r tracker ganache
-
-Options:
-    -r --remove-data    	remove persistent data
 "
 }
 
@@ -63,9 +60,14 @@ Usage: streamr-docker-dev restart [options] [--] <service>...
     streamr-docker-dev restart
     streamr-docker-dev restart tracker
     streamr-docker-dev restart -r tracker ganache
+"
+}
 
-Options:
-    -r --remove-data    	remove persistent data
+wipe_help() {
+echo "
+Wipes the data persisted by all services.
+
+Usage: streamr-docker-dev wipe
 "
 }
 
@@ -120,6 +122,9 @@ case $1 in
         ;;
     "restart" )
         restart_help
+        ;;
+    "wipe" )
+        wipe_help
         ;;
     "ps" )
         ps_help

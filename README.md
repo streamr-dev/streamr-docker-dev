@@ -49,17 +49,6 @@ ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ip addr add 10.200.10.1 dev lo label lo:1
 ```
 
-### Setting up image upload through AWS (Optional)
-
-You need to follow these steps if you want AWS S3 dependent features (i.e.
-image upload) to be available through the Core backend.
-
-1. copy `.env.example` as `.env` and change the values to correct ones
-(Note: `.env` file is in `.gitignore`)
-
-2. Restart `engine-and-editor` and S3 services should work. You can debug any
-   potential issues with `streamr-docker-dev log -f engine-and-editor`.
-
 ## Running
 
 ### `start`
@@ -133,9 +122,17 @@ When running testing the SDKs or running other end-to-end tests, just start the 
 
 ## Troubleshooting
 
-```
-Error response from daemon: Get https://registry-1.docker.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)`
-```
+### Making image uploads to AWS work
+
+Uploading images to AWS needs credentials to be able to access the target S3 bucket.
+
+1. copy `.env.example` as `.env` and change the values to correct ones
+(Note: `.env` file is in `.gitignore`)
+
+2. Restart `engine-and-editor` and S3 services should work. You can debug any
+   potential issues with `streamr-docker-dev log -f engine-and-editor`.
+
+### Error response from daemon: Get https://registry-1.docker.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
 
 This is a connection issue; could be DNS settings, could be firewall. For me, changing to another wlan helped.
 
