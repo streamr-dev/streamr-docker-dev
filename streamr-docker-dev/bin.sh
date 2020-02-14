@@ -18,6 +18,8 @@ DRY_RUN=0
 FOLLOW=0
 HELP=0
 
+echo "Arguments: $ARGUMENTS"
+
 help() {
     $ORIG_DIRNAME/help_scripts.sh
     exit

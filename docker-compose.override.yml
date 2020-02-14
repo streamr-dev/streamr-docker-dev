@@ -1,7 +1,7 @@
 version: "3"
 services:
     nginx:
-        container_name: streamr_nginx_reverse
+        container_name: streamr_nginx
         image: nginx:1.14-alpine
         restart: on-failure
         ports:
@@ -33,6 +33,7 @@ services:
         depends_on:
             - init_keyspace
             - cassandra
+            - tracker
         environment:
             STREAMR_URL: http://10.200.10.1:8081/streamr-core
             CASSANDRA_HOST: 10.200.10.1:9042
@@ -51,6 +52,8 @@ services:
             - "8791:8791"
             - "9100:9100"
             - "30316:30316"
+        depends_on:
+            - tracker
         environment:
             STREAMR_URL: http://10.200.10.1:8081/streamr-core
             CONFIG_FILE: configs/docker-2.env.json
@@ -68,6 +71,8 @@ services:
             - "8691:8691"
             - "9200:9200"
             - "30317:30317"
+        depends_on:
+            - tracker
         environment:
             STREAMR_URL: http://10.200.10.1:8081/streamr-core
             CONFIG_FILE: configs/docker-3.env.json
@@ -90,7 +95,7 @@ services:
             - broker-node-storage-1
             - broker-node-no-storage-1
             - broker-node-no-storage-2
-            - community-product
+            - ganache
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8081/streamr-core/api/v1/products"]
             interval: 1m30s
@@ -102,17 +107,6 @@ services:
             FILEUPLOAD_S3_BUCKET: "${FILEUPLOAD_S3_BUCKET}"
             STREAMR_URL: "http://10.200.10.1"
             CPS_URL: "http://10.200.10.1:8085/communities/"
-    ethereum-watcher:
-        container_name: streamr_dev_ethereum_watcher
-        image: streamr/ethereum-watcher
-        restart: on-failure
-        depends_on:
-            - engine-and-editor
-        environment:
-            STREAMR_API_URL: http://engine-and-editor:8081/streamr-core/api/v1
-            METRICS: "false"
-        volumes:
-            - ./data/ethereum-watcher/:/app/logs
     ganache:
         container_name: streamr_dev_ganache
         image: streamr/streamr-ganache:dev
@@ -127,7 +121,7 @@ services:
             interval: 1m30s
             timeout: 10s
             retries: 3
-    ethereum-watcher-local: # uses local ganache
+    ethereum-watcher:
         container_name: streamr_dev_ethereum_watcher_local
         image: streamr/ethereum-watcher:dev
         restart: on-failure
@@ -142,14 +136,15 @@ services:
             DEVOPS_KEY: "devops-user-key"
         volumes:
             - ./data/ethereum-watcher-local/:/app/logs
-    community-product:
-        container_name: streamr_dev_cp
+    data-union-server:
+        container_name: streamr_dev_data-union-server
         image: streamr/streamr-community-products:dev
         ports:
           - "8085:8085"
         restart: on-failure
         depends_on:
             - ganache
+            - engine-and-editor
         environment:
             ETHEREUM_SERVER: http://10.200.10.1:8545
             ETHEREUM_PRIVATE_KEY: 5e98cce00cff5dea6b454889f359a4ec06b9fa6b88e9d69b86de8e1c81887da0
@@ -167,3 +162,6 @@ services:
             retries: 3
         ports:
             - "3333:80"
+        depends_on:
+            - engine-and-editor
+            - ganache
