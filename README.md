@@ -1,24 +1,6 @@
 # Streamr development environment
 
-This repository contains Docker compose files and command line tool `streamr_docker_dev` for setting up a local Streamr development environment. The environment consists of Streamr services and supporting (3rd party) services.
-
-### Streamr services
-- 3 x [Broker](https://github.com/streamr-dev/broker) nodes (2 normal ones + 1 storage node)
-- 1 x [Tracker](https://github.com/streamr-dev/network)
-- 1 x [Core frontend](https://github.com/streamr-dev/streamr-platform/app)
-- 1 x [Core backend](https://github.com/streamr-dev/engine-and-editor)
-- 1 x [Data Union Server](https://github.com/streamr-dev/streamr-community-products)
-- 1 x [ethereum-watcher](https://github.com/streamr-dev/streamr-ethereum-watcher)
-
-### Supporting services
-- 1 x MySQL instance with databases `core_dev` and `core_test`
-- 1 x Redis instance
-- 1 x Apache Cassandra instance with `streamr_dev` keyspace
-- 1 x SMTP server
-- 1 x ganache
-- 1 x nginx
-
-Data of the services is persisted on host machine disk.
+This repository contains Docker compose files and command line tool `streamr_docker_dev` for setting up a local Streamr development environment. The environment consists of Streamr services and supporting (3rd party) services. The data of the services is persisted on the local disk.
 
 ## Setting up
 
@@ -63,6 +45,12 @@ Stop all services: `streamr-docker-dev stop`
 
 Stop particular services: `streamr-docker-dev stop [services]`
 
+### `restart`
+
+Restart all services: `streamr-docker-dev restart`
+
+Restart particular services: `streamr-docker-dev restart [services]`
+
 ### `ps`
 
 View process list: `streamr-docker-dev ps [services]`
@@ -78,6 +66,10 @@ View logs of certain services: `streamr-docker-dev log [-f] [services]`
 Pull latest images of all services: `streamr-docker-dev pull`
 
 Pull latest images of certain services: `streamr-docker-dev pull [services]`
+
+### `wipe`
+
+Wipe the persisted data of all services: `streamr-docker-dev wipe`
 
 ### `clean`
 
@@ -119,6 +111,25 @@ streamr-docker-dev stop [service]
 For integration tests of one of the services, do the same as above (stop the docker version of the service under test), then start your tests. In CI, you may want to add some checks to ensure that the services are started before launching your tests.
 
 When running testing the SDKs or running other end-to-end tests, just start the full stack with `streamr-docker-dev start` before running your tests.
+
+
+## Included services
+
+### Streamr services
+- 3 x [Broker](https://github.com/streamr-dev/broker) nodes (2 normal ones + 1 storage node)
+- 1 x [Tracker](https://github.com/streamr-dev/network)
+- 1 x [Core frontend](https://github.com/streamr-dev/streamr-platform/app)
+- 1 x [Core backend](https://github.com/streamr-dev/engine-and-editor)
+- 1 x [Data Union Server](https://github.com/streamr-dev/streamr-community-products)
+- 1 x [ethereum-watcher](https://github.com/streamr-dev/streamr-ethereum-watcher)
+
+### Supporting services
+- 1 x MySQL instance with databases `core_dev` and `core_test`
+- 1 x Redis instance
+- 1 x Apache Cassandra instance with `streamr_dev` keyspace
+- 1 x SMTP server
+- 1 x ganache
+- 1 x nginx
 
 ## Troubleshooting
 
