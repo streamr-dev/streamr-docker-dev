@@ -7,7 +7,6 @@ ROOT_DIR="$ORIG_DIRNAME/.."
 OPERATION=
 COMMANDS_TO_RUN=()
 
-FIRST_START_ARGUMENTS=""
 SERVICES=""
 FLAGS=""
 DETACHED=1
@@ -31,7 +30,7 @@ start() {
     [[ $DETACHED == 1 ]] && FLAGS+=" -d"
     [[ $SERVICES == "" ]] && msg="Starting all" || msg="Starting$SERVICES"
     COMMANDS_TO_RUN+=("echo $msg")
-    COMMANDS_TO_RUN+=("docker-compose $FIRST_START_ARGUMENTS up $FLAGS $SERVICES")
+    COMMANDS_TO_RUN+=("docker-compose up $FLAGS $SERVICES")
 }
 
 stop() {
