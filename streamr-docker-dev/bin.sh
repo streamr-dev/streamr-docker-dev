@@ -24,8 +24,9 @@ help() {
 start() {
     ip_lines=$(ifconfig | grep -c 10.200.10.1)
     if [ "$ip_lines" -eq "0" ]; then
-       echo "WARNING: bind-ip is not set! Setting it now."
-       bind_ip
+        COMMANDS_TO_RUN+=("echo Binding the internal IP address to the loopback interface.")
+        COMMANDS_TO_RUN+=("echo This requires sudo privileges, so please provide your password if requested")
+        COMMANDS_TO_RUN+=("sudo ifconfig lo0 alias 10.200.10.1/24")
     fi
     [[ $DETACHED == 1 ]] && FLAGS+=" -d"
     [[ $SERVICES == "" ]] && msg="Starting all" || msg="Starting$SERVICES"
@@ -46,12 +47,12 @@ restart() {
 
 wipe() {
     stop
-    COMMANDS_TO_RUN+=("echo Deleting persistent data")
+    COMMANDS_TO_RUN+=("echo Wiping persistent data of services")
     COMMANDS_TO_RUN+=("rm -rf ./data")
 }
 
 ps() {
-    COMMANDS_TO_RUN+=("docker-compose ps$SERVICES")
+    COMMANDS_TO_RUN+=("docker-compose ps $SERVICES")
 }
 
 log() {
@@ -59,12 +60,7 @@ log() {
     if [ $FOLLOW == 1 ];then
         FLAGS+=" -f"
     fi
-    COMMANDS_TO_RUN+=("docker-compose logs$FLAGS$SERVICES")
-}
-
-bind_ip() {
-    COMMANDS_TO_RUN+=("echo Binding the ip addresses requires to be run as sudo and therefore a sudo user's password is required")
-    COMMANDS_TO_RUN+=("sudo ifconfig lo0 alias 10.200.10.1/24")
+    COMMANDS_TO_RUN+=("docker-compose logs $FLAGS $SERVICES")
 }
 
 pull() {
@@ -73,8 +69,8 @@ pull() {
 }
 
 clean() {
-    COMMANDS_TO_RUN+=("echo Stopping all")
-    COMMANDS_TO_RUN+=("docker-compose kill")
+    wipe
+    COMMANDS_TO_RUN+=("echo Pruning docker images. This may take a while...")
     COMMANDS_TO_RUN+=("docker system prune --all --force --volumes")
 }
 

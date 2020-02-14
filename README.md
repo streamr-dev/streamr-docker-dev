@@ -81,7 +81,7 @@ Pull latest images of certain services: `streamr-docker-dev pull [services]`
 
 ### `clean`
 
-Remove all images and persisted data: `streamr-docker-dev clean` 
+"Factory reset" the environment by removing all images and persisted data: `streamr-docker-dev clean` 
 
 ## Accessing the Core app and Streamr API
 
