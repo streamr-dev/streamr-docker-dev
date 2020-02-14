@@ -6,7 +6,7 @@ streamr-docker-dev – Streamr Docker Developer Environment.
 
 Usage: streamr-docker-dev [<command> [options] [--] <service>...]
     streamr-docker-dev start
-    streamr-docker-dev stop -r tracker
+    streamr-docker-dev stop tracker
     streamr-docker-dev pull
 
 Commands:
@@ -48,8 +48,7 @@ Stops the given services, or all services if none are specified.
 
 Usage: streamr-docker-dev stop [options] [--] <service>...
     streamr-docker-dev stop
-    streamr-docker-dev stop tracker
-    streamr-docker-dev stop -r tracker ganache
+    streamr-docker-dev stop tracker ganache
 "
 }
 
@@ -59,8 +58,7 @@ Restarts the given services, or all services if none are specified
 
 Usage: streamr-docker-dev restart [options] [--] <service>...
     streamr-docker-dev restart
-    streamr-docker-dev restart tracker
-    streamr-docker-dev restart -r tracker ganache
+    streamr-docker-dev restart tracker ganache
 "
 }
 
