@@ -3,6 +3,7 @@
 ORIG_FILENAME="$(readlink "$0" -f)"
 ORIG_DIRNAME=$(dirname "$ORIG_FILENAME")
 ROOT_DIR="$ORIG_DIRNAME/.."
+CONTAINER_PREFIX="streamr-dev-"
 
 OPERATION=
 COMMANDS_TO_RUN=()
@@ -87,6 +88,11 @@ log() {
     COMMANDS_TO_RUN+=("docker-compose logs $FLAGS $SERVICES")
 }
 
+shell() {
+    # Assumes standardized container names that begin with $CONTAINER_PREFIX
+    COMMANDS_TO_RUN+=("docker exec -ti $CONTAINER_PREFIX$SERVICES /bin/sh")
+}
+
 pull() {
     # Pull latest images define on docker compose
     COMMANDS_TO_RUN+=("docker-compose pull $SERVICES")
@@ -111,7 +117,7 @@ shift
 while [ $# -gt 0 ]; do # if there are arguments
     if [[ "$1" = -* ]]; then
         case $1 in
-            --except )                  EXCEPT_SERVICES+=" $2"
+            --except )                  EXCEPT_SERVICES+="$2 "
                                         shift # skip over the next arg, which was already consumed above
                                         ;;
             --timeout )                 WAIT_TIMEOUT=$2
@@ -129,7 +135,7 @@ while [ $# -gt 0 ]; do # if there are arguments
                                         ;;
         esac
     else
-        SERVICES+=" $1"
+        SERVICES+="$1 "
     fi
     shift
 done
@@ -149,6 +155,8 @@ case $OPERATION in
     ps )                            ps
                                     ;;
     log )                           log
+                                    ;;
+    shell )                         shell
                                     ;;
     pull )                          pull
                                     ;;

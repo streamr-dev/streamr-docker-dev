@@ -14,6 +14,7 @@ Commands:
     wait                wait for all health checks to pass
     ps                  list docker containers
     log                 show logs
+    shell               shell into a container
     pull                pulls images
     wipe                wipes the data persisted by all services
     factory-reset       removes images and generated files
@@ -24,6 +25,7 @@ Examples:
     streamr-docker-dev stop tracker
     streamr-docker-dev start --except tracker && streamr-docker-dev wait --timeout 300
     streamr-docker-dev log -f tracker
+    streamr-docker-dev shell tracker
     streamr-docker-dev pull
 
 Options:
@@ -118,6 +120,17 @@ Options:
 "
 }
 
+shell_help() {
+echo "
+Opens an interactive shell into the target container.
+
+Usage: streamr-docker-dev shell <service>
+
+Examples:
+    streamr-docker-dev shell tracker
+"
+}
+
 pull_help() {
 echo "
 Pulls images defined in docker-compose files. If no services are given, pulls all of them.
@@ -167,6 +180,9 @@ case $1 in
         ;;
     "log" )
         log_help
+        ;;
+    "shell" )
+        shell_help
         ;;
     "pull" )
         pull_help
