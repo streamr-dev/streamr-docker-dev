@@ -112,6 +112,9 @@ Usage: streamr-docker-dev factory-reset
 }
 
 case $1 in
+    "" )
+        common_help
+        ;;
     "start" )
         start_help
         ;;
@@ -137,5 +140,7 @@ case $1 in
         factory-reset_help
         ;;
     * ) common_help
+        echo "ERROR: No help available for invalid command: $1"
+        exit 1
         ;;
 esac

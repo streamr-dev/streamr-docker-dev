@@ -85,7 +85,7 @@ while [ $# -gt 0 ]; do # if there are arguments
             --attached )                DETACHED=0
                                         ;;
             * )                         help
-                                        echo "Invalid option: $1"
+                                        echo "ERROR: Invalid option: $1"
                                         exit 1
                                         ;;
         esac
@@ -97,7 +97,7 @@ done
 
 # Populate COMMANDS_TO_RUN by executing the relevant method
 case $OPERATION in
-    help )                          help
+    "" | help )                     help
                                     ;;
     start )                         start
                                     ;;
@@ -115,7 +115,9 @@ case $OPERATION in
                                     ;;
     factory-reset)                  factory-reset
                                     ;;
-    * )                             "$ORIG_DIRNAME/help_scripts.sh"
+    * )                             help
+                                    echo "ERROR: Invalid command: $OPERATION"
+                                    exit 1
                                     ;;
 esac
 
