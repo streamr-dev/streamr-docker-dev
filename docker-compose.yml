@@ -49,6 +49,11 @@ services:
         image: redis:5.0.7-alpine
         ports:
             - "6379:6379"
+        healthcheck:
+            test: ["CMD", "redis-cli", "PING"]
+            interval: 10s
+            timeout: 10s
+            retries: 60
     smtp:
         container_name: streamr-dev-smtp
         image: namshi/smtp
