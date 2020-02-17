@@ -73,7 +73,7 @@ Wipe the persisted data of all services: `streamr-docker-dev wipe`
 
 ### `factory-reset`
 
-"Factory reset" the environment by removing all images and persisted data: `streamr-docker-dev clean` 
+"Factory reset" the environment by removing all images and persisted data: `streamr-docker-dev factory-reset` 
 
 ## Accessing the Core app and Streamr API
 
@@ -106,7 +106,7 @@ streamr-docker-dev stop [service]
 
 For integration tests of one of the services, do the same as above (stop the docker version of the service under test), then start your tests. In CI, you may want to add some checks to ensure that the services are started before launching your tests.
 
-When running testing the SDKs or running other end-to-end tests, just start the full stack with `streamr-docker-dev start` before running your tests.
+When running testing the SDKs or running other end-to-end tests, just start the full stack with `streamr-docker-dev start` before your tests.
 
 ## Included services
 
