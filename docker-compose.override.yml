@@ -122,7 +122,7 @@ services:
             timeout: 10s
             retries: 3
     ethereum-watcher:
-        container_name: streamr-dev-ethereum-watcher-local
+        container_name: streamr-dev-ethereum-watcher
         image: streamr/ethereum-watcher:dev
         restart: on-failure
         depends_on:
@@ -135,7 +135,7 @@ services:
             MARKETPLACE_ADDRESS: "0xf1371c0f40528406dc4f4caf89924ea9da49e866"
             DEVOPS_KEY: "devops-user-key"
         volumes:
-            - ./data/ethereum-watcher-local/:/app/logs
+            - ./data/ethereum-watcher/:/app/logs
     data-union-server:
         container_name: streamr-dev-data-union-server
         image: streamr/streamr-community-products:dev
