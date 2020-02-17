@@ -5,20 +5,26 @@ echo "
 streamr-docker-dev – Streamr Docker Developer Environment.
 
 Usage: streamr-docker-dev [<command> [options] [--] <service>...]
-    streamr-docker-dev start
-    streamr-docker-dev stop tracker
-    streamr-docker-dev pull
 
 Commands:
     help                show this screen
     start               start services
     stop                stop services
     restart             stop and start services
+    wait                wait for all health checks to pass
     ps                  list docker containers
     log                 show logs
     pull                pulls images
     wipe                wipes the data persisted by all services
     factory-reset       removes images and generated files
+
+
+Examples:
+    streamr-docker-dev start
+    streamr-docker-dev stop tracker
+    streamr-docker-dev start --except tracker && streamr-docker-dev wait --timeout 300
+    streamr-docker-dev log -f tracker
+    streamr-docker-dev pull
 
 Options:
     --dry-run           echo commands instead of executing them
@@ -33,6 +39,8 @@ echo "
 Starts the given services, or all services if none are specified.
 
 Usage: streamr-docker-dev start [--] <service>...
+
+Examples:
     streamr-docker-dev start
     streamr-docker-dev start tracker ganache
     streamr-docker-dev start --except tracker
@@ -48,6 +56,8 @@ echo "
 Stops the given services, or all services if none are specified.
 
 Usage: streamr-docker-dev stop [options] [--] <service>...
+
+Examples:
     streamr-docker-dev stop
     streamr-docker-dev stop tracker ganache
 "
@@ -58,8 +68,25 @@ echo "
 Restarts the given services, or all services if none are specified
 
 Usage: streamr-docker-dev restart [options] [--] <service>...
+
+Examples:
     streamr-docker-dev restart
     streamr-docker-dev restart tracker ganache
+"
+}
+
+wait_help() {
+echo "
+Waits until pending health checks pass. Ignores services without health checks.
+
+Usage: streamr-docker-dev wait [options]
+
+Examples:
+    streamr-docker-dev wait
+    streamr-docker-dev wait --timeout 300
+
+Options:
+    --timeout [sec]      Sets the maximum time to wait. Default: 300 sec
 "
 }
 
@@ -68,6 +95,8 @@ echo "
 Shows currently running services. If no services given, shows all
 
 Usage: streamr-docker-dev ps [<service>...]
+
+Examples:
     streamr-docker-dev ps
     streamr-docker-dev ps tracker
 "
@@ -78,6 +107,8 @@ echo "
 Shows the logs of the given services
 
 Usage: streamr-docker-dev log [[options] [--] <service>...]
+
+Examples:
     streamr-docker-dev log
     streamr-docker-dev log tracker ganache
     streamr-docker-dev log -f tracker ganache
@@ -92,6 +123,8 @@ echo "
 Pulls images defined in docker-compose files. If no services are given, pulls all of them.
 
 Usage: streamr-docker-dev pull [ [--] <service>...]
+
+Examples:
     streamr-docker-dev pull
     streamr-docker-dev pull tracker ganache
 "
@@ -125,6 +158,9 @@ case $1 in
         ;;
     "restart" )
         restart_help
+        ;;
+    "wait" )
+        wait_help
         ;;
     "ps" )
         ps_help

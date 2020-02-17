@@ -59,6 +59,10 @@ Restart all services: `streamr-docker-dev restart`
 
 Restart particular services: `streamr-docker-dev restart [services]`
 
+### `wait`
+
+Wait up to 5 min for pending health checks to pass: `streamr-docker-dev wait --timeout 300`
+
 ### `ps`
 
 View process list: `streamr-docker-dev ps [services]`

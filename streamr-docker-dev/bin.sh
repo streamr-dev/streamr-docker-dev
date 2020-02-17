@@ -14,6 +14,10 @@ DETACHED=1
 DRY_RUN=0
 FOLLOW=0
 HELP=0
+WAIT_TIMEOUT=300     # seconds
+
+# Execute all commands from the root dir of streamr-docker-dev
+cd "$ROOT_DIR" || exit 1
 
 help() {
     "$ORIG_DIRNAME/help_scripts.sh" $SERVICES
@@ -48,6 +52,27 @@ stop() {
 
 restart() {
     stop && COMMANDS_TO_RUN+=("printf \n") && start
+}
+
+wait() {
+    # Warning: depends on docker-compose ps output, could break easily
+    echo "Waiting for pending health checks to pass (timeout: $WAIT_TIMEOUT sec)..."
+    declare -i time_waited
+    while [[ $time_waited -lt $WAIT_TIMEOUT ]]; do
+        # Are there lines that contain "health" (have health checks) but are not "healthy"?
+        if docker-compose ps | grep health | grep -q -v healthy; then
+            sleep 10s
+            time_waited=$((time_waited+10))
+            echo "time_waited: $time_waited, WAIT_TIMEOUT: $WAIT_TIMEOUT"
+        else
+            break
+        fi
+    done
+
+    if [[ $time_waited -ge $WAIT_TIMEOUT ]]; then
+        echo "ERROR: Timed out waiting for health checks to pass. (Timeout: $WAIT_TIMEOUT sec)"
+        exit 1
+    fi
 }
 
 ps() {
@@ -89,6 +114,9 @@ while [ $# -gt 0 ]; do # if there are arguments
             --except )                  EXCEPT_SERVICES+=" $2"
                                         shift # skip over the next arg, which was already consumed above
                                         ;;
+            --timeout )                 WAIT_TIMEOUT=$2
+                                        shift # skip over the next arg, which was already consumed above
+                                        ;;
             -f | --follow )             FOLLOW=1
                                         ;;
             --dry-run )                 DRY_RUN=1
@@ -116,6 +144,8 @@ case $OPERATION in
                                     ;;
     restart )                       restart
                                     ;;
+    wait )                          wait
+                                    ;;
     ps )                            ps
                                     ;;
     log )                           log
@@ -133,7 +163,6 @@ case $OPERATION in
 esac
 
 # Run or dry-run COMMANDS_TO_RUN
-cd "$ROOT_DIR" || exit 1
 for command in "${COMMANDS_TO_RUN[@]}"
 do
     if [ $DRY_RUN == 1 ]; then
