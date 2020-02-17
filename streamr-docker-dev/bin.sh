@@ -8,6 +8,7 @@ OPERATION=
 COMMANDS_TO_RUN=()
 
 SERVICES=""
+EXCEPT_SERVICES=""
 FLAGS=""
 DETACHED=1
 DRY_RUN=0
@@ -29,6 +30,13 @@ start() {
     [[ $SERVICES == "" ]] && msg="Starting all" || msg="Starting$SERVICES"
     COMMANDS_TO_RUN+=("echo $msg")
     COMMANDS_TO_RUN+=("docker-compose up $FLAGS $SERVICES")
+
+    # "--except" feature is implemented by starting all, then stopping the unwanted services.
+    # Bit of a hack but docker-compose doesn't provide a better direct way.
+    if [[ $EXCEPT_SERVICES != "" ]]; then
+        COMMANDS_TO_RUN+=("docker-compose kill $EXCEPT_SERVICES")
+        COMMANDS_TO_RUN+=("docker-compose rm -f $EXCEPT_SERVICES")
+    fi
 }
 
 stop() {
@@ -78,6 +86,9 @@ shift
 while [ $# -gt 0 ]; do # if there are arguments
     if [[ "$1" = -* ]]; then
         case $1 in
+            --except )                  EXCEPT_SERVICES+=" $2"
+                                        shift # skip over the next arg, which was already consumed above
+                                        ;;
             -f | --follow )             FOLLOW=1
                                         ;;
             --dry-run )                 DRY_RUN=1

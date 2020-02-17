@@ -45,6 +45,8 @@ Start all services: `streamr-docker-dev start`
 
 Start particular services: `streamr-docker-dev start [services]`
 
+Start all services except particular ones: `streamr-docker-dev start --except [service]`
+
 ### `stop`
 
 Stop all services: `streamr-docker-dev stop`
@@ -101,18 +103,23 @@ The MySQL credentials are `root` / `password`.
 
 ## Usage in Streamr development
 
-When you're developing one of the Streamr components, you'll want to use the `streamr-docker-dev` tool to run all other services except the one you're developing. To do this, simply start all services, then stop the one you're planning to develop:
+When you're developing one of the Streamr components, you'll want to use the `streamr-docker-dev` tool with the `--except` flag to exclude the service you're developing:
 
 ```
-streamr-docker-dev start
-streamr-docker-dev stop [service]
+streamr-docker-dev start --except [service-under-development]
 ```
 
 ## Usage in testing and CI
 
-For integration tests of one of the services, do the same as above (stop the docker version of the service under test), then start your tests. In CI, you may want to add some checks to ensure that the services are started before launching your tests.
+For integration tests, the `--except` flag is useful: 
 
-When running testing the SDKs or running other end-to-end tests, just start the full stack with `streamr-docker-dev start` before your tests.
+```
+streamr-docker-dev start --except [service-under-test]
+```
+
+When testing the SDKs or running other end-to-end tests, just start the full stack with `streamr-docker-dev start` before your tests.
+
+Generally in CI, you probably want to add some checks to ensure that the required services are fully up and running before launching your tests.
 
 ## Included services
 

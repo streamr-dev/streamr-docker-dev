@@ -35,9 +35,11 @@ Starts the given services, or all services if none are specified.
 Usage: streamr-docker-dev start [--] <service>...
     streamr-docker-dev start
     streamr-docker-dev start tracker ganache
+    streamr-docker-dev start --except tracker
 
 Options:
-    --attached          start in attached mode
+    --except [service]      start services except the one given
+    --attached              start in attached mode
 "
 }
 
