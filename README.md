@@ -73,6 +73,10 @@ View all logs: `streamr-docker-dev log [-f]`
 
 View logs of certain services: `streamr-docker-dev log [-f] [services]`
 
+### `shell`
+
+Open an interactive shell into a container: `streamr-docker-dev shell [service]`
+
 ### `pull`
 
 Pull latest images of all services: `streamr-docker-dev pull`
