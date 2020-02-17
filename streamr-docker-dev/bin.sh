@@ -32,7 +32,7 @@ start() {
         COMMANDS_TO_RUN+=("sudo ifconfig lo0 alias 10.200.10.1/24")
     fi
     [[ $DETACHED == 1 ]] && FLAGS+=" -d"
-    [[ $SERVICES == "" ]] && msg="Starting all" || msg="Starting$SERVICES"
+    [[ $SERVICES == "" ]] && msg="Starting all" || msg="Starting $SERVICES"
     COMMANDS_TO_RUN+=("echo $msg")
     COMMANDS_TO_RUN+=("docker-compose up $FLAGS $SERVICES")
 
@@ -45,7 +45,7 @@ start() {
 }
 
 stop() {
-    [[ $SERVICES == "" ]] && msg="Stopping all" || msg="Stopping$SERVICES"
+    [[ $SERVICES == "" ]] && msg="Stopping all" || msg="Stopping $SERVICES"
     COMMANDS_TO_RUN+=("echo $msg")
     COMMANDS_TO_RUN+=("docker-compose kill $SERVICES")
     COMMANDS_TO_RUN+=("docker-compose rm -f $SERVICES")

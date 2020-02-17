@@ -13,6 +13,11 @@ services:
             JVM_OPTS: "-Xms256M -Xmx512M"
         volumes:
             - ./data/cassandra:/var/lib/cassandra
+        healthcheck:
+            test: ["CMD", "cqlsh", "-e", "SHOW HOST"]
+            interval: 10s
+            timeout: 10s
+            retries: 60
     init-keyspace:
         container_name: streamr-dev-init-keyspace
         image: cassandra
