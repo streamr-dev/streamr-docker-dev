@@ -64,7 +64,6 @@ wait() {
         if docker-compose ps | grep health | grep -q -v healthy; then
             sleep 10s
             time_waited=$((time_waited+10))
-            echo "time_waited: $time_waited, WAIT_TIMEOUT: $WAIT_TIMEOUT"
         else
             break
         fi
