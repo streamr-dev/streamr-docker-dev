@@ -121,7 +121,7 @@ case $OPERATION in
 esac
 
 # Run or dry-run COMMANDS_TO_RUN
-pushd $ROOT_DIR > /dev/null
+cd "$ROOT_DIR" || exit 1
 for command in "${COMMANDS_TO_RUN[@]}"
 do
     if [ $DRY_RUN == 1 ]; then
@@ -130,5 +130,5 @@ do
         $command
     fi
 done
-popd > /dev/null
+
 
