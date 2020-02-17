@@ -37,6 +37,11 @@ services:
             - ./mysql_init_scripts:/docker-entrypoint-initdb.d
             - ./custom-mysql-settings.cnf:/etc/mysql/conf.d/custom-mysql-settings.cnf
         restart: on-failure
+        healthcheck:
+            test: ["CMD", "mysql", "--password=password", "-e", "SELECT 1"]
+            interval: 10s
+            timeout: 10s
+            retries: 60
         environment:
             MYSQL_ROOT_PASSWORD: password
     redis:
