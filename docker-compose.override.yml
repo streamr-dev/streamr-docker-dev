@@ -8,6 +8,11 @@ services:
           - "80:80"
         volumes:
           - ./custom-nginx-reverse-proxy.conf:/etc/nginx/nginx.conf:ro
+        healthcheck:
+            test: ["CMD", "nc", "-z", "localhost", "80"]
+            interval: 10s
+            timeout: 10s
+            retries: 60
     tracker:
         container_name: streamr-dev-tracker
         image: streamr/broker-node:dev
