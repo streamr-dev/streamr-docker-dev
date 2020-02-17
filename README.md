@@ -115,15 +115,24 @@ streamr-docker-dev start --except [service-under-development]
 
 ## Usage in testing and CI
 
-For integration tests, the `--except` flag is useful: 
+For integration tests, the `--except` flag is useful to exclude the service under test:
 
 ```
 streamr-docker-dev start --except [service-under-test]
 ```
 
-When testing the SDKs or running other end-to-end tests, just start the full stack with `streamr-docker-dev start` before your tests.
+When testing the SDKs or running other end-to-end tests, just start the full stack before your tests: 
 
-Generally in CI, you probably want to add some checks to ensure that the required services are fully up and running before launching your tests.
+```
+streamr-docker-dev start
+```
+
+In CI, you can use the `wait` command to ensure that the services are started properly before starting your tests:
+
+```
+streamr-docker-dev start
+streamr-docker-dev wait --timeout 300
+```
 
 ## Included services
 
