@@ -16,7 +16,6 @@ HELP=0
 
 help() {
     "$ORIG_DIRNAME/help_scripts.sh" $SERVICES
-    exit
 }
 
 start() {
@@ -85,8 +84,9 @@ while [ $# -gt 0 ]; do # if there are arguments
                                         ;;
             --attached )                DETACHED=0
                                         ;;
-            * )                         echo "Invalid option: $1"
-                                        exit
+            * )                         help
+                                        echo "Invalid option: $1"
+                                        exit 1
                                         ;;
         esac
     else
@@ -116,7 +116,6 @@ case $OPERATION in
     factory-reset)                  factory-reset
                                     ;;
     * )                             "$ORIG_DIRNAME/help_scripts.sh"
-                                    exit
                                     ;;
 esac
 
