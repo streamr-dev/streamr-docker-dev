@@ -1,7 +1,7 @@
 version: "3"
 services:
     nginx:
-        container_name: streamr_dev_nginx
+        container_name: streamr-dev-nginx
         image: nginx:1.14-alpine
         restart: on-failure
         ports:
@@ -9,7 +9,7 @@ services:
         volumes:
           - ./custom-nginx-reverse-proxy.conf:/etc/nginx/nginx.conf:ro
     tracker:
-        container_name: streamr_dev_tracker
+        container_name: streamr-dev-tracker
         image: streamr/broker-node:dev
         restart: on-failure
         ports:
@@ -22,7 +22,7 @@ services:
             timeout: 10s
             retries: 3
     broker-node-storage-1:
-        container_name: streamr_dev_broker-node-storage-1
+        container_name: streamr-dev-broker-node-storage-1
         image: streamr/broker-node:dev
         restart: on-failure
         ports:
@@ -31,7 +31,7 @@ services:
             - "9000:9000"
             - "30315:30315"
         depends_on:
-            - init_keyspace
+            - init-keyspace
             - cassandra
             - tracker
         environment:
@@ -44,7 +44,7 @@ services:
             timeout: 10s
             retries: 3
     broker-node-no-storage-1:
-        container_name: streamr_dev_broker-node-no-storage-1
+        container_name: streamr-dev-broker-node-no-storage-1
         image: streamr/broker-node:dev
         restart: on-failure
         ports:
@@ -63,7 +63,7 @@ services:
             timeout: 10s
             retries: 3
     broker-node-no-storage-2:
-        container_name: streamr_dev_broker-node-no-storage-2
+        container_name: streamr-dev-broker-node-no-storage-2
         image: streamr/broker-node:dev
         restart: on-failure
         ports:
@@ -82,12 +82,12 @@ services:
             timeout: 10s
             retries: 3
     engine-and-editor:
-        container_name: streamr_dev_engine-and-editor
+        container_name: streamr-dev-engine-and-editor
         image: streamr/engine-and-editor:dev
         ports:
             - "8081:8081"
         depends_on:
-            - init_keyspace
+            - init-keyspace
             - smtp
             - mysql
             - cassandra
@@ -108,7 +108,7 @@ services:
             STREAMR_URL: "http://10.200.10.1"
             CPS_URL: "http://10.200.10.1:8085/communities/"
     ganache:
-        container_name: streamr_dev_ganache
+        container_name: streamr-dev-ganache
         image: streamr/streamr-ganache:dev
         ports:
           - "8545:8545"
@@ -122,7 +122,7 @@ services:
             timeout: 10s
             retries: 3
     ethereum-watcher:
-        container_name: streamr_dev_ethereum_watcher_local
+        container_name: streamr-dev-ethereum-watcher-local
         image: streamr/ethereum-watcher:dev
         restart: on-failure
         depends_on:
@@ -137,7 +137,7 @@ services:
         volumes:
             - ./data/ethereum-watcher-local/:/app/logs
     data-union-server:
-        container_name: streamr_dev_data-union-server
+        container_name: streamr-dev-data-union-server
         image: streamr/streamr-community-products:dev
         ports:
           - "8085:8085"
@@ -153,7 +153,7 @@ services:
             TOKEN_ADDRESS: "0xbaa81a0179015be47ad439566374f2bae098686f"
             REMOTE_SECRETS: "false"
     platform:
-        container_name: streamr_dev_platform
+        container_name: streamr-dev-platform
         image: streamr/platform:dev
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost"]
