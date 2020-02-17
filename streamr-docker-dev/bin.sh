@@ -10,13 +10,12 @@ COMMANDS_TO_RUN=()
 SERVICES=""
 FLAGS=""
 DETACHED=1
-ALL=0
 DRY_RUN=0
 FOLLOW=0
 HELP=0
 
 help() {
-    $ORIG_DIRNAME/help_scripts.sh
+    "$ORIG_DIRNAME/help_scripts.sh" $SERVICES
     exit
 }
 
@@ -80,8 +79,6 @@ shift
 while [ $# -gt 0 ]; do # if there are arguments
     if [[ "$1" = -* ]]; then
         case $1 in
-            -h | --help )               HELP=1
-                                        ;;
             -f | --follow )             FOLLOW=1
                                         ;;
             --dry-run )                 DRY_RUN=1
@@ -98,14 +95,9 @@ while [ $# -gt 0 ]; do # if there are arguments
     shift
 done
 
-if [ $HELP == 1 ]; then
-    $ORIG_DIRNAME/help_scripts.sh "$OPERATION"
-    exit
-fi
-
 # Populate COMMANDS_TO_RUN by executing the relevant method
 case $OPERATION in
-    help | -h | --help )            help
+    help )                          help
                                     ;;
     start )                         start
                                     ;;
@@ -123,7 +115,7 @@ case $OPERATION in
                                     ;;
     factory-reset)                  factory-reset
                                     ;;
-    * )                             $ORIG_DIRNAME/help_scripts.sh
+    * )                             "$ORIG_DIRNAME/help_scripts.sh"
                                     exit
                                     ;;
 esac

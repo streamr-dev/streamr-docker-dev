@@ -31,7 +31,13 @@ ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ip addr add 10.200.10.1 dev lo label lo:1
 ```
 
-## Running
+## Commands
+
+### `help`
+
+List available commands: `streamr-docker-dev`
+
+Help about particular command: `streamr-docker-dev help [command]`
 
 ### `start`
 

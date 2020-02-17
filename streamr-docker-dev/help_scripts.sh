@@ -21,11 +21,10 @@ Commands:
     factory-reset       removes images and generated files
 
 Options:
-    -h --help           command help
     --dry-run           echo commands instead of executing them
 
 Show command-specific options:
-	streamr-docker-dev <command> -h
+	streamr-docker-dev help <command>
 "
 }
 
