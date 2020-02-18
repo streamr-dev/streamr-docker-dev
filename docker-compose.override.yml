@@ -23,9 +23,9 @@ services:
         command: node tracker.js --endpointServerPort=11111
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:11111/topology/"]
-            interval: 1m30s
+            interval: 30s
             timeout: 10s
-            retries: 3
+            retries: 20
     broker-node-storage-1:
         container_name: streamr-dev-broker-node-storage-1
         image: streamr/broker-node:dev
@@ -45,9 +45,9 @@ services:
             CONFIG_FILE: configs/docker-1.env.json
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8891/api/v1/volume"]
-            interval: 1m30s
+            interval: 30s
             timeout: 10s
-            retries: 3
+            retries: 20
     broker-node-no-storage-1:
         container_name: streamr-dev-broker-node-no-storage-1
         image: streamr/broker-node:dev
@@ -64,9 +64,9 @@ services:
             CONFIG_FILE: configs/docker-2.env.json
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8791/api/v1/volume"]
-            interval: 1m30s
+            interval: 30s
             timeout: 10s
-            retries: 3
+            retries: 20
     broker-node-no-storage-2:
         container_name: streamr-dev-broker-node-no-storage-2
         image: streamr/broker-node:dev
@@ -83,9 +83,9 @@ services:
             CONFIG_FILE: configs/docker-3.env.json
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8691/api/v1/volume"]
-            interval: 1m30s
+            interval: 30s
             timeout: 10s
-            retries: 3
+            retries: 20
     engine-and-editor:
         container_name: streamr-dev-engine-and-editor
         image: streamr/engine-and-editor:dev
@@ -103,9 +103,9 @@ services:
             - ganache
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8081/streamr-core/api/v1/products"]
-            interval: 1m30s
+            interval: 30s
             timeout: 10s
-            retries: 3
+            retries: 20
         environment:
             AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
             AWS_SECRET_KEY: "${AWS_SECRET_ACCESS_KEY}"
@@ -123,9 +123,9 @@ services:
             NETWORK_ID: 1111
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8545"]
-            interval: 1m30s
+            interval: 10s
             timeout: 10s
-            retries: 3
+            retries: 60
     ethereum-watcher:
         container_name: streamr-dev-ethereum-watcher
         image: streamr/ethereum-watcher:dev
@@ -167,9 +167,9 @@ services:
         image: streamr/platform:dev
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost"]
-            interval: 1m30s
+            interval: 10s
             timeout: 10s
-            retries: 3
+            retries: 60
         ports:
             - "3333:80"
         depends_on:
