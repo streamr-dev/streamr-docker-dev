@@ -47,6 +47,8 @@ Start particular services: `streamr-docker-dev start [services]`
 
 Start all services except particular ones: `streamr-docker-dev start --except [service]`
 
+Start and wait for services to become healthy: `streamr-docker-dev start --wait`
+
 ### `stop`
 
 Stop all services: `streamr-docker-dev stop`
@@ -119,23 +121,18 @@ streamr-docker-dev start --except [service-under-development]
 
 ## Usage in testing and CI
 
-For integration tests, the `--except` flag is useful to exclude the service under test:
+In CI, the `--wait` flag can be used with `start` to block until all health checks are passing. This ensures that the services are up and running before starting your tests.
+
+For integration tests, use the `--except` option to exclude the service under test: 
 
 ```
-streamr-docker-dev start --except [service-under-test]
+streamr-docker-dev start --except [service-under-test] --wait
 ```
 
 When testing the SDKs or running other end-to-end tests, just start the full stack before your tests: 
 
 ```
-streamr-docker-dev start
-```
-
-In CI, you can use the `wait` command to ensure that the services are started properly before starting your tests:
-
-```
-streamr-docker-dev start
-streamr-docker-dev wait --timeout 300
+streamr-docker-dev start --wait
 ```
 
 ## Included services

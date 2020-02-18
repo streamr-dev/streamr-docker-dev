@@ -15,6 +15,7 @@ DETACHED=1
 DRY_RUN=0
 FOLLOW=0
 HELP=0
+WAIT=0
 WAIT_TIMEOUT=300     # seconds
 
 # Execute all commands from the root dir of streamr-docker-dev
@@ -41,6 +42,10 @@ start() {
     if [[ $EXCEPT_SERVICES != "" ]]; then
         COMMANDS_TO_RUN+=("docker-compose kill $EXCEPT_SERVICES")
         COMMANDS_TO_RUN+=("docker-compose rm -f $EXCEPT_SERVICES")
+    fi
+
+    if [ $WAIT == 1 ]; then
+        COMMANDS_TO_RUN+=("wait")
     fi
 }
 
@@ -118,6 +123,8 @@ while [ $# -gt 0 ]; do # if there are arguments
         case $1 in
             --except )                  EXCEPT_SERVICES+="$2 "
                                         shift # skip over the next arg, which was already consumed above
+                                        ;;
+            --wait )                    WAIT=1
                                         ;;
             --timeout )                 WAIT_TIMEOUT=$2
                                         shift # skip over the next arg, which was already consumed above

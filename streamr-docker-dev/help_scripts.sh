@@ -23,7 +23,7 @@ Commands:
 Examples:
     streamr-docker-dev start
     streamr-docker-dev stop tracker
-    streamr-docker-dev start --except tracker && streamr-docker-dev wait --timeout 300
+    streamr-docker-dev start --except tracker --wait
     streamr-docker-dev log -f tracker
     streamr-docker-dev shell tracker
     streamr-docker-dev pull
@@ -45,10 +45,11 @@ Usage: streamr-docker-dev start [--] <service>...
 Examples:
     streamr-docker-dev start
     streamr-docker-dev start tracker ganache
-    streamr-docker-dev start --except tracker
+    streamr-docker-dev start --except tracker --wait
 
 Options:
     --except [service]      start services except the one given
+    --wait                  after starting, wait for services to become healthy (same as 'wait' command)
     --attached              start in attached mode
 "
 }
