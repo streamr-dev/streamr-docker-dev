@@ -161,41 +161,41 @@ Usage: streamr-docker-dev factory-reset
 }
 
 case $1 in
-    "" )
-        common_help
-        ;;
-    "start" )
-        start_help
-        ;;
-    "stop" )
-        stop_help
-        ;;
-    "restart" )
-        restart_help
-        ;;
-    "wait" )
-        wait_help
-        ;;
-    "ps" )
-        ps_help
-        ;;
-    "log" )
-        log_help
-        ;;
-    "shell" )
-        shell_help
-        ;;
-    "pull" )
-        pull_help
-        ;;
-    "wipe" )
-        wipe_help
-        ;;
-    "factory-reset" )
-        factory-reset_help
-        ;;
-    * ) common_help
-        echo "ERROR: No help available for invalid command: $1"
-        exit 1
-        ;;
+"" )
+    common_help
+    ;;
+"start" )
+    start_help
+    ;;
+"stop" )
+    stop_help
+    ;;
+"restart" )
+    restart_help
+    ;;
+"wait" )
+    wait_help
+    ;;
+"ps" )
+    ps_help
+    ;;
+"log" )
+    log_help
+    ;;
+"shell" )
+    shell_help
+    ;;
+"pull" )
+    pull_help
+    ;;
+"wipe" )
+    wipe_help
+    ;;
+"factory-reset" )
+    factory-reset_help
+    ;;
+* ) common_help
+    echo "ERROR: No help available for invalid command: $1"
+    exit 1
+    ;;
 esac

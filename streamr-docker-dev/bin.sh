@@ -120,24 +120,31 @@ shift
 while [ $# -gt 0 ]; do # if there are arguments
     if [[ "$1" = -* ]]; then
         case $1 in
-            --except )                  EXCEPT_SERVICES+="$2 "
-                                        shift # skip over the next arg, which was already consumed above
-                                        ;;
-            --wait )                    WAIT=1
-                                        ;;
-            --timeout )                 WAIT_TIMEOUT=$2
-                                        shift # skip over the next arg, which was already consumed above
-                                        ;;
-            -f | --follow )             FOLLOW=1
-                                        ;;
-            --dry-run )                 DRY_RUN=1
-                                        ;;
-            --attached )                DETACHED=0
-                                        ;;
-            * )                         help
-                                        echo "ERROR: Invalid option: $1"
-                                        exit 1
-                                        ;;
+        --except )
+            EXCEPT_SERVICES+="$2 "
+            shift # skip over the next arg, which was already consumed above
+            ;;
+        --wait )
+            WAIT=1
+           ;;
+        --timeout )
+            WAIT_TIMEOUT=$2
+            shift # skip over the next arg, which was already consumed above
+            ;;
+        -f | --follow )
+            FOLLOW=1
+            ;;
+        --dry-run )
+            DRY_RUN=1
+            ;;
+        --attached )
+            DETACHED=0
+            ;;
+        * )
+            help
+            echo "ERROR: Invalid option: $1"
+            exit 1
+            ;;
         esac
     else
         SERVICES+="$1 "
@@ -147,32 +154,44 @@ done
 
 # Populate COMMANDS_TO_RUN by executing the relevant method
 case $OPERATION in
-    "" | help )                     help
-                                    ;;
-    start )                         start
-                                    ;;
-    stop )                          stop
-                                    ;;
-    restart )                       restart
-                                    ;;
-    wait )                          wait
-                                    ;;
-    ps )                            ps
-                                    ;;
-    log )                           log
-                                    ;;
-    shell )                         shell
-                                    ;;
-    pull )                          pull
-                                    ;;
-    wipe )                          wipe
-                                    ;;
-    factory-reset)                  factory-reset
-                                    ;;
-    * )                             help
-                                    echo "ERROR: Invalid command: $OPERATION"
-                                    exit 1
-                                    ;;
+"" | help )
+    help
+    ;;
+start )
+    start
+    ;;
+stop )
+    stop
+    ;;
+restart )
+    restart
+    ;;
+wait )
+    wait
+    ;;
+ps )
+    ps
+    ;;
+log )
+    log
+    ;;
+shell )
+    shell
+    ;;
+pull )
+    pull
+    ;;
+wipe )
+    wipe
+    ;;
+factory-reset )
+    factory-reset
+    ;;
+* )
+    help
+    echo "ERROR: Invalid command: $OPERATION"
+    exit 1
+    ;;
 esac
 
 # Run or dry-run COMMANDS_TO_RUN
