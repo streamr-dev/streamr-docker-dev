@@ -85,6 +85,10 @@ Pull latest images of all services: `streamr-docker-dev pull`
 
 Pull latest images of certain services: `streamr-docker-dev pull [services]`
 
+### `update`
+
+Update the tool to the latest version: `streamr-docker-dev update`
+
 ### `wipe`
 
 Wipe the persisted data of all services: `streamr-docker-dev wipe`

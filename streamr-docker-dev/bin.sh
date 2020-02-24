@@ -101,6 +101,11 @@ pull() {
     COMMANDS_TO_RUN+=("docker-compose pull $SERVICES")
 }
 
+update() {
+    # git pull latest version
+    COMMANDS_TO_RUN+=("git pull")
+}
+
 wipe() {
     stop
     COMMANDS_TO_RUN+=("echo Wiping persistent data of services")
@@ -181,6 +186,9 @@ shell )
 pull )
     pull
     ;;
+update )
+    update
+    ;;
 wipe )
     wipe
     ;;
@@ -203,5 +211,3 @@ do
         $command
     fi
 done
-
-

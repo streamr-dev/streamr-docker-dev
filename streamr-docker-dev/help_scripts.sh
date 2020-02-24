@@ -15,7 +15,8 @@ Commands:
     ps                  list docker containers
     log                 show logs
     shell               shell into a container
-    pull                pulls images
+    pull                pulls latest versions of images
+    update              updates streamr-docker-dev by doing git pull
     wipe                wipes the data persisted by all services
     factory-reset       removes images and generated files
 
@@ -144,6 +145,14 @@ Examples:
 "
 }
 
+update_help() {
+echo "
+Updates streamr-docker-dev to the latest version by doing a "git pull" in the streamr-docker-dev directory.
+
+Usage: streamr-docker-dev update
+"
+}
+
 wipe_help() {
 echo "
 Wipes the data persisted by all services.
@@ -187,6 +196,9 @@ case $1 in
     ;;
 "pull" )
     pull_help
+    ;;
+"update" )
+    update_help
     ;;
 "wipe" )
     wipe_help
