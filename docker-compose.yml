@@ -1,7 +1,7 @@
 version: "3"
 services:
     cassandra:
-        container_name: streamr_dev_cassandra
+        container_name: streamr-dev-cassandra
         image: cassandra:3.11.5
         ports:
             - "7000:7000"
@@ -13,8 +13,13 @@ services:
             JVM_OPTS: "-Xms256M -Xmx512M"
         volumes:
             - ./data/cassandra:/var/lib/cassandra
-    init_keyspace:
-        container_name: streamr_dev_init_keyspace
+        healthcheck:
+            test: ["CMD", "cqlsh", "-e", "SHOW HOST"]
+            interval: 10s
+            timeout: 10s
+            retries: 60
+    init-keyspace:
+        container_name: streamr-dev-init-keyspace
         image: cassandra
         command: bash -c "sleep 30 && cqlsh cassandra -f /init_scripts/keyspace.cql && echo keyspace initialized && sleep infinity"
         restart: on-failure
@@ -23,7 +28,7 @@ services:
         depends_on:
             - cassandra
     mysql:
-        container_name: streamr_dev_mysql
+        container_name: streamr-dev-mysql
         image: mysql:5.7.22
         ports:
             - "3306:3306"
@@ -32,15 +37,25 @@ services:
             - ./mysql_init_scripts:/docker-entrypoint-initdb.d
             - ./custom-mysql-settings.cnf:/etc/mysql/conf.d/custom-mysql-settings.cnf
         restart: on-failure
+        healthcheck:
+            test: ["CMD", "mysql", "--password=password", "-e", "SELECT 1"]
+            interval: 10s
+            timeout: 10s
+            retries: 60
         environment:
             MYSQL_ROOT_PASSWORD: password
     redis:
-        container_name: streamr_dev_redis
+        container_name: streamr-dev-redis
         image: redis:5.0.7-alpine
         ports:
             - "6379:6379"
+        healthcheck:
+            test: ["CMD", "redis-cli", "PING"]
+            interval: 10s
+            timeout: 10s
+            retries: 60
     smtp:
-        container_name: streamr_dev_smtp
+        container_name: streamr-dev-smtp
         image: namshi/smtp
         ports:
             - "25:25"

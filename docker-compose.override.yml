@@ -1,15 +1,20 @@
 version: "3"
 services:
     nginx:
-        container_name: streamr_nginx_reverse
+        container_name: streamr-dev-nginx
         image: nginx:1.14-alpine
         restart: on-failure
         ports:
           - "80:80"
         volumes:
           - ./custom-nginx-reverse-proxy.conf:/etc/nginx/nginx.conf:ro
+        healthcheck:
+            test: ["CMD", "nc", "-z", "localhost", "80"]
+            interval: 10s
+            timeout: 10s
+            retries: 60
     tracker:
-        container_name: streamr_dev_tracker
+        container_name: streamr-dev-tracker
         image: streamr/broker-node:dev
         restart: on-failure
         ports:
@@ -18,11 +23,11 @@ services:
         command: node tracker.js --endpointServerPort=11111
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:11111/topology/"]
-            interval: 1m30s
+            interval: 30s
             timeout: 10s
-            retries: 3
+            retries: 20
     broker-node-storage-1:
-        container_name: streamr_dev_broker-node-storage-1
+        container_name: streamr-dev-broker-node-storage-1
         image: streamr/broker-node:dev
         restart: on-failure
         ports:
@@ -31,19 +36,20 @@ services:
             - "9000:9000"
             - "30315:30315"
         depends_on:
-            - init_keyspace
+            - init-keyspace
             - cassandra
+            - tracker
         environment:
             STREAMR_URL: http://10.200.10.1:8081/streamr-core
             CASSANDRA_HOST: 10.200.10.1:9042
             CONFIG_FILE: configs/docker-1.env.json
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8891/api/v1/volume"]
-            interval: 1m30s
+            interval: 30s
             timeout: 10s
-            retries: 3
+            retries: 20
     broker-node-no-storage-1:
-        container_name: streamr_dev_broker-node-no-storage-1
+        container_name: streamr-dev-broker-node-no-storage-1
         image: streamr/broker-node:dev
         restart: on-failure
         ports:
@@ -51,16 +57,18 @@ services:
             - "8791:8791"
             - "9100:9100"
             - "30316:30316"
+        depends_on:
+            - tracker
         environment:
             STREAMR_URL: http://10.200.10.1:8081/streamr-core
             CONFIG_FILE: configs/docker-2.env.json
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8791/api/v1/volume"]
-            interval: 1m30s
+            interval: 30s
             timeout: 10s
-            retries: 3
+            retries: 20
     broker-node-no-storage-2:
-        container_name: streamr_dev_broker-node-no-storage-2
+        container_name: streamr-dev-broker-node-no-storage-2
         image: streamr/broker-node:dev
         restart: on-failure
         ports:
@@ -68,21 +76,23 @@ services:
             - "8691:8691"
             - "9200:9200"
             - "30317:30317"
+        depends_on:
+            - tracker
         environment:
             STREAMR_URL: http://10.200.10.1:8081/streamr-core
             CONFIG_FILE: configs/docker-3.env.json
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8691/api/v1/volume"]
-            interval: 1m30s
+            interval: 30s
             timeout: 10s
-            retries: 3
+            retries: 20
     engine-and-editor:
-        container_name: streamr_dev_engine-and-editor
+        container_name: streamr-dev-engine-and-editor
         image: streamr/engine-and-editor:dev
         ports:
             - "8081:8081"
         depends_on:
-            - init_keyspace
+            - init-keyspace
             - smtp
             - mysql
             - cassandra
@@ -90,31 +100,20 @@ services:
             - broker-node-storage-1
             - broker-node-no-storage-1
             - broker-node-no-storage-2
-            - community-product
+            - ganache
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8081/streamr-core/api/v1/products"]
-            interval: 1m30s
+            interval: 30s
             timeout: 10s
-            retries: 3
+            retries: 20
         environment:
             AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
             AWS_SECRET_KEY: "${AWS_SECRET_ACCESS_KEY}"
             FILEUPLOAD_S3_BUCKET: "${FILEUPLOAD_S3_BUCKET}"
             STREAMR_URL: "http://10.200.10.1"
             CPS_URL: "http://10.200.10.1:8085/communities/"
-    ethereum-watcher:
-        container_name: streamr_dev_ethereum_watcher
-        image: streamr/ethereum-watcher
-        restart: on-failure
-        depends_on:
-            - engine-and-editor
-        environment:
-            STREAMR_API_URL: http://engine-and-editor:8081/streamr-core/api/v1
-            METRICS: "false"
-        volumes:
-            - ./data/ethereum-watcher/:/app/logs
     ganache:
-        container_name: streamr_dev_ganache
+        container_name: streamr-dev-ganache
         image: streamr/streamr-ganache:dev
         ports:
           - "8545:8545"
@@ -124,11 +123,11 @@ services:
             NETWORK_ID: 1111
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8545"]
-            interval: 1m30s
+            interval: 10s
             timeout: 10s
-            retries: 3
-    ethereum-watcher-local: # uses local ganache
-        container_name: streamr_dev_ethereum_watcher_local
+            retries: 60
+    ethereum-watcher:
+        container_name: streamr-dev-ethereum-watcher
         image: streamr/ethereum-watcher:dev
         restart: on-failure
         depends_on:
@@ -141,15 +140,16 @@ services:
             MARKETPLACE_ADDRESS: "0xf1371c0f40528406dc4f4caf89924ea9da49e866"
             DEVOPS_KEY: "devops-user-key"
         volumes:
-            - ./data/ethereum-watcher-local/:/app/logs
-    community-product:
-        container_name: streamr_dev_cp
+            - ./data/ethereum-watcher/:/app/logs
+    data-union-server:
+        container_name: streamr-dev-data-union-server
         image: streamr/streamr-community-products:dev
         ports:
           - "8085:8085"
         restart: on-failure
         depends_on:
             - ganache
+            - engine-and-editor
         environment:
             ETHEREUM_SERVER: http://10.200.10.1:8545
             ETHEREUM_PRIVATE_KEY: 5e98cce00cff5dea6b454889f359a4ec06b9fa6b88e9d69b86de8e1c81887da0
@@ -157,13 +157,21 @@ services:
             STREAMR_HTTP_URL: http://10.200.10.1:8081/streamr-core/api/v1
             TOKEN_ADDRESS: "0xbaa81a0179015be47ad439566374f2bae098686f"
             REMOTE_SECRETS: "false"
+        healthcheck:
+            test: ["CMD", "curl", "-sS", "http://localhost:8085/communities"]
+            interval: 10s
+            timeout: 10s
+            retries: 60
     platform:
-        container_name: streamr_dev_platform
+        container_name: streamr-dev-platform
         image: streamr/platform:dev
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost"]
-            interval: 1m30s
+            interval: 10s
             timeout: 10s
-            retries: 3
+            retries: 60
         ports:
             - "3333:80"
+        depends_on:
+            - engine-and-editor
+            - ganache
