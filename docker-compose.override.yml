@@ -158,7 +158,7 @@ services:
             TOKEN_ADDRESS: "0xbaa81a0179015be47ad439566374f2bae098686f"
             REMOTE_SECRETS: "false"
         healthcheck:
-            test: ["CMD", "curl", "-sS", "http://localhost:8085/communities"]
+            test: ["CMD", "curl", "-sS", "http://localhost:8085/dataunions"]
             interval: 10s
             timeout: 10s
             retries: 60
