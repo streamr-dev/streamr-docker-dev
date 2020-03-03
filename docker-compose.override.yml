@@ -100,7 +100,7 @@ services:
             - broker-node-storage-1
             - broker-node-no-storage-1
             - broker-node-no-storage-2
-            - ganache
+            - parity-node0
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8081/streamr-core/api/v1/products"]
             interval: 30s
@@ -112,9 +112,9 @@ services:
             FILEUPLOAD_S3_BUCKET: "${FILEUPLOAD_S3_BUCKET}"
             STREAMR_URL: "http://10.200.10.1"
             CPS_URL: "http://10.200.10.1:8085/communities/"
-    ganache:
-        container_name: streamr-dev-ganache
-        image: streamr/streamr-ganache:dev
+    parity-node0:
+        container_name: streamr-dev-parity-node0
+        image: streamr/streamr-parity-node0:dev
         ports:
           - "8545:8545"
         restart: on-failure
@@ -131,13 +131,13 @@ services:
         image: streamr/ethereum-watcher:dev
         restart: on-failure
         depends_on:
-            - ganache
+            - parity-node0
             - engine-and-editor
         environment:
             STREAMR_API_URL: http://engine-and-editor:8081/streamr-core/api/v1
             METRICS: null
-            ETHEREUM_SERVER_URL: "http://ganache:8545"
-            MARKETPLACE_ADDRESS: "0xf1371c0f40528406dc4f4caf89924ea9da49e866"
+            ETHEREUM_SERVER_URL: "http://parity-node0:8545"
+            MARKETPLACE_ADDRESS: "0xEa4C690E7560070071643960f20bA984c8A922cd"
             DEVOPS_KEY: "devops-user-key"
         volumes:
             - ./data/ethereum-watcher/:/app/logs
@@ -148,14 +148,14 @@ services:
           - "8085:8085"
         restart: on-failure
         depends_on:
-            - ganache
+            - parity-node0
             - engine-and-editor
         environment:
             ETHEREUM_SERVER: http://10.200.10.1:8545
-            ETHEREUM_PRIVATE_KEY: 5e98cce00cff5dea6b454889f359a4ec06b9fa6b88e9d69b86de8e1c81887da0
+            ETHEREUM_PRIVATE_KEY: 3DF8095DFBAE93D8C7F1143B217A483D57A7F745E2542425DFE2FA25264CB2E8
             STREAMR_WS_URL: ws://10.200.10.1:8890/api/v1/ws
             STREAMR_HTTP_URL: http://10.200.10.1:8081/streamr-core/api/v1
-            TOKEN_ADDRESS: "0xbaa81a0179015be47ad439566374f2bae098686f"
+            TOKEN_ADDRESS: "0xeDFC9c2F4Cfa7495c1A95CfE1cB856F5980D5e18"
             REMOTE_SECRETS: "false"
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8085/dataunions"]
@@ -174,4 +174,57 @@ services:
             - "3333:80"
         depends_on:
             - engine-and-editor
-            - ganache
+            - parity-node0
+    parity-node0:
+         container_name: streamr-dev-parity-node0
+         image: streamr/open-ethereum-poa:dev
+         depends_on:
+           - parity-node1
+           - parity-node2
+           - smart-contracts-init
+         ports:
+           - "8545:8540"
+           - "8450:8450"
+           - "30309:30309"
+         restart: on-failure
+         healthcheck:
+            test: ["CMD", "curl", "-sS", "http://localhost:8540"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
+         command: --chain ./streamr-spec.json --config ./node0.toml
+    parity-node1:
+         container_name: streamr-dev-parity-node1
+         image: streamr/open-ethereum-poa:dev
+         ports:
+           - "8541:8541"
+           - "8451:8451"
+           - "30301:30301"
+         restart: on-failure
+         healthcheck:
+            test: ["CMD", "curl", "-sS", "http://localhost:8541"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
+         command: --chain ./streamr-spec.json --config ./node1.toml --bootnodes enode://b5500b451712edbff1fc09658d9730a2b41d05f1bbd7588aca7f98799e053d5e126e86200654e0a695ff4e9bb14be9e6cea0cfc81c3a051419a0a30a6a2ad8a5@parity-node0:30309
+    parity-node2:
+         container_name: streamr-dev-parity-node2
+         image: streamr/open-ethereum-poa:dev
+         ports:
+           - "8542:8542"
+           - "8452:8452"
+           - "30302:30302"
+         restart: on-failure
+         healthcheck:
+            test: ["CMD", "curl", "-sS", "http://localhost:8542"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
+         command: --chain ./streamr-spec.json --config ./node2.toml --bootnodes enode://b5500b451712edbff1fc09658d9730a2b41d05f1bbd7588aca7f98799e053d5e126e86200654e0a695ff4e9bb14be9e6cea0cfc81c3a051419a0a30a6a2ad8a5@parity-node0:30309
+    smart-contracts-init:
+        container_name: smart-contracts-init
+        image: streamr/smart-contracts-init:dev
+        restart: on-failure
+        environment:
+            EE_URL: http://engine-and-editor:8081/streamr-core
+            CHAIN_URL: http://10.200.10.1:8545
