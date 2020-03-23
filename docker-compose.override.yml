@@ -122,8 +122,8 @@ services:
         environment:
             STREAMR_API_URL: http://engine-and-editor:8081/streamr-core/api/v1
             METRICS: null
-            ETHEREUM_SERVER_URL: "http://parity-node0:8545"
-            MARKETPLACE_ADDRESS: "0xEa4C690E7560070071643960f20bA984c8A922cd"
+            ETHEREUM_SERVER_URL: "http://10.200.10.1:8545"
+            MARKETPLACE_ADDRESS: "0xf1371c0f40528406dc4f4caf89924ea9da49e866"
             DEVOPS_KEY: "devops-user-key"
         volumes:
             - ./data/ethereum-watcher/:/app/logs
@@ -137,10 +137,10 @@ services:
             - smart-contracts-init
         environment:
             ETHEREUM_SERVER: http://10.200.10.1:8545
-            ETHEREUM_PRIVATE_KEY: 3DF8095DFBAE93D8C7F1143B217A483D57A7F745E2542425DFE2FA25264CB2E8
+            ETHEREUM_PRIVATE_KEY: 5e98cce00cff5dea6b454889f359a4ec06b9fa6b88e9d69b86de8e1c81887da0
             STREAMR_WS_URL: ws://10.200.10.1:8890/api/v1/ws
             STREAMR_HTTP_URL: http://10.200.10.1:8081/streamr-core/api/v1
-            TOKEN_ADDRESS: "0xeDFC9c2F4Cfa7495c1A95CfE1cB856F5980D5e18"
+            TOKEN_ADDRESS: "0xbaa81a0179015be47ad439566374f2bae098686f"
             REMOTE_SECRETS: "false"
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8085/dataunions"]
