@@ -112,20 +112,6 @@ services:
             FILEUPLOAD_S3_BUCKET: "${FILEUPLOAD_S3_BUCKET}"
             STREAMR_URL: "http://10.200.10.1"
             CPS_URL: "http://10.200.10.1:8085/communities/"
-    parity-node0:
-        container_name: streamr-dev-parity-node0
-        image: streamr/streamr-parity-node0:dev
-        ports:
-          - "8545:8545"
-        restart: on-failure
-        environment:
-            EE_URL: http://engine-and-editor:8081/streamr-core
-            NETWORK_ID: 1111
-        healthcheck:
-            test: ["CMD", "curl", "-sS", "http://localhost:8545"]
-            interval: 10s
-            timeout: 10s
-            retries: 60
     ethereum-watcher:
         container_name: streamr-dev-ethereum-watcher
         image: streamr/ethereum-watcher:dev
@@ -148,8 +134,7 @@ services:
           - "8085:8085"
         restart: on-failure
         depends_on:
-            - parity-node0
-            - engine-and-editor
+            - smart-contracts-init
         environment:
             ETHEREUM_SERVER: http://10.200.10.1:8545
             ETHEREUM_PRIVATE_KEY: 3DF8095DFBAE93D8C7F1143B217A483D57A7F745E2542425DFE2FA25264CB2E8
@@ -178,10 +163,6 @@ services:
     parity-node0:
          container_name: streamr-dev-parity-node0
          image: streamr/open-ethereum-poa:dev
-         depends_on:
-           - parity-node1
-           - parity-node2
-           - smart-contracts-init
          ports:
            - "8545:8540"
            - "8450:8450"
@@ -193,37 +174,12 @@ services:
             timeout: 10s
             retries: 3
          command: --chain ./streamr-spec.json --config ./node0.toml
-    parity-node1:
-         container_name: streamr-dev-parity-node1
-         image: streamr/open-ethereum-poa:dev
-         ports:
-           - "8541:8541"
-           - "8451:8451"
-           - "30301:30301"
-         restart: on-failure
-         healthcheck:
-            test: ["CMD", "curl", "-sS", "http://localhost:8541"]
-            interval: 1m30s
-            timeout: 10s
-            retries: 3
-         command: --chain ./streamr-spec.json --config ./node1.toml --bootnodes enode://b5500b451712edbff1fc09658d9730a2b41d05f1bbd7588aca7f98799e053d5e126e86200654e0a695ff4e9bb14be9e6cea0cfc81c3a051419a0a30a6a2ad8a5@parity-node0:30309
-    parity-node2:
-         container_name: streamr-dev-parity-node2
-         image: streamr/open-ethereum-poa:dev
-         ports:
-           - "8542:8542"
-           - "8452:8452"
-           - "30302:30302"
-         restart: on-failure
-         healthcheck:
-            test: ["CMD", "curl", "-sS", "http://localhost:8542"]
-            interval: 1m30s
-            timeout: 10s
-            retries: 3
-         command: --chain ./streamr-spec.json --config ./node2.toml --bootnodes enode://b5500b451712edbff1fc09658d9730a2b41d05f1bbd7588aca7f98799e053d5e126e86200654e0a695ff4e9bb14be9e6cea0cfc81c3a051419a0a30a6a2ad8a5@parity-node0:30309
     smart-contracts-init:
         container_name: smart-contracts-init
         image: streamr/smart-contracts-init:dev
+        depends_on:
+           - parity-node0
+           - engine-and-editor
         restart: on-failure
         environment:
             EE_URL: http://engine-and-editor:8081/streamr-core
