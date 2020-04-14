@@ -119,6 +119,7 @@ services:
         depends_on:
             - parity-node0
             - engine-and-editor
+            - smart-contracts-init
         environment:
             STREAMR_API_URL: http://engine-and-editor:8081/streamr-core/api/v1
             METRICS: null
