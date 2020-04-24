@@ -11,9 +11,3 @@ CREATE TABLE IF NOT EXISTS stream_data (
     payload blob,
     PRIMARY KEY ((id, partition), ts, sequence_no, publisher_id, msg_chain_id)
 );
-
-create table if not exists stream_last_msg
-(
-	id text primary key,
-	time timestamp
-);
