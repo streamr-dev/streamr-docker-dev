@@ -162,7 +162,7 @@ services:
             - ./data/ethereum-watcher/:/app/logs
     data-union-server:
         container_name: streamr-dev-data-union-server
-        image: streamr/streamr-community-products:dev
+        image: streamr/data-union-server:dev
         ports:
           - "8085:8085"
         restart: on-failure
