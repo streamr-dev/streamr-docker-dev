@@ -60,15 +60,46 @@ restart() {
 }
 
 wait() {
-    # Warning: depends on docker-compose ps output, could break easily
     echo "Waiting for pending health checks to pass (timeout: $WAIT_TIMEOUT sec)..."
     declare -i time_waited
     while [[ $time_waited -lt $WAIT_TIMEOUT ]]; do
-        # Are there lines that contain "health" (have health checks) but are not "healthy"?
-        if docker-compose ps | grep health | grep -q -v healthy; then
+        waiting_for_services=()
+
+        # Get the id of each image we have in docker-compose
+        for image_id in $(docker-compose ps -q)
+        do
+            service_name=$(docker inspect -f "{{.Name}}" "$image_id")
+            # Try to read health state of each image
+            health_state=$(docker inspect -f "{{.State.Health.Status}}" "$image_id" 2> /dev/null)
+            if [ $? -eq 0 ]; then
+                # Successfully got health state. Is the service healthy?
+                if [ "$health_state" != "healthy" ]; then
+                    waiting_for_services+=("$service_name ($health_state)")
+                fi
+            else
+                # Error while fetching health state. Maybe a health check is not configured. Did the image exit successfully?
+                exit_status=$(docker inspect -f "{{.State.Status}}" "$image_id")
+                exit_code=$(docker inspect -f "{{.State.ExitCode}}" "$image_id")
+                if [ "$exit_status" != "exited" ]; then
+                    # Didn't exit yet, keep waiting...
+                    waiting_for_services+=("$service_name (no health check -> waiting for it to exit)")
+                elif [ "$exit_code" != "0" ]; then
+                    # Exited but errored
+                    waiting_for_services+=("$service_name (ERROR: exit code $exit_code)")
+                fi
+            fi
+        done
+
+        if [ ${#waiting_for_services[@]} -gt 0 ]; then
+            if (( time_waited >= 60 )); then
+                echo "***********************************"
+                echo "Still waiting for the following services:"
+                for s in "${waiting_for_services[@]}"; do echo "$s"; done
+            fi
             sleep 10s
             time_waited=$((time_waited+10))
         else
+            echo "All services up and running."
             break
         fi
     done
