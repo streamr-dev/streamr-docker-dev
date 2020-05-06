@@ -160,6 +160,11 @@ services:
             DEVOPS_KEY: "devops-user-key"
         volumes:
             - ./data/ethereum-watcher/:/app/logs
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: Health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
     data-union-server:
         container_name: streamr-dev-data-union-server
         image: streamr/data-union-server:dev

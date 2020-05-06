@@ -59,6 +59,11 @@ services:
         image: namshi/smtp
         ports:
             - "25:25"
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check. Can't use nc -z because the image doesn't have nc.
+            interval: 10s
+            timeout: 10s
+            retries: 60
 volumes:
     data:
     mysql_init_scripts:
