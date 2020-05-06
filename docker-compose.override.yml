@@ -188,16 +188,16 @@ services:
     platform:
         container_name: streamr-dev-platform
         image: streamr/platform:dev
-        healthcheck:
-            test: ["CMD", "curl", "-sS", "http://localhost"]
-            interval: 10s
-            timeout: 10s
-            retries: 60
         ports:
             - "3333:80"
         depends_on:
             - engine-and-editor
             - parity-node0
+        healthcheck:
+            test: ["CMD", "curl", "-sS", "http://localhost"]
+            interval: 10s
+            timeout: 10s
+            retries: 60
     parity-node0:
          container_name: streamr-dev-parity-node0
          image: streamr/open-ethereum-poa:dev
