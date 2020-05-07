@@ -222,16 +222,17 @@ services:
         environment:
             EE_URL: http://10.200.10.1
             CHAIN_URL: http://10.200.10.1:8545
-    # TODO: uncomment when image is fixed
-    #hsl-demo:
-    #    restart: on-failure
-    #    container_name: streamr-dev-hsl-demo
-    #    image: streamr/hsl-demo:dev
-    #    depends_on:
-    #        - engine-and-editor
-    #    command: mqtt-streamr --reconnect-on-data-timeout 10 --stream-id YpTAPDbvSAmj-iCUYz-dxA --streamr-url ws://10.200.10.1/api/v1/ws --streamr-rest-url http://10.200.10.1/api/v1 --mqtt-url wss://mqtt.hsl.fi --topic /hfp/v2/journey/ongoing/vp/tram/# --api-key tester1-api-key --transform VP
-    #    healthcheck:
-    #        test: ["CMD", "echo"] # TODO: health check
-    #        interval: 10s
-    #        timeout: 10s
-    #        retries: 60
+    hsl-demo:
+        restart: on-failure
+        container_name: streamr-dev-hsl-demo
+        image: streamr/hsl-demo:dev
+        environment:
+          REMOTE_SECRETS: "false"
+        depends_on:
+            - engine-and-editor
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
+        command: mqtt-streamr --reconnect-on-data-timeout 10 --stream-id YpTAPDbvSAmj-iCUYz-dxA --streamr-url ws://10.200.10.1/api/v1/ws --streamr-rest-url http://10.200.10.1/api/v1 --mqtt-url wss://mqtt.hsl.fi --topic /hfp/v1/journey/ongoing/tram/# --api-key tester1-api-key
