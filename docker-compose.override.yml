@@ -160,6 +160,11 @@ services:
             DEVOPS_KEY: "devops-user-key"
         volumes:
             - ./data/ethereum-watcher/:/app/logs
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: Health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
     data-union-server:
         container_name: streamr-dev-data-union-server
         image: streamr/data-union-server:dev
@@ -183,16 +188,16 @@ services:
     platform:
         container_name: streamr-dev-platform
         image: streamr/platform:dev
-        healthcheck:
-            test: ["CMD", "curl", "-sS", "http://localhost"]
-            interval: 10s
-            timeout: 10s
-            retries: 60
         ports:
             - "3333:80"
         depends_on:
             - engine-and-editor
             - parity-node0
+        healthcheck:
+            test: ["CMD", "curl", "-sS", "http://localhost"]
+            interval: 10s
+            timeout: 10s
+            retries: 60
     parity-node0:
          container_name: streamr-dev-parity-node0
          image: streamr/open-ethereum-poa:dev
@@ -208,12 +213,12 @@ services:
             retries: 3
          command: --chain ./streamr-spec.json --config ./node0.toml
     smart-contracts-init:
-        container_name: smart-contracts-init
+        container_name: streamr-dev-smart-contracts-init
         image: streamr/smart-contracts-init:dev
         depends_on:
            - parity-node0
            - engine-and-editor
-        restart: on-failure
+        restart: on-failure # exits when successful
         environment:
             EE_URL: http://10.200.10.1
             CHAIN_URL: http://10.200.10.1:8545
