@@ -31,6 +31,12 @@ ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ip addr add 10.200.10.1 dev lo label lo:1
 ```
 
+## Quickstart
+
+- Start the full stack and wait until it's up and running: `streamr-docker-dev start --wait `
+- Browse to [http://localhost](http://localhost) to use the Core UI
+- Log in as `tester1@streamr.com` with password `tester1TESTER1`
+
 ## Commands
 
 ### `help`
