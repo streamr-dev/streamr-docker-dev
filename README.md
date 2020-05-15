@@ -11,7 +11,9 @@ This repository contains Docker compose files and command line tool `streamr_doc
 2. Increase the amount of memory allocated to Docker VM from 2GB to something
    like 5GB or more (Docker icon -> Preferences -> Advanced). Click Apply & Restart.
 
-3. Create a symlink to `streamr-docker-dev` into a suitable directory in your PATH (run from repository root):
+3. Clone this repo: `git clone git@github.com:streamr-dev/streamr-docker-dev.git`, change into that directory `cd streamr-docker-dev`
+
+4. Create a symlink to `streamr-docker-dev` into a suitable directory in your PATH (run from repository root):
 ```
 ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ```
@@ -20,12 +22,14 @@ ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 
 1. Install and start Docker service.
 
-2. Add `streamr-docker-dev` into a suitable directory in your PATH (run from repository root), e.g.:
+2. Clone this repo: `git clone git@github.com:streamr-dev/streamr-docker-dev.git`, change into that directory `cd streamr-docker-dev`
+
+3. Add `streamr-docker-dev` into a suitable directory in your PATH (run from repository root), e.g.:
 ```
 ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ```
 
-3.  Attach (unused) IP address 10.200.10.1 to loopback network interface (usually named `lo`)
+4.  Attach the (unused) IP address 10.200.10.1 to loopback network interface (usually named `lo`)
 [details](https://docs.docker.com/docker-for-mac/networking/#use-cases-and-workarounds):
 ```
 ip addr add 10.200.10.1 dev lo label lo:1
@@ -149,7 +153,7 @@ streamr-docker-dev start --wait
 
 ### Streamr services
 - 3 x [Broker](https://github.com/streamr-dev/broker) nodes (2 normal ones + 1 storage node)
-- 1 x [Tracker](https://github.com/streamr-dev/network)
+- 3 x [Tracker](https://github.com/streamr-dev/network)
 - 1 x [Core frontend](https://github.com/streamr-dev/streamr-platform/app)
 - 1 x [Core backend](https://github.com/streamr-dev/engine-and-editor)
 - 1 x [Data Union Server](https://github.com/streamr-dev/streamr-community-products)
@@ -160,7 +164,7 @@ streamr-docker-dev start --wait
 - 1 x Redis instance
 - 1 x Apache Cassandra instance with `streamr_dev` keyspace
 - 1 x SMTP server
-- 1 x ganache
+- 1 x Ethereum Parity node, running a single-node private chain
 - 1 x nginx
 
 ## Troubleshooting
