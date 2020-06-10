@@ -198,6 +198,8 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
+        environment:
+            DATA_UNIONS: "on"
     parity-node0:
          container_name: streamr-dev-parity-node0
          image: streamr/open-ethereum-poa:dev
