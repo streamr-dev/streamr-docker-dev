@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS stream_data (
 
 
 -- ### NEW SCHEMA ### --
-create table bucket
+CREATE TABLE IF NOT EXISTS bucket
 (
     stream_id   text,
     partition   int,
@@ -23,9 +23,9 @@ create table bucket
     records     int,
     size        int,
     primary key ((stream_id, partition), date_create)
-) with clustering order by (date_create desc);
+) WITH CLUSTERING ORDER BY (date_create desc);
 
-create table stream_data_new
+CREATE TABLE IF NOT EXISTS stream_data_new
 (
     stream_id    text,
     partition    int,
