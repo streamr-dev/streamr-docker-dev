@@ -242,6 +242,8 @@ services:
         environment:
             EE_URL: http://10.200.10.1
             CHAIN_URL: http://10.200.10.1:8545
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
     hsl-demo:
         restart: on-failure
         container_name: streamr-dev-hsl-demo
