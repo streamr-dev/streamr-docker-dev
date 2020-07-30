@@ -151,7 +151,6 @@ services:
         depends_on:
             - parity-node0
             - engine-and-editor
-            - smart-contracts-init
         environment:
             STREAMR_API_URL: http://10.200.10.1/api/v1
             METRICS: null
@@ -171,8 +170,6 @@ services:
         ports:
           - "8085:8085"
         restart: on-failure
-        depends_on:
-            - smart-contracts-init
         environment:
             ETHEREUM_SERVER: http://10.200.10.1:8545
             ETHEREUM_PRIVATE_KEY: 5e98cce00cff5dea6b454889f359a4ec06b9fa6b88e9d69b86de8e1c81887da0
@@ -204,7 +201,7 @@ services:
          container_name: streamr-dev-parity-node0
          environment:
             CHAIN_ID: 0x2323
-         image: streamr/open-ethereum-poa:dev
+         image: streamr/open-ethereum-poa-mainchain-preload1:dev
          ports:
            - "8545:8540"
            - "8450:8450"
@@ -220,7 +217,7 @@ services:
          container_name: streamr-dev-parity-sidechain-node0
          environment:
             CHAIN_ID: 0x2325
-         image: streamr/open-ethereum-poa:dev
+         image: streamr/open-ethereum-poa-sidechain-preload1:dev
          ports:
            - "8546:8540"
            - "8451:8450"
@@ -232,18 +229,6 @@ services:
             timeout: 10s
             retries: 3
          command: --chain ./streamr-spec.json --config ./node0.toml
-    smart-contracts-init:
-        container_name: streamr-dev-smart-contracts-init
-        image: streamr/smart-contracts-init:dev
-        depends_on:
-           - parity-node0
-           - engine-and-editor
-        restart: on-failure # exits when successful
-        environment:
-            EE_URL: http://10.200.10.1
-            CHAIN_URL: http://10.200.10.1:8545
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
     hsl-demo:
         restart: on-failure
         container_name: streamr-dev-hsl-demo
