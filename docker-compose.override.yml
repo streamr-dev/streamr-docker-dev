@@ -243,7 +243,7 @@ services:
             timeout: 10s
             retries: 60
         command: mqtt-streamr --reconnect-on-data-timeout 10 --stream-id YpTAPDbvSAmj-iCUYz-dxA --streamr-url ws://10.200.10.1/api/v1/ws --streamr-rest-url http://10.200.10.1/api/v1 --mqtt-url wss://mqtt.hsl.fi --topic /hfp/v1/journey/ongoing/tram/# --api-key tester1-api-key
-    rabbit:
+    bridge_rabbit:
         environment: ['RABBITMQ_NODENAME=node@rabbit']
         hostname: rabbit
         image: rabbitmq:3
@@ -255,11 +255,11 @@ services:
             - net_rabbit_bridge_senderforeign
         restart: unless-stopped
         volumes: ['./data/bridge_data/rabbitmq:/var/lib/rabbitmq/mnesia']
-    redis:
+    bridge_redis:
         command: [redis-server, --appendonly, 'yes']
         hostname: redis
         image: redis:4
-        networks:        
+        networks:
             - net_db_bridge_request
             - net_db_bridge_collected
             - net_db_bridge_affirmation
@@ -269,7 +269,7 @@ services:
         volumes: ['./data/bridge_data/redis:/data']
     bridge_request:
         image: poanetwork/tokenbridge-oracle:latest
-        env_file: 
+        env_file:
             - ./oracles.env
         restart: unless-stopped
         entrypoint: yarn watcher:signature-request
@@ -312,6 +312,18 @@ services:
         networks:
             - net_db_bridge_senderforeign
             - net_rabbit_bridge_senderforeign
+    bridge:
+        image: tianon/true  # dummy image that does nothing
+        depends_on:
+            - bridge_senderforeign
+            - bridge_senderhome
+            - bridge_affirmation
+            - bridge_collected
+            - bridge_rabbit
+            - bridge_redis
+            - bridge_request
+
+
 
 networks:
     net_db_bridge_request:
