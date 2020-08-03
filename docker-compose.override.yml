@@ -243,7 +243,7 @@ services:
             timeout: 10s
             retries: 60
         command: mqtt-streamr --reconnect-on-data-timeout 10 --stream-id YpTAPDbvSAmj-iCUYz-dxA --streamr-url ws://10.200.10.1/api/v1/ws --streamr-rest-url http://10.200.10.1/api/v1 --mqtt-url wss://mqtt.hsl.fi --topic /hfp/v1/journey/ongoing/tram/# --api-key tester1-api-key
-    bridge_rabbit:
+    rabbit:
         environment: ['RABBITMQ_NODENAME=node@rabbit']
         hostname: rabbit
         image: rabbitmq:3
@@ -255,7 +255,7 @@ services:
             - net_rabbit_bridge_senderforeign
         restart: unless-stopped
         volumes: ['./data/bridge_data/rabbitmq:/var/lib/rabbitmq/mnesia']
-    bridge_redis:
+    redis:
         command: [redis-server, --appendonly, 'yes']
         hostname: redis
         image: redis:4
@@ -319,8 +319,8 @@ services:
             - bridge_senderhome
             - bridge_affirmation
             - bridge_collected
-            - bridge_rabbit
-            - bridge_redis
+            - rabbit
+            - redis
             - bridge_request
 
 
