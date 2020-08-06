@@ -245,7 +245,7 @@ services:
         command: mqtt-streamr --reconnect-on-data-timeout 10 --stream-id YpTAPDbvSAmj-iCUYz-dxA --streamr-url ws://10.200.10.1/api/v1/ws --streamr-rest-url http://10.200.10.1/api/v1 --mqtt-url wss://mqtt.hsl.fi --topic /hfp/v1/journey/ongoing/tram/# --api-key tester1-api-key
     bridge-rabbitmq:
         container_name: streamr-dev-bridge-rabbitmq
-        environment: ['RABBITMQ_NODENAME=node@rabbit']
+        environment: ['RABBITMQ_NODENAME=node@bridge-rabbitmq']
         hostname: bridge-rabbitmq
         image: rabbitmq:3
         networks:
