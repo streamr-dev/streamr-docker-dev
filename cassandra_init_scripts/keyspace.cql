@@ -12,8 +12,10 @@ CREATE TABLE IF NOT EXISTS stream_data (
     PRIMARY KEY ((id, partition), ts, sequence_no, publisher_id, msg_chain_id)
 );
 
+-- ### NEW KEYSPACE ### --
+CREATE KEYSPACE IF NOT EXISTS streamr_dev_v2 WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
+USE streamr_dev_v2;
 
--- ### NEW SCHEMA ### --
 CREATE TABLE IF NOT EXISTS bucket
 (
     stream_id   text,
@@ -25,7 +27,7 @@ CREATE TABLE IF NOT EXISTS bucket
     primary key ((stream_id, partition), date_create)
 ) WITH CLUSTERING ORDER BY (date_create desc);
 
-CREATE TABLE IF NOT EXISTS stream_data_new
+CREATE TABLE IF NOT EXISTS stream_data
 (
     stream_id    text,
     partition    int,
