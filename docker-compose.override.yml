@@ -213,6 +213,8 @@ services:
             timeout: 10s
             retries: 3
          command: --chain ./streamr-spec.json --config ./node0.toml
+         volumes:
+           - ./data/parity-node0/:/home/parity/parity_data
     parity-sidechain-node0:
          container_name: streamr-dev-parity-sidechain-node0
          environment:
@@ -229,6 +231,8 @@ services:
             timeout: 10s
             retries: 3
          command: --chain ./streamr-spec.json --config ./node0.toml
+         volumes:
+           - ./data/parity-sidechain-node0/:/home/parity/parity_data
     hsl-demo:
         restart: on-failure
         container_name: streamr-dev-hsl-demo
