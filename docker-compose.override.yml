@@ -6,6 +6,7 @@ services:
         restart: on-failure
         ports:
           - "80:80"
+          - "443:443"
         volumes:
           - ./custom-nginx-reverse-proxy.conf:/etc/nginx/nginx.conf:ro
           - ./nginx-certs:/etc/nginx/mounted-certs
