@@ -164,7 +164,8 @@ streamr-docker-dev start --wait
 - 1 x Redis instance
 - 1 x Apache Cassandra instance with `streamr_dev` keyspace
 - 1 x SMTP server
-- 1 x Ethereum Parity node, running a single-node private chain
+- 1 x Ethereum Parity node ("mainchain")
+- 1 x Ethereum Parity node ("sidechain")
 - 1 x nginx
 
 ## Troubleshooting
