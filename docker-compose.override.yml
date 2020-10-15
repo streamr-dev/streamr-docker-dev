@@ -2,7 +2,7 @@ version: "3"
 services:
     nginx:
         container_name: streamr-dev-nginx
-        image: nginx:1.14-alpine
+        image: nginx:stable-alpine
         restart: on-failure
         ports:
           - "80:80"
