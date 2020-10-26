@@ -128,9 +128,6 @@ services:
             - mysql
             - cassandra
             - redis
-            - broker-node-storage-1
-            - broker-node-no-storage-1
-            - broker-node-no-storage-2
             - parity-node0
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8081/streamr-core/api/v1/products"]
