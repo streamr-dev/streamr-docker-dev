@@ -20,7 +20,7 @@ services:
             retries: 60
     init-keyspace:
         container_name: streamr-dev-init-keyspace
-        image: cassandra
+        image: cassandra:3.11.5
         command: bash -c "sleep 5 && cqlsh cassandra -f /init_scripts/keyspace.cql && echo keyspace initialized"
         restart: on-failure # exits on success
         volumes:
