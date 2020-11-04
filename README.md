@@ -1,3 +1,10 @@
+<p align="center">
+  <a href="https://streamr.network">
+    <img alt="Streamr" src="https://raw.githubusercontent.com/streamr-dev/streamr-client-javascript/master/readme-header-img.png" width="1320" />
+  </a>
+</p>
+<h1 align="left">
+   
 # Streamr development environment
 
 This repository contains Docker compose files and command line tool `streamr_docker_dev` for setting up a local Streamr development environment. The environment consists of Streamr services and supporting (3rd party) services. The data of the services is persisted on the local disk.
@@ -118,7 +125,7 @@ The API root is at `http://localhost/api/v1`.
 The environment ships with some predefined user accounts.
 
 | Username                 | Password                 | Misc                                                       |
-|--------------------------|--------------------------|------------------------------------------------------------|
+|:--------------------------|:--------------------------|:------------------------------------------------------------|
 | tester1@streamr.com      | tester1TESTER1           | API key:  tester1-api-key                                  |
 | tester2@streamr.com      | tester2                  | API key:  tester2-api-key                                  |
 | tester-admin@streamr.com | tester-adminTESTER-ADMIN | API key:  tester-admin-api-key                             |
@@ -189,7 +196,7 @@ I received this error only during `docker login`, after login I could resume usi
 ## Directory structure
 
 | File                        | Description                                                    |
-|-----------------------------|----------------------------------------------------------------|
+|:-----------------------------|:----------------------------------------------------------------|
 | docker-compose.yml          | Supporting services stack (MySQL, Cassandra, Redis, etc.)      |
 | docker-compose.override.yml | Streamr service stack                                          |
 | custom-mysql-settings.cnf   | Custom MySQL settings                                          |
