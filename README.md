@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://streamr.network">
-    <img alt="Streamr" src="https://raw.githubusercontent.com/streamr-dev/streamr-client-javascript/master/readme-header-img.png" width="1320" />
+    <img alt="Streamr" src="https://raw.githubusercontent.com/streamr-dev/streamr-docker-dev/master/docker-header-img.png" width="1320" />
   </a>
 </p>
 <h1 align="left">
@@ -187,7 +187,8 @@ Uploading images to AWS needs credentials to be able to access the target S3 buc
 2. Restart `engine-and-editor` and S3 services should work. You can debug any
    potential issues with `streamr-docker-dev log -f engine-and-editor`.
 
-### Error response from daemon: Get https://registry-1.docker.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+### Error response from daemon
+`Get https://registry-1.docker.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)`
 
 This is a connection issue; could be DNS settings, could be firewall. For me, changing to another wlan helped.
 
