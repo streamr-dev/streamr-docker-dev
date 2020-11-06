@@ -40,7 +40,7 @@ ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 
 - Start the full stack and wait until it's up and running: `streamr-docker-dev start --wait `
 - Browse to [http://localhost](http://localhost) to use the Core UI
-- Log in as `tester1@streamr.com` with password `tester1TESTER1`
+- Log in with your Ethereum wallet (install [MetaMask](https://metamask.io/) if you don't have one)
 
 ## Commands
 
@@ -113,18 +113,6 @@ Wipe the persisted data of all services: `streamr-docker-dev wipe`
 Once the services are running, browse to [http://localhost](http://localhost) to use Core.
 
 The API root is at `http://localhost/api/v1`.
-
-### Accounts
-
-The environment ships with some predefined user accounts.
-
-| Username                 | Password                 | Misc                                                       |
-|:--------------------------|:--------------------------|:------------------------------------------------------------|
-| tester1@streamr.com      | tester1TESTER1           | API key:  tester1-api-key                                  |
-| tester2@streamr.com      | tester2                  | API key:  tester2-api-key                                  |
-| tester-admin@streamr.com | tester-adminTESTER-ADMIN | API key:  tester-admin-api-key                             |
-
-The MySQL credentials are `root` / `password`.
 
 ## Usage in Streamr development
 
