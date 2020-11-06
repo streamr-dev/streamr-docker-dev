@@ -27,9 +27,19 @@ help() {
 start() {
     ip_lines=$(ifconfig | grep -c 10.200.10.1)
     if [ "$ip_lines" -eq "0" ]; then
-        COMMANDS_TO_RUN+=("echo Binding the internal IP address to the loopback interface.")
+        COMMANDS_TO_RUN+=("echo Binding the internal IP address 10.200.10.1 to the loopback interface.")
         COMMANDS_TO_RUN+=("echo This requires sudo privileges, so please provide your password if requested")
-        COMMANDS_TO_RUN+=("sudo ifconfig lo0 alias 10.200.10.1/24")
+        
+        # Binding the loopback address is OS-specific
+        if [ "$(uname)" == "Darwin" ]; then
+            COMMANDS_TO_RUN+=("sudo ifconfig lo0 alias 10.200.10.1/24")
+        elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+            COMMANDS_TO_RUN+=("sudo ip addr add 10.200.10.1 dev lo label lo:1")
+        #elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+            # TODO: bind under 32 bits Windows NT platform
+        #elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+            # TODO: bind under 64 bits Windows NT platform
+        fi
     fi
     [[ $DETACHED == 1 ]] && FLAGS+=" -d"
     [[ $SERVICES == "" ]] && msg="Starting all" || msg="Starting $SERVICES"
