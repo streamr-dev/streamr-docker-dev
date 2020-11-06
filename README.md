@@ -36,12 +36,6 @@ ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ```
 
-4.  Attach the (unused) IP address 10.200.10.1 to loopback network interface (usually named `lo`)
-[details](https://docs.docker.com/docker-for-mac/networking/#use-cases-and-workarounds):
-```
-ip addr add 10.200.10.1 dev lo label lo:1
-```
-
 ## Quickstart
 
 - Start the full stack and wait until it's up and running: `streamr-docker-dev start --wait `
