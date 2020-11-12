@@ -17,6 +17,7 @@ FOLLOW=0
 WAIT=0
 WAIT_TIMEOUT=300     # seconds
 
+
 # Execute all commands from the root dir of streamr-docker-dev
 cd "$ROOT_DIR" || exit 1
 
@@ -45,6 +46,16 @@ start() {
     [[ $SERVICES == "" ]] && msg="Starting all" || msg="Starting $SERVICES"
     COMMANDS_TO_RUN+=("echo $msg")
     COMMANDS_TO_RUN+=("docker-compose up $FLAGS $SERVICES")
+
+    # Read .env
+    export $(cat .env | xargs)
+
+    # If .env doesn't provide STREAMR_BASE_URL, ensure the default value is set
+    if [[ -z "${STREAMR_BASE_URL}" ]]; then
+        export STREAMR_BASE_URL=http://10.200.10.1
+    else
+        echo "Using STREAMR_BASE_URL: ${STREAMR_BASE_URL}"
+    fi
 
     # "--except" feature is implemented by starting all, then stopping the unwanted services.
     # Bit of a hack but docker-compose doesn't provide a better direct way.
