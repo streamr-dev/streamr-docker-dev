@@ -50,11 +50,17 @@ start() {
     # Read .env
     export $(cat .env | xargs)
 
-    # If .env doesn't provide STREAMR_BASE_URL, ensure the default value is set
+    # Set default values for required env variables if not set in .env
     if [[ -z "${STREAMR_BASE_URL}" ]]; then
         export STREAMR_BASE_URL=http://10.200.10.1
     else
         echo "Using STREAMR_BASE_URL: ${STREAMR_BASE_URL}"
+    fi
+
+    if [[ -z "${STREAMR_WS_URL}" ]]; then
+        export STREAMR_WS_URL=${STREAMR_BASE_URL/http/ws}/api/v1/ws # replace "http" with "ws"
+    else
+        echo "Using STREAMR_WS_URL: ${STREAMR_WS_URL}"
     fi
 
     # "--except" feature is implemented by starting all, then stopping the unwanted services.
