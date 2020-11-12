@@ -193,6 +193,19 @@ services:
             retries: 60
         environment:
             DATA_UNIONS: "on"
+    network-explorer:
+        container_name: streamr-dev-network-explorer
+        image: streamr/network-explorer:dev
+        ports:
+            - "3334:3000"
+        depends_on:
+            - engine-and-editor
+        healthcheck:
+            test: ["CMD", "nc", "-z", "localhost", "3000"]
+            interval: 10s
+            timeout: 10s
+            retries: 60
+        stdin_open: true
     parity-node0:
          container_name: streamr-dev-parity-node0
          environment:
