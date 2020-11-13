@@ -17,9 +17,24 @@ FOLLOW=0
 WAIT=0
 WAIT_TIMEOUT=300     # seconds
 
-
 # Execute all commands from the root dir of streamr-docker-dev
 cd "$ROOT_DIR" || exit 1
+
+# Read .env
+export $(cat .env | xargs)
+
+# Set default values for required env variables if not set in .env
+if [[ -z "${STREAMR_BASE_URL}" ]]; then
+    export STREAMR_BASE_URL=http://10.200.10.1
+else
+    echo "Using STREAMR_BASE_URL: ${STREAMR_BASE_URL}"
+fi
+
+if [[ -z "${STREAMR_WS_URL}" ]]; then
+    export STREAMR_WS_URL=${STREAMR_BASE_URL/http/ws}/api/v1/ws # replace "http" with "ws"
+else
+    echo "Using STREAMR_WS_URL: ${STREAMR_WS_URL}"
+fi
 
 help() {
     "$ORIG_DIRNAME/help_scripts.sh" $SERVICES
@@ -46,22 +61,6 @@ start() {
     [[ $SERVICES == "" ]] && msg="Starting all" || msg="Starting $SERVICES"
     COMMANDS_TO_RUN+=("echo $msg")
     COMMANDS_TO_RUN+=("docker-compose up $FLAGS $SERVICES")
-
-    # Read .env
-    export $(cat .env | xargs)
-
-    # Set default values for required env variables if not set in .env
-    if [[ -z "${STREAMR_BASE_URL}" ]]; then
-        export STREAMR_BASE_URL=http://10.200.10.1
-    else
-        echo "Using STREAMR_BASE_URL: ${STREAMR_BASE_URL}"
-    fi
-
-    if [[ -z "${STREAMR_WS_URL}" ]]; then
-        export STREAMR_WS_URL=${STREAMR_BASE_URL/http/ws}/api/v1/ws # replace "http" with "ws"
-    else
-        echo "Using STREAMR_WS_URL: ${STREAMR_WS_URL}"
-    fi
 
     # "--except" feature is implemented by starting all, then stopping the unwanted services.
     # Bit of a hack but docker-compose doesn't provide a better direct way.
