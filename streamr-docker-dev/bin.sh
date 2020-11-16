@@ -16,6 +16,7 @@ DRY_RUN=0
 FOLLOW=0
 WAIT=0
 WAIT_TIMEOUT=300     # seconds
+DOCKER_COMPOSE="docker-compose --no-ansi"
 
 # Execute all commands from the root dir of streamr-docker-dev
 cd "$ROOT_DIR" || exit 1
@@ -60,13 +61,13 @@ start() {
     [[ $DETACHED == 1 ]] && FLAGS+=" -d"
     [[ $SERVICES == "" ]] && msg="Starting all" || msg="Starting $SERVICES"
     COMMANDS_TO_RUN+=("echo $msg")
-    COMMANDS_TO_RUN+=("docker-compose up $FLAGS $SERVICES")
+    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE up $FLAGS $SERVICES")
 
     # "--except" feature is implemented by starting all, then stopping the unwanted services.
     # Bit of a hack but docker-compose doesn't provide a better direct way.
     if [[ $EXCEPT_SERVICES != "" ]]; then
-        COMMANDS_TO_RUN+=("docker-compose kill $EXCEPT_SERVICES")
-        COMMANDS_TO_RUN+=("docker-compose rm -f $EXCEPT_SERVICES")
+        COMMANDS_TO_RUN+=("$DOCKER_COMPOSE kill $EXCEPT_SERVICES")
+        COMMANDS_TO_RUN+=("$DOCKER_COMPOSE rm -f $EXCEPT_SERVICES")
     fi
 
     if [ $WAIT == 1 ]; then
@@ -77,8 +78,8 @@ start() {
 stop() {
     [[ $SERVICES == "" ]] && msg="Stopping all" || msg="Stopping $SERVICES"
     COMMANDS_TO_RUN+=("echo $msg")
-    COMMANDS_TO_RUN+=("docker-compose kill $SERVICES")
-    COMMANDS_TO_RUN+=("docker-compose rm -f $SERVICES")
+    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE kill $SERVICES")
+    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE rm -f $SERVICES")
 }
 
 restart() {
@@ -92,7 +93,7 @@ wait() {
         waiting_for_services=()
 
         # Get the id of each image we have in docker-compose
-        for image_id in $(docker-compose ps -q)
+        for image_id in $($DOCKER_COMPOSE ps -q)
         do
             service_name=$(docker inspect -f "{{.Name}}" "$image_id")
             # Try to read health state of each image
@@ -137,7 +138,7 @@ wait() {
 }
 
 ps() {
-    COMMANDS_TO_RUN+=("docker-compose ps $SERVICES")
+    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE ps $SERVICES")
 }
 
 log() {
@@ -145,7 +146,7 @@ log() {
     if [ $FOLLOW == 1 ];then
         FLAGS+=" -f"
     fi
-    COMMANDS_TO_RUN+=("docker-compose logs $FLAGS $SERVICES")
+    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE logs $FLAGS $SERVICES")
 }
 
 shell() {
@@ -155,7 +156,7 @@ shell() {
 
 pull() {
     # Pull latest images define on docker compose
-    COMMANDS_TO_RUN+=("docker-compose pull $SERVICES")
+    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE pull $SERVICES")
 }
 
 update() {
