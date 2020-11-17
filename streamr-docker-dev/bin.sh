@@ -20,9 +20,10 @@ WAIT_TIMEOUT=300     # seconds
 # Execute all commands from the root dir of streamr-docker-dev
 cd "$ROOT_DIR" || exit 1
 
-# Read .env
-export $(cat .env | xargs)
-
+if [ -f .env ]; then
+	# Read .env
+	export $(cat .env | xargs)
+fi
 # Set default values for required env variables if not set in .env
 if [[ -z "${STREAMR_BASE_URL}" ]]; then
     export STREAMR_BASE_URL=http://10.200.10.1
