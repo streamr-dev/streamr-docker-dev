@@ -24,7 +24,7 @@ services:
         command: bash -c "sleep 5 && cqlsh cassandra -f /init_scripts/keyspace.cql && echo keyspace initialized"
         restart: on-failure # exits on success
         volumes:
-            - ./cassandra_init_scripts:/init_scripts
+            - ./cassandra-init-scripts:/init_scripts
         depends_on:
             - cassandra
     mysql:
@@ -34,7 +34,7 @@ services:
             - "3306:3306"
         volumes:
             - ./data/mysql:/var/lib/mysql:rw
-            - ./mysql_init_scripts:/docker-entrypoint-initdb.d
+            - ./mysql-init-scripts:/docker-entrypoint-initdb.d
             - ./custom-mysql-settings.cnf:/etc/mysql/conf.d/custom-mysql-settings.cnf
         restart: on-failure
         healthcheck:
@@ -66,5 +66,8 @@ services:
             retries: 60
 volumes:
     data:
-    mysql_init_scripts:
-    cassandra_init_scripts:
+      name: streamr-dev-volume-data
+    mysql-init-scripts:
+      name: streamr-dev-volume-mysql-init-scripts
+    cassandra-init-scripts:
+      name: streamr-dev-volume-cassandra-init-scripts
