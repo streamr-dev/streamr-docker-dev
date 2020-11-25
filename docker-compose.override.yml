@@ -25,7 +25,7 @@ services:
           - ./certs:/certs
         command: node tracker.js 0xa4fc7b912ed4588080ac9f2044cb3d6cab961bcf0d96de6fa9e773860bf59e1c tracker-1 --port=30301 ${TRACKER_ARGS}
         healthcheck:
-            test: ["CMD", "curl", "-sS", "http://localhost:30301/topology/"]
+            test: ["CMD", "curl", "-sS", "${STREAMR_BASE_URL}:30301/topology/"]
             interval: 30s
             timeout: 10s
             retries: 20
@@ -39,7 +39,7 @@ services:
           - ./certs:/certs
         command: node tracker.js 0x3b328103c0d043cd1b34f1203c0313eb70c98443444dfdf7125f2d4479b89eb9 tracker-2 --port=30302 ${TRACKER_ARGS}
         healthcheck:
-            test: ["CMD", "curl", "-sS", "http://localhost:30302/topology/"]
+            test: ["CMD", "curl", "-sS", "${STREAMR_BASE_URL}:30302/topology/"]
             interval: 30s
             timeout: 10s
             retries: 20
@@ -53,7 +53,7 @@ services:
           - ./certs:/certs
         command: node tracker.js 0xf456bb2a958574416f4b9e1b1b642cb3092953aa6131aba6e36f7529d1137795 tracker-3 --port=30303 ${TRACKER_ARGS}
         healthcheck:
-            test: ["CMD", "curl", "-sS", "http://localhost:30303/topology/"]
+            test: ["CMD", "curl", "-sS", "${STREAMR_BASE_URL}:30303/topology/"]
             interval: 30s
             timeout: 10s
             retries: 20
