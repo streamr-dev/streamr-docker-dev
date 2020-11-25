@@ -16,9 +16,27 @@ DRY_RUN=0
 FOLLOW=0
 WAIT=0
 WAIT_TIMEOUT=300     # seconds
+DOCKER_COMPOSE="docker-compose --no-ansi"
 
 # Execute all commands from the root dir of streamr-docker-dev
 cd "$ROOT_DIR" || exit 1
+
+if [ -f .env ]; then
+	# Read .env
+	export $(cat .env | xargs)
+fi
+# Set default values for required env variables if not set in .env
+if [[ -z "${STREAMR_BASE_URL}" ]]; then
+    export STREAMR_BASE_URL=http://10.200.10.1
+else
+    echo "Using STREAMR_BASE_URL: ${STREAMR_BASE_URL}"
+fi
+
+if [[ -z "${STREAMR_WS_URL}" ]]; then
+    export STREAMR_WS_URL=${STREAMR_BASE_URL/http/ws}/api/v1/ws # replace "http" with "ws"
+else
+    echo "Using STREAMR_WS_URL: ${STREAMR_WS_URL}"
+fi
 
 help() {
     "$ORIG_DIRNAME/help_scripts.sh" $SERVICES
@@ -27,20 +45,30 @@ help() {
 start() {
     ip_lines=$(ifconfig | grep -c 10.200.10.1)
     if [ "$ip_lines" -eq "0" ]; then
-        COMMANDS_TO_RUN+=("echo Binding the internal IP address to the loopback interface.")
+        COMMANDS_TO_RUN+=("echo Binding the internal IP address 10.200.10.1 to the loopback interface.")
         COMMANDS_TO_RUN+=("echo This requires sudo privileges, so please provide your password if requested")
-        COMMANDS_TO_RUN+=("sudo ifconfig lo0 alias 10.200.10.1/24")
+        
+        # Binding the loopback address is OS-specific
+        if [ "$(uname)" == "Darwin" ]; then
+            COMMANDS_TO_RUN+=("sudo ifconfig lo0 alias 10.200.10.1/24")
+        elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+            COMMANDS_TO_RUN+=("sudo ip addr add 10.200.10.1 dev lo label lo:1")
+        #elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+            # TODO: bind under 32 bits Windows NT platform
+        #elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+            # TODO: bind under 64 bits Windows NT platform
+        fi
     fi
     [[ $DETACHED == 1 ]] && FLAGS+=" -d"
     [[ $SERVICES == "" ]] && msg="Starting all" || msg="Starting $SERVICES"
     COMMANDS_TO_RUN+=("echo $msg")
-    COMMANDS_TO_RUN+=("docker-compose up $FLAGS $SERVICES")
+    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE up $FLAGS $SERVICES")
 
     # "--except" feature is implemented by starting all, then stopping the unwanted services.
     # Bit of a hack but docker-compose doesn't provide a better direct way.
     if [[ $EXCEPT_SERVICES != "" ]]; then
-        COMMANDS_TO_RUN+=("docker-compose kill $EXCEPT_SERVICES")
-        COMMANDS_TO_RUN+=("docker-compose rm -f $EXCEPT_SERVICES")
+        COMMANDS_TO_RUN+=("$DOCKER_COMPOSE kill $EXCEPT_SERVICES")
+        COMMANDS_TO_RUN+=("$DOCKER_COMPOSE rm -f $EXCEPT_SERVICES")
     fi
 
     if [ $WAIT == 1 ]; then
@@ -51,8 +79,8 @@ start() {
 stop() {
     [[ $SERVICES == "" ]] && msg="Stopping all" || msg="Stopping $SERVICES"
     COMMANDS_TO_RUN+=("echo $msg")
-    COMMANDS_TO_RUN+=("docker-compose kill $SERVICES")
-    COMMANDS_TO_RUN+=("docker-compose rm -f $SERVICES")
+    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE kill $SERVICES")
+    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE rm -f $SERVICES")
 }
 
 restart() {
@@ -66,7 +94,7 @@ wait() {
         waiting_for_services=()
 
         # Get the id of each image we have in docker-compose
-        for image_id in $(docker-compose ps -q)
+        for image_id in $($DOCKER_COMPOSE ps -q)
         do
             service_name=$(docker inspect -f "{{.Name}}" "$image_id")
             # Try to read health state of each image
@@ -111,7 +139,7 @@ wait() {
 }
 
 ps() {
-    COMMANDS_TO_RUN+=("docker-compose ps $SERVICES")
+    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE ps $SERVICES")
 }
 
 log() {
@@ -119,7 +147,7 @@ log() {
     if [ $FOLLOW == 1 ];then
         FLAGS+=" -f"
     fi
-    COMMANDS_TO_RUN+=("docker-compose logs $FLAGS $SERVICES")
+    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE logs $FLAGS $SERVICES")
 }
 
 shell() {
@@ -129,7 +157,7 @@ shell() {
 
 pull() {
     # Pull latest images define on docker compose
-    COMMANDS_TO_RUN+=("docker-compose pull $SERVICES")
+    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE pull $SERVICES")
 }
 
 update() {

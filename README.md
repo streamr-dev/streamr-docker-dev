@@ -1,3 +1,10 @@
+<p align="center">
+  <a href="https://streamr.network">
+    <img alt="Streamr" src="https://raw.githubusercontent.com/streamr-dev/streamr-docker-dev/master/docker-header-img.png" width="1320" />
+  </a>
+</p>
+<h1 align="left">
+   
 # Streamr development environment
 
 This repository contains Docker compose files and command line tool `streamr_docker_dev` for setting up a local Streamr development environment. The environment consists of Streamr services and supporting (3rd party) services. The data of the services is persisted on the local disk.
@@ -29,17 +36,11 @@ ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 ```
 
-4.  Attach the (unused) IP address 10.200.10.1 to loopback network interface (usually named `lo`)
-[details](https://docs.docker.com/docker-for-mac/networking/#use-cases-and-workarounds):
-```
-ip addr add 10.200.10.1 dev lo label lo:1
-```
-
 ## Quickstart
 
 - Start the full stack and wait until it's up and running: `streamr-docker-dev start --wait `
 - Browse to [http://localhost](http://localhost) to use the Core UI
-- Log in as `tester1@streamr.com` with password `tester1TESTER1`
+- Log in with your Ethereum wallet (install [MetaMask](https://metamask.io/) if you don't have one)
 
 ## Commands
 
@@ -113,18 +114,6 @@ Once the services are running, browse to [http://localhost](http://localhost) to
 
 The API root is at `http://localhost/api/v1`.
 
-### Accounts
-
-The environment ships with some predefined user accounts.
-
-| Username                 | Password                 | Misc                                                       |
-|--------------------------|--------------------------|------------------------------------------------------------|
-| tester1@streamr.com      | tester1TESTER1           | API key:  tester1-api-key                                  |
-| tester2@streamr.com      | tester2                  | API key:  tester2-api-key                                  |
-| tester-admin@streamr.com | tester-adminTESTER-ADMIN | API key:  tester-admin-api-key                             |
-
-The MySQL credentials are `root` / `password`.
-
 ## Usage in Streamr development
 
 When you're developing one of the Streamr components, you'll want to use the `streamr-docker-dev` tool with the `--except` flag to exclude the service you're developing:
@@ -164,7 +153,8 @@ streamr-docker-dev start --wait
 - 1 x Redis instance
 - 1 x Apache Cassandra instance with `streamr_dev` keyspace
 - 1 x SMTP server
-- 1 x Ethereum Parity node, running a single-node private chain
+- 1 x Ethereum Parity node ("mainchain")
+- 1 x Ethereum Parity node ("sidechain")
 - 1 x nginx
 
 ## Troubleshooting
@@ -179,7 +169,8 @@ Uploading images to AWS needs credentials to be able to access the target S3 buc
 2. Restart `engine-and-editor` and S3 services should work. You can debug any
    potential issues with `streamr-docker-dev log -f engine-and-editor`.
 
-### Error response from daemon: Get https://registry-1.docker.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+### Error response from daemon
+`Get https://registry-1.docker.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)`
 
 This is a connection issue; could be DNS settings, could be firewall. For me, changing to another wlan helped.
 
@@ -188,7 +179,7 @@ I received this error only during `docker login`, after login I could resume usi
 ## Directory structure
 
 | File                        | Description                                                    |
-|-----------------------------|----------------------------------------------------------------|
+|:-----------------------------|:----------------------------------------------------------------|
 | docker-compose.yml          | Supporting services stack (MySQL, Cassandra, Redis, etc.)      |
 | docker-compose.override.yml | Streamr service stack                                          |
 | custom-mysql-settings.cnf   | Custom MySQL settings                                          |
