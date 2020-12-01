@@ -252,7 +252,6 @@ services:
         image: rabbitmq:3
         networks:
             - net_rabbit_bridge_request
-            - net_rabbit_bridge_collected
             - net_rabbit_bridge_affirmation
             - net_rabbit_bridge_senderhome
             - net_rabbit_bridge_senderforeign
@@ -269,7 +268,6 @@ services:
         image: redis:4
         networks:
             - net_db_bridge_request
-            - net_db_bridge_collected
             - net_db_bridge_affirmation
             - net_db_bridge_senderhome
             - net_db_bridge_senderforeign
@@ -289,20 +287,6 @@ services:
         networks:
             - net_db_bridge_request
             - net_rabbit_bridge_request
-        healthcheck:
-            test: ["CMD", "echo"] # TODO: health check
-            interval: 10s
-            timeout: 10s
-            retries: 60
-    bridge_collected:
-        image: poanetwork/tokenbridge-oracle:latest
-        env_file:
-            - ./oracles.env
-        restart: unless-stopped
-        entrypoint: yarn watcher:collected-signatures
-        networks:
-            - net_db_bridge_collected
-            - net_rabbit_bridge_collected
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -356,7 +340,6 @@ services:
             - bridge_senderforeign
             - bridge_senderhome
             - bridge_affirmation
-            - bridge_collected
             - rabbit
             - bridge_redis
             - bridge_request
@@ -366,8 +349,6 @@ services:
 networks:
     net_db_bridge_request:
         driver: bridge
-    net_db_bridge_collected:
-        driver: bridge
     net_db_bridge_affirmation:
         driver: bridge
     net_db_bridge_senderhome:
@@ -375,8 +356,6 @@ networks:
     net_db_bridge_senderforeign:
         driver: bridge
     net_rabbit_bridge_request:
-        driver: bridge
-    net_rabbit_bridge_collected:
         driver: bridge
     net_rabbit_bridge_affirmation:
         driver: bridge
