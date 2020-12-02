@@ -22,8 +22,10 @@ DOCKER_COMPOSE="docker-compose --no-ansi"
 cd "$ROOT_DIR" || exit 1
 
 if [ -f .env ]; then
-	# Read .env
-	export $(cat .env | xargs)
+    # Read .env (from https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs/20909045#20909045)
+    set -o allexport
+    source .env
+    set +o allexport
 fi
 # Set default values for required env variables if not set in .env
 if [[ -z "${STREAMR_BASE_URL}" ]]; then

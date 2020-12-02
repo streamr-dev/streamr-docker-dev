@@ -1,0 +1,16 @@
+name: Build master
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  smoke-test:
+    name: docker-compose config file integrity check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Run smoke test
+        run: make test-smoke
+

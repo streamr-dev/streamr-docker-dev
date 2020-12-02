@@ -1,4 +1,4 @@
 data/
 .idea
 .env
-nginx-certs/
+certs/
