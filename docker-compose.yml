@@ -66,8 +66,8 @@ services:
             retries: 60
 volumes:
     data:
-      name: streamr-dev-volume-data
+      name: data
     mysql-init-scripts:
-      name: streamr-dev-volume-mysql-init-scripts
+      name: mysql-init-scripts
     cassandra-init-scripts:
-      name: streamr-dev-volume-cassandra-init-scripts
+      name: cassandra-init-scripts
