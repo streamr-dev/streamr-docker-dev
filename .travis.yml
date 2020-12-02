@@ -1,6 +1,6 @@
 language: shell
 os: linux
-dist: focal
+dist: xenial
 jobs:
   include:
     - stage: docker-compose config file integrity check
