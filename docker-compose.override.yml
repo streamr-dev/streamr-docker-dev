@@ -147,7 +147,7 @@ services:
             STREAMR_URL: "${STREAMR_BASE_URL}"
             HTTPS_API_SERVER: "${STREAMR_BASE_URL}/api/v1"
             WS_SERVER: "${STREAMR_WS_URL}"
-            CPS_URL: "http://10.200.10.1:8085/communities/"
+            CPS_URL: "http://10.200.10.1:8085/dataunions/"
     ethereum-watcher:
         container_name: streamr-dev-ethereum-watcher
         image: streamr/ethereum-watcher:dev
