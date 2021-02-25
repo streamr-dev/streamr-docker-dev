@@ -94,10 +94,6 @@ There are pre-filled wallets with ETH & DATA on this chain to use.
 - (8) 0x2cd9855d17e01ce041953829398af7e48b24ece04ff9d0e183414de54dc52285
 - (9) 0x2c326a4c139eced39709b235fffa1fde7c252f3f7b505103f7b251586c35d543
 
-#### HD Wallet
-
-Mnemonic:      testrpc
-Base HD Path:  m/44'/60'/0'/0/{account_index}
 
 #### Local DATA token contract address
 0xbAA81A0179015bE47Ad439566374F2Bae098686F
