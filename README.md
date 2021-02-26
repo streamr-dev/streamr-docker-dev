@@ -166,7 +166,8 @@ Wipe the persisted data of all services: `streamr-docker-dev wipe`
 
 ### `factory-reset`
 
-"Factory reset" the environment by removing all images and persisted data: `streamr-docker-dev factory-reset` 
+"Factory reset" the docker environment by removing all images and persisted data: `streamr-docker-dev factory-reset`. 
+**Warning: this will delete all your docker images and their state, not just ones related to the Streamr stack.**
 
 ## Accessing the Core app and Streamr API
 
