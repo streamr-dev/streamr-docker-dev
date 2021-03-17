@@ -19,8 +19,9 @@ Commands:
     update              updates streamr-docker-dev by doing git pull
     wipe                wipes the data persisted by all services
     factory-reset       removes all docker images and generated files
-
-
+                          (WARNING: this deletes ALL docker images on 
+			            your system and their state -
+				    not just Streamr-related ones!)
 Examples:
     streamr-docker-dev start
     streamr-docker-dev stop tracker
