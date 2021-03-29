@@ -22,8 +22,10 @@ DOCKER_COMPOSE="docker-compose --no-ansi"
 cd "$ROOT_DIR" || exit 1
 
 if [ -f .env ]; then
-	# Read .env
-	export $(cat .env | xargs)
+    # Read .env (from https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs/20909045#20909045)
+    set -o allexport
+    source .env
+    set +o allexport
 fi
 # Set default values for required env variables if not set in .env
 if [[ -z "${STREAMR_BASE_URL}" ]]; then
@@ -55,6 +57,7 @@ start() {
             COMMANDS_TO_RUN+=("sudo ip addr add 10.200.10.1 dev lo label lo:1")
         #elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
             # TODO: bind under 32 bits Windows NT platform
+            # maybe something like this: netsh interface ip add address "loopback" 10.200.10.1 255.255.255.255 
         #elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
             # TODO: bind under 64 bits Windows NT platform
         fi
