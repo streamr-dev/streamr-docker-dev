@@ -196,7 +196,6 @@ services:
             - init-keyspace
             - smtp
             - mysql
-            - cassandra
             - redis
             - parity-node0
         healthcheck:
