@@ -2,7 +2,7 @@ version: "3"
 services:
     cassandra:
         container_name: streamr-dev-cassandra
-        image: streamr:cassandra:v0.0.1
+        image: streamr/cassandra:v0.0.1
         ports:
             - "7000:7000"
             - "7001:7001"
