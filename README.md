@@ -226,6 +226,11 @@ streamr-docker-dev start --wait
 
 ## Troubleshooting
 
+### Metamask transactions are stuck
+
+This is a common problem on Metamask when switching inbetween chains. Clearing the transaction history in Metamask usually fixes this issue:
+Click, 'Settings', then 'Advanced', then, 'Reset Account'.
+
 ### Making image uploads to AWS work
 
 Uploading images to AWS needs credentials to be able to access the target S3 bucket.
