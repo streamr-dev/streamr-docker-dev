@@ -281,6 +281,7 @@ services:
             REACT_APP_TRACKER_REGISTRY_PROVIDER: "${STREAMR_BASE_URL}/mainchain-rpc/http/"
             REACT_APP_TRACKER_REGISTRY_ADDRESS: "0xBFCF120a8fD17670536f1B27D9737B775b2FD4CF"
             REACT_APP_MAPBOX_TOKEN: "pk.eyJ1IjoibWF0dGlubmVzIiwiYSI6ImNrNWhrN2FubDA0cGgzam1ycHV6Nmg2dHoifQ.HC5_Wu1R-OqRLza1u6P3Ig"
+            REACT_APP_MOCK_API_URL: "${STREAMR_BASE_URL}/network-explorer-mock-api"
     parity-node0:
          container_name: streamr-dev-parity-node0
          environment:
