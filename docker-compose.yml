@@ -66,7 +66,7 @@ services:
             retries: 60
     nginx:
         container_name: streamr-dev-nginx
-        image: nginx:stable-alpine
+        image: streamr/nginx:v0.0.1
         restart: on-failure
         ports:
           - "80:80"
@@ -74,11 +74,6 @@ services:
         volumes:
           - ./custom-nginx-reverse-proxy.conf:/etc/nginx/nginx.conf:ro
           - ./certs:/etc/nginx/mounted-certs
-        healthcheck:
-            test: ["CMD", "nc", "-z", "localhost", "80"]
-            interval: 10s
-            timeout: 10s
-            retries: 60
     tracker-1:
         container_name: streamr-dev-tracker-1
         image: streamr/broker-node:dev
