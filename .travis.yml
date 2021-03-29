@@ -4,4 +4,4 @@ dist: xenial
 jobs:
   include:
     - stage: docker-compose config file integrity check
-      script: docker-compose -f docker-compose.yml -f docker-compose.override.yml config
+      script: docker-compose -f docker-compose.yml config
