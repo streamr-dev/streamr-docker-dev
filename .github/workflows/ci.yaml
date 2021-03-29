@@ -10,7 +10,15 @@ on:
 jobs:
   build:
     name: docker-compose config file integrity check
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-16.04
+          - ubuntu-18.04
+          - ubuntu-20.04
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
