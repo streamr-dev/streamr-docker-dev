@@ -1,9 +1,14 @@
-name: Build PR
+name: Build
 on:
+  push:
+    branches:
+      - master
   pull_request:
+    branches:
+      - master
 
 jobs:
-  smoke-test:
+  build:
     name: docker-compose config file integrity check
     runs-on: ubuntu-latest
     steps:
