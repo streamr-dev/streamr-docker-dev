@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: docker-compose config file integrity check
+    name: Build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     continue-on-error: true
     strategy:
