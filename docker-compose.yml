@@ -56,7 +56,7 @@ services:
             retries: 60
     smtp:
         container_name: streamr-dev-smtp
-        image: streamr/smtp
+        image: streamr/smtp:v0.0.1
         ports:
             - "25:25"
     nginx:
