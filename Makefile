@@ -10,5 +10,5 @@ SHELL := bash
 
 .PHONY: test-smoke
 test-smoke:
-	docker-compose -f docker-compose.yml -f docker-compose.override.yml config
+	docker-compose -f docker-compose.yml config
 
