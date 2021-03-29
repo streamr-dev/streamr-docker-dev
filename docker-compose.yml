@@ -29,7 +29,7 @@ services:
             - cassandra
     mysql:
         container_name: streamr-dev-mysql
-        image: mysql:5.7.22
+        image: streamr/mysql:v0.0.1
         ports:
             - "3306:3306"
         volumes:
@@ -37,11 +37,6 @@ services:
             - ./mysql_init_scripts:/docker-entrypoint-initdb.d
             - ./custom-mysql-settings.cnf:/etc/mysql/conf.d/custom-mysql-settings.cnf
         restart: on-failure
-        healthcheck:
-            test: ["CMD", "mysql", "--password=password", "-e", "SELECT 1"]
-            interval: 10s
-            timeout: 10s
-            retries: 60
         environment:
             MYSQL_ROOT_PASSWORD: password
     redis:
