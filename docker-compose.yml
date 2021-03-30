@@ -56,9 +56,14 @@ services:
             retries: 60
     smtp:
         container_name: streamr-dev-smtp
-        image: streamr/smtp:v0.0.1
+        image: namshi/smtp
         ports:
             - "25:25"
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check. Can't use nc -z because the image doesn't have nc.
+            interval: 10s
+            timeout: 10s
+            retries: 60
     nginx:
         container_name: streamr-dev-nginx
         image: nginx:stable-alpine
