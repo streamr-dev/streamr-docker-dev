@@ -16,7 +16,7 @@ DRY_RUN=0
 FOLLOW=0
 WAIT=0
 WAIT_TIMEOUT=300     # seconds
-DOCKER_COMPOSE="docker-compose --no-ansi"
+DOCKER_COMPOSE="docker-compose --ansi never"
 
 # Execute all commands from the root dir of streamr-docker-dev
 cd "$ROOT_DIR" || exit 1
