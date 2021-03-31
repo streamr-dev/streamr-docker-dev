@@ -46,14 +46,9 @@ services:
             MYSQL_ROOT_PASSWORD: password
     redis:
         container_name: streamr-dev-redis
-        image: redis:5.0.7-alpine
+        image: streamr/redis:v0.0.1
         ports:
             - "6379:6379"
-        healthcheck:
-            test: ["CMD", "redis-cli", "PING"]
-            interval: 10s
-            timeout: 10s
-            retries: 60
     smtp:
         container_name: streamr-dev-smtp
         image: streamr/smtp:v0.0.1
