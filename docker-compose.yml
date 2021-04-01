@@ -49,7 +49,7 @@ services:
             - "25:25"
     nginx:
         container_name: streamr-dev-nginx
-        image: streamr/nginx:v0.0.1
+        image: streamr/nginx:v0.0.2
         restart: on-failure
         ports:
           - "80:80"
