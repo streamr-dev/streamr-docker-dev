@@ -235,11 +235,6 @@ services:
         depends_on:
             - engine-and-editor
             - parity-node0
-        healthcheck:
-            test: ["CMD", "curl", "-sS", "http://localhost"]
-            interval: 10s
-            timeout: 10s
-            retries: 60
         environment:
             DATA_UNIONS: "on"
     network-explorer:
