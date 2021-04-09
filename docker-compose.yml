@@ -324,7 +324,7 @@ services:
     bridge-redis:
         container_name: streamr-dev-bridge-redis
         command: [redis-server, --appendonly, 'yes']
-        hostname: redis
+        hostname: bridge-redis
         image: redis:4
         networks:
             - net-db-bridge-request
