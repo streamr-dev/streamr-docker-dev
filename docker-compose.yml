@@ -321,7 +321,7 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
-    bridge_redis:
+    bridge-redis:
         command: [redis-server, --appendonly, 'yes']
         hostname: redis
         image: redis:4
@@ -400,7 +400,7 @@ services:
             - bridge_senderhome
             - bridge_affirmation
             - rabbit
-            - bridge_redis
+            - bridge-redis
             - bridge_request
 
 networks:
