@@ -10,12 +10,7 @@ services:
             - "9042:9042"
             - "9160:9160"
         volumes:
-            - ./data/cassandra:/var/lib/cassandra
-        healthcheck:
-            test: ["CMD", "cqlsh", "-e", "SHOW HOST"]
-            interval: 10s
-            timeout: 10s
-            retries: 60
+            - data-cassandra:/var/lib/cassandra
     init-keyspace:
         container_name: streamr-dev-init-keyspace
         image: cassandra:3.11.5
@@ -31,7 +26,7 @@ services:
         ports:
             - "3306:3306"
         volumes:
-            - ./data/mysql:/var/lib/mysql:rw
+            - data-mysql:/var/lib/mysql:rw
             - ./mysql_init_scripts:/docker-entrypoint-initdb.d
             - ./custom-mysql-settings.cnf:/etc/mysql/conf.d/custom-mysql-settings.cnf
         restart: on-failure
@@ -203,7 +198,7 @@ services:
             MARKETPLACE_ADDRESS: "0xf1371c0f40528406dc4f4caf89924ea9da49e866"
             DEVOPS_KEY: "devops-user-key"
         volumes:
-            - ./data/ethereum-watcher/:/app/logs
+            - data-ethereum-watcher/:/app/logs
         healthcheck:
             test: ["CMD", "echo"] # TODO: Health check
             interval: 10s
@@ -237,6 +232,11 @@ services:
             - parity-node0
         environment:
             DATA_UNIONS: "on"
+        healthcheck:
+          test: ["CMD", "curl", "-sS", "http://localhost"]
+          interval: 10s
+          timeout: 10s
+          retries: 60
     network-explorer:
         container_name: streamr-dev-network-explorer
         image: streamr/network-explorer:dev
@@ -272,7 +272,7 @@ services:
             retries: 3
          command: --chain ./streamr-spec.json --config ./node0.toml
          volumes:
-           - ./data/parity-node0/:/home/parity/parity_data
+           - data-parity-node0/:/home/parity/parity_data
     parity-sidechain-node0:
          container_name: streamr-dev-parity-sidechain-node0
          environment:
@@ -290,7 +290,7 @@ services:
             retries: 3
          command: --chain ./streamr-spec.json --config ./node0.toml
          volumes:
-           - ./data/parity-sidechain-node0/:/home/parity/parity_data
+           - data-parity-sidechain-node0/:/home/parity/parity_data
     hsl-demo:
         restart: on-failure
         container_name: streamr-dev-hsl-demo
@@ -315,7 +315,7 @@ services:
             - net_rabbit_bridge_senderhome
             - net_rabbit_bridge_senderforeign
         restart: unless-stopped
-        volumes: ['./data/bridge_data/rabbitmq:/var/lib/rabbitmq/mnesia']
+        volumes: ['data-bridge-data-rabbitmq:/var/lib/rabbitmq/mnesia']
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -331,7 +331,7 @@ services:
             - net_db_bridge_senderhome
             - net_db_bridge_senderforeign
         restart: unless-stopped
-        volumes: ['./data/bridge_data/redis:/data']
+        volumes: ['data-bridge-data-redis:/data']
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -422,6 +422,13 @@ networks:
         driver: bridge
 
 volumes:
-    data:
     mysql_init_scripts:
     cassandra_init_scripts:
+    cassandra_init_scripts:
+    data-bridge-data-rabbitmq:
+    data-bridge-data-redis:
+    data-mysql:
+    data-cassandra:
+    data-parity-node0:
+    data-parity-sidechain-node0:
+    data-ethereum-watcher:

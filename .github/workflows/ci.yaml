@@ -21,7 +21,9 @@ jobs:
           - ubuntu-20.04
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
-      - name: Run smoke test
+        uses: actions/checkout@v2.3.4
+      - name: Run smoke tests
         run: make test-smoke
+      - name: Run streamr-docker-dev
+        run: make test-docker-dev
 
