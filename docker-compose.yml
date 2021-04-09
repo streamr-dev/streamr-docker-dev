@@ -324,7 +324,7 @@ services:
     bridge_redis:
         command: [redis-server, --appendonly, 'yes']
         hostname: redis
-        image: redis:4
+        image: streamr/redis:v0.0.1
         networks:
             - net_db_bridge_request
             - net_db_bridge_affirmation
