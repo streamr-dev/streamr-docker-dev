@@ -310,10 +310,10 @@ services:
         hostname: rabbit
         image: rabbitmq:3
         networks:
-            - net_rabbit_bridge_request
-            - net_rabbit_bridge_affirmation
-            - net_rabbit_bridge_senderhome
-            - net_rabbit_bridge_senderforeign
+            - net-rabbit-bridge-request
+            - net-rabbit-bridge-affirmation
+            - net-rabbit-bridge-senderhome
+            - net-rabbit-bridge-senderforeign
         restart: unless-stopped
         volumes: ['data-bridge-data-rabbitmq:/var/lib/rabbitmq/mnesia']
         healthcheck:
@@ -345,7 +345,7 @@ services:
         entrypoint: yarn watcher:signature-request
         networks:
             - net-db-bridge-request
-            - net_rabbit_bridge_request
+            - net-rabbit-bridge-request
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -359,7 +359,7 @@ services:
         entrypoint: yarn watcher:affirmation-request
         networks:
             - net-db-bridge-affirmation
-            - net_rabbit_bridge_affirmation
+            - net-rabbit-bridge-affirmation
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -373,7 +373,7 @@ services:
         entrypoint: yarn sender:home
         networks:
             - net-db-bridge-senderhome
-            - net_rabbit_bridge_senderhome
+            - net-rabbit-bridge-senderhome
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -387,7 +387,7 @@ services:
         entrypoint: yarn sender:foreign
         networks:
             - net-db-bridge-senderforeign
-            - net_rabbit_bridge_senderforeign
+            - net-rabbit-bridge-senderforeign
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -412,13 +412,13 @@ networks:
         driver: bridge
     net-db-bridge-senderforeign:
         driver: bridge
-    net_rabbit_bridge_request:
+    net-rabbit-bridge-request:
         driver: bridge
-    net_rabbit_bridge_affirmation:
+    net-rabbit-bridge-affirmation:
         driver: bridge
-    net_rabbit_bridge_senderhome:
+    net-rabbit-bridge-senderhome:
         driver: bridge
-    net_rabbit_bridge_senderforeign:
+    net-rabbit-bridge-senderforeign:
         driver: bridge
 
 volumes:
