@@ -305,9 +305,10 @@ services:
             timeout: 10s
             retries: 60
         command: mqtt-streamr --reconnect-on-data-timeout 10 --stream-id YpTAPDbvSAmj-iCUYz-dxA --streamr-url ${STREAMR_WS_URL} --streamr-rest-url ${STREAMR_BASE_URL}/api/v1 --mqtt-url wss://mqtt.hsl.fi --topic /hfp/v1/journey/ongoing/tram/# --api-key tester1-api-key
-    rabbit:
-        environment: ['RABBITMQ_NODENAME=node@rabbit']
-        hostname: rabbit
+    bridge-rabbitmq:
+        container_name: streamr-dev-bridge-rabbitmq
+        environment: ['RABBITMQ_NODENAME=node@bridge-rabbitmq']
+        hostname: bridge-rabbitmq
         image: rabbitmq:3
         networks:
             - net-rabbit-bridge-request
@@ -406,7 +407,7 @@ services:
             - bridge-senderforeign
             - bridge-senderhome
             - bridge-affirmation
-            - rabbit
+            - bridge-rabbitmq
             - bridge-redis
             - bridge-request
 
