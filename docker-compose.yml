@@ -11,6 +11,11 @@ services:
             - "9160:9160"
         volumes:
             - data-cassandra:/var/lib/cassandra
+        healthcheck:
+            test: ["CMD", "cqlsh", "-e", "SHOW HOST"]
+            interval: 10s
+            timeout: 10s
+            retries: 60
     init-keyspace:
         container_name: streamr-dev-init-keyspace
         image: cassandra:3.11.5
@@ -171,6 +176,11 @@ services:
             - mysql
             - redis
             - parity-node0
+        healthcheck:
+            test: ["CMD", "curl", "-sS", "http://localhost:8081/streamr-core/api/v1/products"]
+            interval: 30s
+            timeout: 10s
+            retries: 20
         environment:
             AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
             AWS_SECRET_KEY: "${AWS_SECRET_ACCESS_KEY}"
@@ -194,6 +204,11 @@ services:
             DEVOPS_KEY: "devops-user-key"
         volumes:
             - data-ethereum-watcher/:/app/logs
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: Health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
     data-union-server:
         container_name: streamr-dev-data-union-server
         image: streamr/data-union-server:dev
@@ -284,6 +299,11 @@ services:
           REMOTE_SECRETS: "false"
         depends_on:
             - engine-and-editor
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
         command: mqtt-streamr --reconnect-on-data-timeout 10 --stream-id YpTAPDbvSAmj-iCUYz-dxA --streamr-url ${STREAMR_WS_URL} --streamr-rest-url ${STREAMR_BASE_URL}/api/v1 --mqtt-url wss://mqtt.hsl.fi --topic /hfp/v1/journey/ongoing/tram/# --api-key tester1-api-key
     rabbit:
         environment: ['RABBITMQ_NODENAME=node@rabbit']
@@ -296,6 +316,11 @@ services:
             - net_rabbit_bridge_senderforeign
         restart: unless-stopped
         volumes: ['data-bridge-data-rabbitmq:/var/lib/rabbitmq/mnesia']
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
     bridge_redis:
         command: [redis-server, --appendonly, 'yes']
         hostname: redis
@@ -307,6 +332,11 @@ services:
             - net_db_bridge_senderforeign
         restart: unless-stopped
         volumes: ['data-bridge-data-redis:/data']
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
     bridge_request:
         image: poanetwork/tokenbridge-oracle:latest
         env_file:
@@ -316,6 +346,11 @@ services:
         networks:
             - net_db_bridge_request
             - net_rabbit_bridge_request
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
     bridge_affirmation:
         image: poanetwork/tokenbridge-oracle:latest
         env_file:
@@ -325,6 +360,11 @@ services:
         networks:
             - net_db_bridge_affirmation
             - net_rabbit_bridge_affirmation
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
     bridge_senderhome:
         image: poanetwork/tokenbridge-oracle:latest
         env_file:
@@ -334,6 +374,11 @@ services:
         networks:
             - net_db_bridge_senderhome
             - net_rabbit_bridge_senderhome
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
     bridge_senderforeign:
         image: poanetwork/tokenbridge-oracle:latest
         env_file:
@@ -343,6 +388,11 @@ services:
         networks:
             - net_db_bridge_senderforeign
             - net_rabbit_bridge_senderforeign
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
     bridge:
         image: tianon/true  # dummy image that does nothing
         depends_on:
