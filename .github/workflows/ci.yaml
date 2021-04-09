@@ -22,6 +22,6 @@ jobs:
     steps:
       - name: Check out the repo
       - uses: actions/checkout@v2.3.4
-      - name: Run smoke test
-        run: make test-smoke
+      - run: make test-smoke
+      - run: make test-docker-dev
 
