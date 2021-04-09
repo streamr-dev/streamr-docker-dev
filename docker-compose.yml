@@ -326,10 +326,10 @@ services:
         hostname: redis
         image: redis:4
         networks:
-            - net_db_bridge_request
-            - net_db_bridge_affirmation
-            - net_db_bridge_senderhome
-            - net_db_bridge_senderforeign
+            - net-db-bridge-request
+            - net-db-bridge-affirmation
+            - net-db-bridge-senderhome
+            - net-db-bridge-senderforeign
         restart: unless-stopped
         volumes: ['data-bridge-data-redis:/data']
         healthcheck:
@@ -344,7 +344,7 @@ services:
         restart: unless-stopped
         entrypoint: yarn watcher:signature-request
         networks:
-            - net_db_bridge_request
+            - net-db-bridge-request
             - net_rabbit_bridge_request
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
@@ -358,7 +358,7 @@ services:
         restart: unless-stopped
         entrypoint: yarn watcher:affirmation-request
         networks:
-            - net_db_bridge_affirmation
+            - net-db-bridge-affirmation
             - net_rabbit_bridge_affirmation
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
@@ -372,7 +372,7 @@ services:
         restart: unless-stopped
         entrypoint: yarn sender:home
         networks:
-            - net_db_bridge_senderhome
+            - net-db-bridge-senderhome
             - net_rabbit_bridge_senderhome
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
@@ -386,7 +386,7 @@ services:
         restart: unless-stopped
         entrypoint: yarn sender:foreign
         networks:
-            - net_db_bridge_senderforeign
+            - net-db-bridge-senderforeign
             - net_rabbit_bridge_senderforeign
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
@@ -404,13 +404,13 @@ services:
             - bridge_request
 
 networks:
-    net_db_bridge_request:
+    net-db-bridge-request:
         driver: bridge
-    net_db_bridge_affirmation:
+    net-db-bridge-affirmation:
         driver: bridge
-    net_db_bridge_senderhome:
+    net-db-bridge-senderhome:
         driver: bridge
-    net_db_bridge_senderforeign:
+    net-db-bridge-senderforeign:
         driver: bridge
     net_rabbit_bridge_request:
         driver: bridge
