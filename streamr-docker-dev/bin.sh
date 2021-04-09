@@ -60,7 +60,7 @@ start() {
             COMMANDS_TO_RUN+=("sudo ip addr add 10.200.10.1 dev lo label lo:1")
         #elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
             # TODO: bind under 32 bits Windows NT platform
-            # maybe something like this: netsh interface ip add address "loopback" 10.200.10.1 255.255.255.255 
+            # maybe something like this: netsh interface ip add address "loopback" 10.200.10.1 255.255.255.255
         #elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
             # TODO: bind under 64 bits Windows NT platform
         fi
