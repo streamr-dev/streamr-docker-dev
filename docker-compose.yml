@@ -11,11 +11,6 @@ services:
             - "9160:9160"
         volumes:
             - data-cassandra:/var/lib/cassandra
-        healthcheck:
-            test: ["CMD", "cqlsh", "-e", "SHOW HOST"]
-            interval: 10s
-            timeout: 10s
-            retries: 60
     init-keyspace:
         container_name: streamr-dev-init-keyspace
         image: cassandra:3.11.5
@@ -237,6 +232,11 @@ services:
             - parity-node0
         environment:
             DATA_UNIONS: "on"
+        healthcheck:
+          test: ["CMD", "curl", "-sS", "http://localhost"]
+          interval: 10s
+          timeout: 10s
+          retries: 60
     network-explorer:
         container_name: streamr-dev-network-explorer
         image: streamr/network-explorer:dev
