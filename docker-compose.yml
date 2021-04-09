@@ -365,7 +365,7 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
-    bridge_senderhome:
+    bridge-senderhome:
         image: poanetwork/tokenbridge-oracle:latest
         env_file:
             - ./oracles.env
@@ -397,7 +397,7 @@ services:
         image: tianon/true  # dummy image that does nothing
         depends_on:
             - bridge_senderforeign
-            - bridge_senderhome
+            - bridge-senderhome
             - bridge-affirmation
             - rabbit
             - bridge-redis
