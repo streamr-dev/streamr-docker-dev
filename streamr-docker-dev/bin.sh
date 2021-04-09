@@ -9,7 +9,7 @@ OPERATION=
 COMMANDS_TO_RUN=()
 
 SERVICES=""
-EXCEPT_SERVICES=""
+EXCEPT_SERVICES=()
 FLAGS=""
 DETACHED=1
 DRY_RUN=0
@@ -17,6 +17,9 @@ FOLLOW=0
 WAIT=0
 WAIT_TIMEOUT=300     # seconds
 DOCKER_COMPOSE="docker-compose --ansi never"
+
+# don't start these services unless explicitly started
+EXCEPT_SERVICES_DEFAULT=("hsl-demo") # array of string e.g. ("a" "b")
 
 # Execute all commands from the root dir of streamr-docker-dev
 cd "$ROOT_DIR" || exit 1
@@ -49,7 +52,7 @@ start() {
     if [ "$ip_lines" -eq "0" ]; then
         COMMANDS_TO_RUN+=("echo Binding the internal IP address 10.200.10.1 to the loopback interface.")
         COMMANDS_TO_RUN+=("echo This requires sudo privileges, so please provide your password if requested")
-        
+
         # Binding the loopback address is OS-specific
         if [ "$(uname)" == "Darwin" ]; then
             COMMANDS_TO_RUN+=("sudo ifconfig lo0 alias 10.200.10.1/24")
@@ -64,15 +67,25 @@ start() {
     fi
     [[ $DETACHED == 1 ]] && FLAGS+=" -d"
     [[ $SERVICES == "" ]] && msg="Starting all" || msg="Starting $SERVICES"
+
+    # only start these if started explicitly
+    for service in "${EXCEPT_SERVICES_DEFAULT[@]}"
+    do
+        if [[ ! "$SERVICES" =~ $service  ]]; then
+            EXCEPT_SERVICES+=("$service")
+        fi
+    done
+
+    # use --scale $service=0 to prevent start of --except services
+    [[ ! "${#EXCEPT_SERVICES[@]}" -eq 0 ]] && msg+=" except:"
+    for service in "${EXCEPT_SERVICES[@]}"
+    do
+        msg+=" $service"
+        FLAGS+=" --scale $service=0"
+    done
+
     COMMANDS_TO_RUN+=("echo $msg")
     COMMANDS_TO_RUN+=("$DOCKER_COMPOSE up $FLAGS $SERVICES")
-
-    # "--except" feature is implemented by starting all, then stopping the unwanted services.
-    # Bit of a hack but docker-compose doesn't provide a better direct way.
-    if [[ $EXCEPT_SERVICES != "" ]]; then
-        COMMANDS_TO_RUN+=("$DOCKER_COMPOSE kill $EXCEPT_SERVICES")
-        COMMANDS_TO_RUN+=("$DOCKER_COMPOSE rm -f $EXCEPT_SERVICES")
-    fi
 
     if [ $WAIT == 1 ]; then
         COMMANDS_TO_RUN+=("wait")
@@ -188,7 +201,7 @@ while [ $# -gt 0 ]; do # if there are arguments
     if [[ "$1" = -* ]]; then
         case $1 in
         --except )
-            EXCEPT_SERVICES+="$2 "
+            EXCEPT_SERVICES+=("$2")
             shift # skip over the next arg, which was already consumed above
             ;;
         --wait )
