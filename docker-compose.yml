@@ -322,6 +322,7 @@ services:
             timeout: 10s
             retries: 60
     bridge-redis:
+        container_name: streamr-dev-bridge-redis
         command: [redis-server, --appendonly, 'yes']
         hostname: redis
         image: redis:4
@@ -338,6 +339,7 @@ services:
             timeout: 10s
             retries: 60
     bridge-request:
+        container_name: streamr-dev-bridge-request
         image: poanetwork/tokenbridge-oracle:latest
         env_file:
             - ./oracles.env
@@ -352,6 +354,7 @@ services:
             timeout: 10s
             retries: 60
     bridge-affirmation:
+        container_name: streamr-dev-bridge-affirmation
         image: poanetwork/tokenbridge-oracle:latest
         env_file:
             - ./oracles.env
@@ -366,6 +369,7 @@ services:
             timeout: 10s
             retries: 60
     bridge-senderhome:
+        container_name: streamr-dev-bridge-senderhome
         image: poanetwork/tokenbridge-oracle:latest
         env_file:
             - ./oracles.env
@@ -380,6 +384,7 @@ services:
             timeout: 10s
             retries: 60
     bridge-senderforeign:
+        container_name: streamr-dev-bridge-senderforeign
         image: poanetwork/tokenbridge-oracle:latest
         env_file:
             - ./oracles.env
@@ -394,6 +399,8 @@ services:
             timeout: 10s
             retries: 60
     bridge:
+        container_name: streamr-dev-bridge
+        image: poanetwork/tokenbridge-oracle:latest
         image: tianon/true  # dummy image that does nothing
         depends_on:
             - bridge-senderforeign
