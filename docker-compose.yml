@@ -351,7 +351,7 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
-    bridge_affirmation:
+    bridge-affirmation:
         image: poanetwork/tokenbridge-oracle:latest
         env_file:
             - ./oracles.env
@@ -398,7 +398,7 @@ services:
         depends_on:
             - bridge_senderforeign
             - bridge_senderhome
-            - bridge_affirmation
+            - bridge-affirmation
             - rabbit
             - bridge-redis
             - bridge-request
