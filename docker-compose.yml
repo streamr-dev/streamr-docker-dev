@@ -337,7 +337,7 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
-    bridge_request:
+    bridge-request:
         image: poanetwork/tokenbridge-oracle:latest
         env_file:
             - ./oracles.env
@@ -401,7 +401,7 @@ services:
             - bridge_affirmation
             - rabbit
             - bridge-redis
-            - bridge_request
+            - bridge-request
 
 networks:
     net-db-bridge-request:
