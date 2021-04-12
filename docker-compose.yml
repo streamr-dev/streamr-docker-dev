@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 services:
     cassandra:
         container_name: streamr-dev-cassandra
@@ -305,15 +305,16 @@ services:
             timeout: 10s
             retries: 60
         command: mqtt-streamr --reconnect-on-data-timeout 10 --stream-id YpTAPDbvSAmj-iCUYz-dxA --streamr-url ${STREAMR_WS_URL} --streamr-rest-url ${STREAMR_BASE_URL}/api/v1 --mqtt-url wss://mqtt.hsl.fi --topic /hfp/v1/journey/ongoing/tram/# --api-key tester1-api-key
-    rabbit:
-        environment: ['RABBITMQ_NODENAME=node@rabbit']
-        hostname: rabbit
+    bridge-rabbitmq:
+        container_name: streamr-dev-bridge-rabbitmq
+        environment: ['RABBITMQ_NODENAME=node@bridge-rabbitmq']
+        hostname: bridge-rabbitmq
         image: rabbitmq:3
         networks:
-            - net_rabbit_bridge_request
-            - net_rabbit_bridge_affirmation
-            - net_rabbit_bridge_senderhome
-            - net_rabbit_bridge_senderforeign
+            - net-rabbit-bridge-request
+            - net-rabbit-bridge-affirmation
+            - net-rabbit-bridge-senderhome
+            - net-rabbit-bridge-senderforeign
         restart: unless-stopped
         volumes: ['data-bridge-data-rabbitmq:/var/lib/rabbitmq/mnesia']
         healthcheck:
@@ -321,15 +322,16 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
-    bridge_redis:
+    bridge-redis:
+        container_name: streamr-dev-bridge-redis
         command: [redis-server, --appendonly, 'yes']
-        hostname: redis
+        hostname: bridge-redis
         image: streamr/redis:v0.0.1
         networks:
-            - net_db_bridge_request
-            - net_db_bridge_affirmation
-            - net_db_bridge_senderhome
-            - net_db_bridge_senderforeign
+            - net-db-bridge-request
+            - net-db-bridge-affirmation
+            - net-db-bridge-senderhome
+            - net-db-bridge-senderforeign
         restart: unless-stopped
         volumes: ['data-bridge-data-redis:/data']
         healthcheck:
@@ -337,88 +339,94 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
-    bridge_request:
+    bridge-request:
+        container_name: streamr-dev-bridge-request
         image: poanetwork/tokenbridge-oracle:latest
         env_file:
             - ./oracles.env
         restart: unless-stopped
         entrypoint: yarn watcher:signature-request
         networks:
-            - net_db_bridge_request
-            - net_rabbit_bridge_request
+            - net-db-bridge-request
+            - net-rabbit-bridge-request
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
             timeout: 10s
             retries: 60
-    bridge_affirmation:
+    bridge-affirmation:
+        container_name: streamr-dev-bridge-affirmation
         image: poanetwork/tokenbridge-oracle:latest
         env_file:
             - ./oracles.env
         restart: unless-stopped
         entrypoint: yarn watcher:affirmation-request
         networks:
-            - net_db_bridge_affirmation
-            - net_rabbit_bridge_affirmation
+            - net-db-bridge-affirmation
+            - net-rabbit-bridge-affirmation
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
             timeout: 10s
             retries: 60
-    bridge_senderhome:
+    bridge-senderhome:
+        container_name: streamr-dev-bridge-senderhome
         image: poanetwork/tokenbridge-oracle:latest
         env_file:
             - ./oracles.env
         restart: unless-stopped
         entrypoint: yarn sender:home
         networks:
-            - net_db_bridge_senderhome
-            - net_rabbit_bridge_senderhome
+            - net-db-bridge-senderhome
+            - net-rabbit-bridge-senderhome
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
             timeout: 10s
             retries: 60
-    bridge_senderforeign:
+    bridge-senderforeign:
+        container_name: streamr-dev-bridge-senderforeign
         image: poanetwork/tokenbridge-oracle:latest
         env_file:
             - ./oracles.env
         restart: unless-stopped
         entrypoint: yarn sender:foreign
         networks:
-            - net_db_bridge_senderforeign
-            - net_rabbit_bridge_senderforeign
+            - net-db-bridge-senderforeign
+            - net-rabbit-bridge-senderforeign
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
             timeout: 10s
             retries: 60
     bridge:
+        container_name: streamr-dev-bridge
+        image: poanetwork/tokenbridge-oracle:latest
         image: tianon/true  # dummy image that does nothing
         depends_on:
-            - bridge_senderforeign
-            - bridge_senderhome
-            - bridge_affirmation
-            - rabbit
-            - bridge_redis
-            - bridge_request
+            - bridge-senderforeign
+            - bridge-senderhome
+            - bridge-affirmation
+            - bridge-rabbitmq
+            - bridge-redis
+            - bridge-request
 
 networks:
-    net_db_bridge_request:
+    net-db-bridge-request:
         driver: bridge
-    net_db_bridge_affirmation:
+    net-db-bridge-affirmation:
         driver: bridge
-    net_db_bridge_senderhome:
+    net-db-bridge-senderhome:
         driver: bridge
-    net_db_bridge_senderforeign:
+    net-db-bridge-senderforeign:
         driver: bridge
-    net_rabbit_bridge_request:
+    net-rabbit-bridge-request:
         driver: bridge
-    net_rabbit_bridge_affirmation:
+    net-rabbit-bridge-affirmation:
         driver: bridge
-    net_rabbit_bridge_senderhome:
+    net-rabbit-bridge-senderhome:
         driver: bridge
-    net_rabbit_bridge_senderforeign:
+    net-rabbit-bridge-senderforeign:
         driver: bridge
 
 volumes:
