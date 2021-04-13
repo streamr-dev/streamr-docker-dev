@@ -19,7 +19,7 @@ WAIT_TIMEOUT=300     # seconds
 DOCKER_COMPOSE="docker-compose --ansi never"
 
 # don't start these services unless explicitly started
-EXCEPT_SERVICES_DEFAULT=("hsl-demo") # array of string e.g. ("a" "b")
+EXCEPT_SERVICES_DEFAULT=() # array of string e.g. ("a" "b")
 
 # Execute all commands from the root dir of streamr-docker-dev
 cd "$ROOT_DIR" || exit 1
