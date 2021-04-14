@@ -392,7 +392,6 @@ services:
             retries: 60
     bridge:
         container_name: streamr-dev-bridge
-        image: poanetwork/tokenbridge-oracle:latest
         image: tianon/true  # dummy image that does nothing
         depends_on:
             - bridge-senderforeign
