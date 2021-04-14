@@ -11,11 +11,7 @@ services:
             - "9160:9160"
         volumes:
             - data-cassandra:/var/lib/cassandra
-        healthcheck:
-            test: ["CMD", "cqlsh", "-e", "SHOW HOST"]
-            interval: 10s
-            timeout: 10s
-            retries: 60
+        restart: unless-stopped
     init-keyspace:
         container_name: streamr-dev-init-keyspace
         image: cassandra:3.11.5
@@ -34,7 +30,7 @@ services:
             - data-mysql:/var/lib/mysql:rw
             - ./mysql_init_scripts:/docker-entrypoint-initdb.d
             - ./custom-mysql-settings.cnf:/etc/mysql/conf.d/custom-mysql-settings.cnf
-        restart: on-failure
+        restart: unless-stopped
         environment:
             MYSQL_ROOT_PASSWORD: password
     redis:
@@ -50,7 +46,7 @@ services:
     nginx:
         container_name: streamr-dev-nginx
         image: streamr/nginx:v0.0.3
-        restart: on-failure
+        restart: unless-stopped
         ports:
           - "80:80"
           - "443:443"
@@ -60,7 +56,7 @@ services:
     tracker-1:
         container_name: streamr-dev-tracker-1
         image: streamr/broker-node:dev
-        restart: on-failure
+        restart: unless-stopped
         ports:
             - "30301:30301"
         volumes:
@@ -74,7 +70,7 @@ services:
     tracker-2:
         container_name: streamr-dev-tracker-2
         image: streamr/broker-node:dev
-        restart: on-failure
+        restart: unless-stopped
         ports:
             - "30302:30302"
         volumes:
@@ -88,7 +84,7 @@ services:
     tracker-3:
         container_name: streamr-dev-tracker-3
         image: streamr/broker-node:dev
-        restart: on-failure
+        restart: unless-stopped
         ports:
             - "30303:30303"
         volumes:
@@ -102,7 +98,7 @@ services:
     broker-node-storage-1:
         container_name: streamr-dev-broker-node-storage-1
         image: streamr/broker-node:dev
-        restart: on-failure
+        restart: unless-stopped
         ports:
             - "8890:8890"
             - "8891:8891"
@@ -126,7 +122,7 @@ services:
     broker-node-no-storage-1:
         container_name: streamr-dev-broker-node-no-storage-1
         image: streamr/broker-node:dev
-        restart: on-failure
+        restart: unless-stopped
         ports:
             - "8790:8790"
             - "8791:8791"
@@ -147,7 +143,7 @@ services:
     broker-node-no-storage-2:
         container_name: streamr-dev-broker-node-no-storage-2
         image: streamr/broker-node:dev
-        restart: on-failure
+        restart: unless-stopped
         ports:
             - "8690:8690"
             - "8691:8691"
@@ -192,7 +188,7 @@ services:
     ethereum-watcher:
         container_name: streamr-dev-ethereum-watcher
         image: streamr/ethereum-watcher:dev
-        restart: on-failure
+        restart: unless-stopped
         depends_on:
             - parity-node0
             - engine-and-editor
@@ -214,7 +210,7 @@ services:
         image: streamr/data-union-server:dev
         ports:
           - "8085:8085"
-        restart: on-failure
+        restart: unless-stopped
         environment:
             ETHEREUM_SERVER: http://10.200.10.1:8545
             ETHEREUM_PRIVATE_KEY: 5e98cce00cff5dea6b454889f359a4ec06b9fa6b88e9d69b86de8e1c81887da0
@@ -269,7 +265,7 @@ services:
            - "8545:8540"
            - "8450:8450"
            - "30309:30309"
-         restart: on-failure
+         restart: unless-stopped
          healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8540"]
             interval: 1m30s
@@ -287,7 +283,7 @@ services:
            - "8546:8540"
            - "8451:8450"
            - "30310:30309"
-         restart: on-failure
+         restart: unless-stopped
          healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8540"]
             interval: 1m30s
