@@ -84,6 +84,8 @@ start() {
         FLAGS+=" --scale $service=0"
     done
 
+    FLAGS+=" --remove-orphans"
+
     COMMANDS_TO_RUN+=("echo $msg")
     COMMANDS_TO_RUN+=("$DOCKER_COMPOSE up $FLAGS $SERVICES")
 
