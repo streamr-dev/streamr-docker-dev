@@ -292,20 +292,6 @@ services:
          command: --chain ./streamr-spec.json --config ./node0.toml
          volumes:
            - data-parity-sidechain-node0/:/home/parity/parity_data
-    hsl-demo:
-        restart: unless-stopped
-        container_name: streamr-dev-hsl-demo
-        image: streamr/hsl-demo:dev
-        environment:
-          REMOTE_SECRETS: "false"
-        depends_on:
-            - engine-and-editor
-        healthcheck:
-            test: ["CMD", "echo"] # TODO: health check
-            interval: 10s
-            timeout: 10s
-            retries: 60
-        command: mqtt-streamr --reconnect-on-data-timeout 10 --stream-id YpTAPDbvSAmj-iCUYz-dxA --streamr-url ${STREAMR_WS_URL} --streamr-rest-url ${STREAMR_BASE_URL}/api/v1 --mqtt-url wss://mqtt.hsl.fi --topic /hfp/v1/journey/ongoing/tram/# --api-key tester1-api-key
     bridge-rabbitmq:
         container_name: streamr-dev-bridge-rabbitmq
         environment: ['RABBITMQ_NODENAME=node@bridge-rabbitmq']
@@ -402,7 +388,6 @@ services:
             retries: 60
     bridge:
         container_name: streamr-dev-bridge
-        image: poanetwork/tokenbridge-oracle:latest
         image: tianon/true  # dummy image that does nothing
         depends_on:
             - bridge-senderforeign
