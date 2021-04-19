@@ -16,7 +16,7 @@ DRY_RUN=0
 FOLLOW=0
 WAIT=0
 WAIT_TIMEOUT=300     # seconds
-DOCKER_COMPOSE="docker-compose --ansi never"
+DOCKER_COMPOSE="docker compose --ansi never"
 
 # don't start these services unless explicitly started
 EXCEPT_SERVICES_DEFAULT=() # array of string e.g. ("a" "b")
