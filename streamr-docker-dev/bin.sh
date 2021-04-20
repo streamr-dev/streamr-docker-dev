@@ -47,6 +47,10 @@ help() {
     "$ORIG_DIRNAME/help_scripts.sh" $SERVICES
 }
 
+services() {
+    $DOCKER_COMPOSE config --services
+}
+
 start() {
     ip_lines=$(ifconfig | grep -c 10.200.10.1)
     if [ "$ip_lines" -eq "0" ]; then
@@ -271,6 +275,9 @@ wipe )
     ;;
 factory-reset )
     factory-reset
+    ;;
+services )
+    services
     ;;
 * )
     help
