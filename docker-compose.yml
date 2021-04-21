@@ -95,8 +95,8 @@ services:
             interval: 30s
             timeout: 10s
             retries: 20
-    broker-node-storage-1:
-        container_name: streamr-dev-broker-node-storage-1
+    broker-1:
+        container_name: streamr-dev-broker-1
         image: streamr/broker-node:dev
         restart: unless-stopped
         ports:
@@ -119,8 +119,8 @@ services:
             interval: 30s
             timeout: 10s
             retries: 20
-    broker-node-no-storage-1:
-        container_name: streamr-dev-broker-node-no-storage-1
+    broker-2:
+        container_name: streamr-dev-broker-2
         image: streamr/broker-node:dev
         restart: unless-stopped
         ports:
@@ -140,8 +140,8 @@ services:
             interval: 30s
             timeout: 10s
             retries: 20
-    broker-node-no-storage-2:
-        container_name: streamr-dev-broker-node-no-storage-2
+    broker-3:
+        container_name: streamr-dev-broker-3
         image: streamr/broker-node:dev
         restart: unless-stopped
         ports:
