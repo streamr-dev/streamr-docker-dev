@@ -28,6 +28,8 @@ NODES="$NODE_NO_STORAGE $NODE_STORAGE"
 TRACKERS='tracker-1 tracker-2 tracker-3'
 
 # swap aliases for full names e.g. trackers = tracker-1 tracker-2 tracker-3
+# feel free to add more, just make sure you don't end up using actual service
+# names as alias names
 expandServiceAliases() {
     local names=$1
     names="${names//node-no-storage/$NODE_NO_STORAGE}"
@@ -35,7 +37,7 @@ expandServiceAliases() {
     names="${names//node-storage/$NODE_STORAGE}"
     names="${names//storage-nodes/$NODE_STORAGE}"
     names="${names//brokers/$NODES}"
-    names="${names//nodes/$NODES}"
+    names="${names//nodes/$NODES}" # brokers/nodes sort of interchangeable
     names="${names//trackers/$TRACKERS}"
     echo "$names"
 }
