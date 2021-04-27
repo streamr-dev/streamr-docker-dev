@@ -161,9 +161,9 @@ services:
             interval: 30s
             timeout: 10s
             retries: 20
-    engine-and-editor:
-        container_name: streamr-dev-engine-and-editor
-        image: streamr/engine-and-editor:dev
+    core-api:
+        container_name: streamr-dev-core-api
+        image: streamr/core-api:dev
         ports:
             - "8081:8081"
         depends_on:
@@ -191,7 +191,7 @@ services:
         restart: unless-stopped
         depends_on:
             - parity-node0
-            - engine-and-editor
+            - core-api
         environment:
             STREAMR_API_URL: "${STREAMR_BASE_URL}/api/v1"
             METRICS: null
@@ -229,7 +229,7 @@ services:
         ports:
             - "3333:80"
         depends_on:
-            - engine-and-editor
+            - core-api
             - parity-node0
         environment:
             DATA_UNIONS: "on"
