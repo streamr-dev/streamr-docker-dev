@@ -21,6 +21,27 @@ DOCKER_COMPOSE="docker-compose --ansi never"
 # don't start these services unless explicitly started
 EXCEPT_SERVICES_DEFAULT=() # array of string e.g. ("a" "b")
 
+# Service Aliases
+NODE_NO_STORAGE='broker-node-no-storage-1 broker-node-no-storage-2'
+NODE_STORAGE='broker-node-storage-1'
+NODES="$NODE_NO_STORAGE $NODE_STORAGE"
+TRACKERS='tracker-1 tracker-2 tracker-3'
+
+# swap aliases for full names e.g. trackers = tracker-1 tracker-2 tracker-3
+# feel free to add more, just make sure you don't end up using actual service
+# names as alias names
+expandServiceAliases() {
+    local names=$1
+    names="${names//node-no-storage/$NODE_NO_STORAGE}"
+    names="${names//no-storage-nodes/$NODE_NO_STORAGE}"
+    names="${names//node-storage/$NODE_STORAGE}"
+    names="${names//storage-nodes/$NODE_STORAGE}"
+    names="${names//brokers/$NODES}"
+    names="${names//nodes/$NODES}" # brokers/nodes sort of interchangeable
+    names="${names//trackers/$TRACKERS}"
+    echo "$names"
+}
+
 # Execute all commands from the root dir of streamr-docker-dev
 cd "$ROOT_DIR" || exit 1
 
@@ -45,6 +66,10 @@ fi
 
 help() {
     "$ORIG_DIRNAME/help_scripts.sh" $SERVICES
+}
+
+services() {
+    $DOCKER_COMPOSE config --services
 }
 
 start() {
@@ -234,6 +259,10 @@ while [ $# -gt 0 ]; do # if there are arguments
     shift
 done
 
+EXCEPT_SERVICES_DEFAULT=($(expandServiceAliases "${EXCEPT_SERVICES_DEFAULT[*]}"))
+SERVICES=$(expandServiceAliases "$SERVICES")
+EXCEPT_SERVICES=($(expandServiceAliases "${EXCEPT_SERVICES[*]}"))
+
 # Populate COMMANDS_TO_RUN by executing the relevant method
 case $OPERATION in
 "" | help )
@@ -271,6 +300,9 @@ wipe )
     ;;
 factory-reset )
     factory-reset
+    ;;
+services )
+    services
     ;;
 * )
     help
