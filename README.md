@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://streamr.network">
-    <img alt="Streamr" src="https://raw.githubusercontent.com/streamr-dev/streamr-docker-dev/master/docker-header-img.png" width="1320" />
+    <img alt="Streamr" src="https://raw.githubusercontent.com/streamr-dev/streamr-docker-dev/master/readme-docker-header.png" width="1320" />
   </a>
 </p>
 <h1 align="left">
