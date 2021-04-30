@@ -29,11 +29,10 @@ TRACKERS='tracker-1 tracker-2 tracker-3'
 
 # swap aliases for full names e.g. trackers = tracker-1 tracker-2 tracker-3
 # feel free to add more, just make sure you don't end up using actual service
-# names as alias names
+# names, or part-thereof as alias names
 expandServiceAliases() {
     local names=$1
     # aliases should be plural to reduce possibility of conflicts with service names
-    names="${names//node-no-storage/$NODE_NO_STORAGE}"
     names="${names//no-storage-nodes/$NODE_NO_STORAGE}"
     names="${names//storage-nodes/$NODE_STORAGE}"
     names="${names//brokers/$NODES}"
