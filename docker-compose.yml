@@ -397,6 +397,7 @@ services:
             - bridge-redis
             - bridge-request
     graph-node:
+        container_name: streamr-dev-thegraph-node
         image: graphprotocol/graph-node
         ports:
             - '8000:8000'
@@ -413,16 +414,18 @@ services:
             postgres_user: streamr
             postgres_pass: let-me-in
             postgres_db: streamr
-            ipfs: 'ipfs:5001'
+            ipfs: 'streamr-dev-ipfs:5001'
             ethereum: 'mainnet:http://host.docker.internal:8546'
             RUST_LOG: info
     ipfs:
+        container_name: streamr-dev-ipfs
         image: ipfs/go-ipfs:v0.4.23
         ports:
             - '5001:5001'
         volumes:
-            - ./data/ipfs:/data/ipfs
+            - data-ipfs:/data/ipfs
     postgres:
+        container_name: streamr-dev-postgres
         image: postgres
         ports:
             - '5432:5432'
@@ -432,19 +435,26 @@ services:
             POSTGRES_PASSWORD: let-me-in
             POSTGRES_DB: streamr
         volumes:
-            - ./data/postgres:/var/lib/postgresql/data
+            - data-postgres:/var/lib/postgresql/data
     chainlink:
+        container_name: streamr-dev-chainlink-node
         image: smartcontract/chainlink:0.10.5
-        port:  
+        ports:  
             - '6688:6688'
-        command: ["local", "n"]
+        command: ["local", "n", "-p", "/chainlink/.password", "-a", "/chainlink/.api"]
         env_file: 
-            - ./chainlink_config/.env
+            - ./chainlink_config/.env_streamr_sidechain
         volumes:
-            - ./chainlink_config/:/chainlink
+            - ./chainlink_config:/chainlink
         depends_on: 
             - parity-sidechain-node0
             - postgres
+        deploy:
+            restart_policy:
+                condition: on-failure
+                delay: 3s
+                max_attempts: 5
+                window: 60s
 
 networks:
     net-db-bridge-request:
@@ -475,3 +485,6 @@ volumes:
     data-parity-node0:
     data-parity-sidechain-node0:
     data-ethereum-watcher:
+    data-chainlink:
+    data-ipfs:
+    data-postgres:
