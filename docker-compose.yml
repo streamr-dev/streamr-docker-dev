@@ -435,7 +435,7 @@ services:
             POSTGRES_PASSWORD: let-me-in
             POSTGRES_DB: streamr
         volumes:
-            - data-postgres:/var/lib/postgresql/data
+            - ./postgres:/var/lib/postgresql/data
     chainlink:
         container_name: streamr-dev-chainlink-node
         image: smartcontract/chainlink:0.10.5
@@ -449,12 +449,18 @@ services:
         depends_on: 
             - parity-sidechain-node0
             - postgres
+            - chainlink-external-adapter
         deploy:
             restart_policy:
                 condition: on-failure
                 delay: 3s
                 max_attempts: 5
                 window: 60s
+    chainlink-external-adapter:
+        container_name: streamr-dev-chainlink-adapter
+        image: streamr/chainlink-external-adapter
+        ports: 
+            - 6691:8080
 
 networks:
     net-db-bridge-request:
@@ -485,6 +491,4 @@ volumes:
     data-parity-node0:
     data-parity-sidechain-node0:
     data-ethereum-watcher:
-    data-chainlink:
     data-ipfs:
-    data-postgres:
