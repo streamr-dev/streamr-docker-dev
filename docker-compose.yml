@@ -434,6 +434,7 @@ services:
             POSTGRES_USER: streamr
             POSTGRES_PASSWORD: let-me-in
             POSTGRES_DB: streamr
+        user: ${CURRENT_UID}
         volumes:
             - ./postgres:/var/lib/postgresql/data
     chainlink:
@@ -446,6 +447,7 @@ services:
             - ./chainlink_config/.env_streamr_sidechain
         volumes:
             - ./chainlink_config:/chainlink
+        user: ${CURRENT_UID}
         depends_on: 
             - parity-sidechain-node0
             - postgres
