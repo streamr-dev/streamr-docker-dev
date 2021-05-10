@@ -434,9 +434,9 @@ services:
             POSTGRES_USER: streamr
             POSTGRES_PASSWORD: let-me-in
             POSTGRES_DB: streamr
-        user: ${CURRENT_UID}
-        volumes:
-            - ./postgres:/var/lib/postgresql/data
+        # user: ${CURRENT_UID}
+        volumes: ['data-postgres:/var/lib/postgresql/data']
+        #     - ./postgres:/var/lib/postgresql/data
     chainlink:
         container_name: streamr-dev-chainlink-node
         image: smartcontract/chainlink:0.10.5
@@ -494,3 +494,4 @@ volumes:
     data-parity-sidechain-node0:
     data-ethereum-watcher:
     data-ipfs:
+    data-postgres:
