@@ -426,7 +426,7 @@ services:
             - data-ipfs:/data/ipfs
     postgres:
         container_name: streamr-dev-postgres
-        image: streamr/postgres
+        image: postgres
         ports:
             - '5432:5432'
         command: ["postgres", "-cshared_preload_libraries=pg_stat_statements"]
@@ -435,7 +435,7 @@ services:
             POSTGRES_PASSWORD: let-me-in
             POSTGRES_DB: streamr
         # user: ${CURRENT_UID}
-        volumes: ['data-postgres:/var/lib/postgresql/data']
+        # volumes: ['data-postgres:/var/lib/postgresql/data']
         #     - ./postgres:/var/lib/postgresql/data
     chainlink:
         container_name: streamr-dev-chainlink-node
@@ -494,4 +494,3 @@ volumes:
     data-parity-sidechain-node0:
     data-ethereum-watcher:
     data-ipfs:
-    data-postgres:
