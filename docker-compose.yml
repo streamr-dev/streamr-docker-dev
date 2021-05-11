@@ -415,7 +415,7 @@ services:
             postgres_pass: let-me-in
             postgres_db: streamr
             ipfs: 'streamr-dev-ipfs:5001'
-            ethereum: 'mainnet:http://host.docker.internal:8546'
+            ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8540'
             RUST_LOG: info
     ipfs:
         container_name: streamr-dev-ipfs
@@ -434,9 +434,9 @@ services:
             POSTGRES_USER: streamr
             POSTGRES_PASSWORD: let-me-in
             POSTGRES_DB: streamr
-        # user: ${CURRENT_UID}
-        # volumes: ['data-postgres:/var/lib/postgresql/data']
-        #     - ./postgres:/var/lib/postgresql/data
+        volumes:
+            - data-postgres:/var/lib/postgresql/data
+            - ./postgres_init_scripts:/docker-entrypoint-initdb.d
     chainlink:
         container_name: streamr-dev-chainlink-node
         image: smartcontract/chainlink:0.10.5
@@ -494,3 +494,4 @@ volumes:
     data-parity-sidechain-node0:
     data-ethereum-watcher:
     data-ipfs:
+    data-postgres:
