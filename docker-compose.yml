@@ -278,7 +278,7 @@ services:
          container_name: streamr-dev-parity-sidechain-node0
          environment:
             CHAIN_ID: 0x2325
-         image: streamr/open-ethereum-poa-sidechain-preload1:dev
+         image: streamr/open-ethereum-poa-sidechain-preload1:dev-eth-61
          ports:
            - "8546:8540"
            - "8451:8450"
@@ -463,6 +463,8 @@ services:
         image: streamr/chainlink-external-adapter
         ports: 
             - 6691:8080
+        depends_on: 
+            - parity-node0
 
 networks:
     net-db-bridge-request:
