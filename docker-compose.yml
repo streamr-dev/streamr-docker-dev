@@ -460,7 +460,7 @@ services:
                 window: 60s
     chainlink-external-adapter:
         container_name: streamr-dev-chainlink-adapter
-        image: streamr/chainlink-external-adapter
+        image: streamr/chainlink-external-adapter:dev
         ports: 
             - 6691:8080
         depends_on: 
