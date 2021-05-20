@@ -215,7 +215,7 @@ streamr-docker-dev start --wait
   - The Data Union Server will be retired when Data Unions 2.0 is launched in Q1 of 2021
 - 1 x [ethereum-watcher](https://github.com/streamr-dev/streamr-ethereum-watcher)
 - 1 x [Chainlink node](https://github.com/streamr-dev/network-contracts)
-  - accessible at http://localhost:6688, user:a@a.com, password:Augustiner
+  - accessible at http://localhost:6688, user:a@a.com, password:testpass
 - 1 x [TheGraph node](https://github.com/streamr-dev/network-contracts)
   - GraphQL queries at http://localhost:8000/subgraphs/name/githubname/subgraphname
   - GUI to past GraphQL queries: http://192.168.0.8:8000/subgraphs/name/githubname/subgraphname/graphql
