@@ -417,6 +417,13 @@ services:
             ipfs: 'streamr-dev-ipfs:5001'
             ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8540'
             RUST_LOG: info
+    graph-deploy-streamregistry-subgraph:
+        container_name: streamr-dev-graph-deploy-streamreg-subgraph
+        image: streamr/graph-deploy-streamregistry-subgraph:dev
+        depends_on: 
+            - graph-node
+        volumes:
+            - data-graph-deploy:/firstrun
     ipfs:
         container_name: streamr-dev-ipfs
         image: ipfs/go-ipfs:v0.4.23
@@ -497,3 +504,4 @@ volumes:
     data-ethereum-watcher:
     data-ipfs:
     data-postgres:
+    data-graph-deploy:
