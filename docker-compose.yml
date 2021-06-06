@@ -278,7 +278,7 @@ services:
          container_name: streamr-dev-parity-sidechain-node0
          environment:
             CHAIN_ID: 0x2325
-         image: streamr/open-ethereum-poa-sidechain-preload1:dev-eth-61
+         image: streamr/open-ethereum-poa-sidechain-preload1:dev
          ports:
            - "8546:8540"
            - "8451:8450"
@@ -420,7 +420,7 @@ services:
     graph-deploy-streamregistry-subgraph:
         container_name: streamr-dev-graph-deploy-streamreg-subgraph
         image: streamr/graph-deploy-streamregistry-subgraph:dev
-        depends_on: 
+        depends_on:
             - graph-node
         volumes:
             - data-graph-deploy:/firstrun
@@ -447,15 +447,15 @@ services:
     chainlink:
         container_name: streamr-dev-chainlink-node
         image: smartcontract/chainlink:0.10.5
-        ports:  
+        ports:
             - '6688:6688'
         command: ["local", "n", "-p", "/chainlink/.password", "-a", "/chainlink/.api"]
-        env_file: 
+        env_file:
             - ./chainlink_config/.env_streamr_sidechain
         volumes:
             - ./chainlink_config:/chainlink
         user: ${CURRENT_UID}
-        depends_on: 
+        depends_on:
             - parity-sidechain-node0
             - postgres
             - chainlink-external-adapter
@@ -468,9 +468,9 @@ services:
     chainlink-external-adapter:
         container_name: streamr-dev-chainlink-adapter
         image: streamr/chainlink-external-adapter:dev
-        ports: 
+        ports:
             - 6691:8080
-        depends_on: 
+        depends_on:
             - parity-node0
 
 networks:
