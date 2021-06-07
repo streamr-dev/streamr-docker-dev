@@ -417,6 +417,11 @@ services:
             ipfs: 'streamr-dev-ipfs:5001'
             ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8540'
             RUST_LOG: info
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
     graph-deploy-streamregistry-subgraph:
         container_name: streamr-dev-graph-deploy-streamreg-subgraph
         image: streamr/graph-deploy-streamregistry-subgraph:dev
@@ -431,6 +436,11 @@ services:
             - '5001:5001'
         volumes:
             - data-ipfs:/data/ipfs
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
     postgres:
         container_name: streamr-dev-postgres
         image: postgres
@@ -444,6 +454,11 @@ services:
         volumes:
             - data-postgres:/var/lib/postgresql/data
             - ./postgres_init_scripts:/docker-entrypoint-initdb.d
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
     chainlink:
         container_name: streamr-dev-chainlink-node
         image: smartcontract/chainlink:0.10.5
@@ -465,6 +480,11 @@ services:
                 delay: 3s
                 max_attempts: 5
                 window: 60s
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
     chainlink-external-adapter:
         container_name: streamr-dev-chainlink-adapter
         image: streamr/chainlink-external-adapter:dev
@@ -472,6 +492,11 @@ services:
             - 6691:8080
         depends_on:
             - parity-node0
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
 
 networks:
     net-db-bridge-request:
