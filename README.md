@@ -214,7 +214,29 @@ streamr-docker-dev start --wait
   - The Data Union Server manages the state of the 
   - The Data Union Server will be retired when Data Unions 2.0 is launched in Q1 of 2021
 - 1 x [ethereum-watcher](https://github.com/streamr-dev/streamr-ethereum-watcher)
-
+- 1 x [Chainlink node](https://github.com/streamr-dev/network-contracts)
+  - accessible at http://localhost:6688, user:a@a.com, password:testpass
+- 1 x [TheGraph node](https://github.com/streamr-dev/network-contracts)
+  - GraphQL queries at http://localhost:8000/subgraphs/name/githubname/subgraphname
+  - GUI to past GraphQL queries: http://192.168.0.8:8000/subgraphs/name/githubname/subgraphname/graphql
+  - An example query is:
+```
+{
+   streams {
+    id,
+    metadata,
+    permissions {
+      id,
+  		user,
+  		edit,
+      canDelete,
+      publish,
+      subscribed,
+      share,
+    }
+  }
+}
+```
 ### Supporting services
 - 1 x MySQL instance with databases `core_dev` and `core_test`
 - 1 x Redis instance
@@ -223,6 +245,9 @@ streamr-docker-dev start --wait
 - 1 x [Ethereum Parity node ("mainchain")](https://github.com/streamr-dev/open-ethereum-poa)
 - 1 x [Ethereum Parity node ("sidechain")](https://github.com/streamr-dev/open-ethereum-poa)
 - 1 x nginx
+- 1 x Postgres DB for TheGraph and Chainlink
+- 1 x ipfs for TheGraph
+- 1 x external adapter for ENSqueries from chainlink to mainchain
 
 ## Troubleshooting
 
