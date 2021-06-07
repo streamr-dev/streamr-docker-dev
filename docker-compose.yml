@@ -396,6 +396,107 @@ services:
             - bridge-rabbitmq
             - bridge-redis
             - bridge-request
+    graph-node:
+        container_name: streamr-dev-thegraph-node
+        image: graphprotocol/graph-node
+        ports:
+            - '8000:8000'
+            - '8001:8001'
+            - '8020:8020'
+            - '8030:8030'
+            - '8040:8040'
+        depends_on:
+            - ipfs
+            - postgres
+            - parity-sidechain-node0
+        environment:
+            postgres_host: postgres
+            postgres_user: streamr
+            postgres_pass: let-me-in
+            postgres_db: streamr
+            ipfs: 'streamr-dev-ipfs:5001'
+            ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8540'
+            RUST_LOG: info
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
+    graph-deploy-streamregistry-subgraph:
+        container_name: streamr-dev-graph-deploy-streamreg-subgraph
+        image: streamr/graph-deploy-streamregistry-subgraph:dev
+        depends_on:
+            - graph-node
+        volumes:
+            - data-graph-deploy:/firstrun
+    ipfs:
+        container_name: streamr-dev-ipfs
+        image: ipfs/go-ipfs:v0.4.23
+        ports:
+            - '5001:5001'
+        volumes:
+            - data-ipfs:/data/ipfs
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
+    postgres:
+        container_name: streamr-dev-postgres
+        image: postgres
+        ports:
+            - '5432:5432'
+        command: ["postgres", "-cshared_preload_libraries=pg_stat_statements"]
+        environment:
+            POSTGRES_USER: streamr
+            POSTGRES_PASSWORD: let-me-in
+            POSTGRES_DB: streamr
+        volumes:
+            - data-postgres:/var/lib/postgresql/data
+            - ./postgres_init_scripts:/docker-entrypoint-initdb.d
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
+    chainlink:
+        container_name: streamr-dev-chainlink-node
+        image: smartcontract/chainlink:0.10.5
+        ports:
+            - '6688:6688'
+        command: ["local", "n", "-p", "/chainlink/.password", "-a", "/chainlink/.api"]
+        env_file:
+            - ./chainlink_config/.env_streamr_sidechain
+        volumes:
+            - ./chainlink_config:/chainlink
+        user: ${CURRENT_UID}
+        depends_on:
+            - parity-sidechain-node0
+            - postgres
+            - chainlink-external-adapter
+        deploy:
+            restart_policy:
+                condition: on-failure
+                delay: 3s
+                max_attempts: 5
+                window: 60s
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
+    chainlink-external-adapter:
+        container_name: streamr-dev-chainlink-adapter
+        image: streamr/chainlink-external-adapter:dev
+        ports:
+            - 6691:8080
+        depends_on:
+            - parity-node0
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
 
 networks:
     net-db-bridge-request:
@@ -426,3 +527,6 @@ volumes:
     data-parity-node0:
     data-parity-sidechain-node0:
     data-ethereum-watcher:
+    data-ipfs:
+    data-postgres:
+    data-graph-deploy:
