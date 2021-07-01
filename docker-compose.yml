@@ -195,7 +195,7 @@ services:
         environment:
             STREAMR_API_URL: "${STREAMR_BASE_URL}/api/v1"
             DEVOPS_KEY: "0x628acb12df34bb30a0b2f95ec2e6a743b386c5d4f63aa9f338bec6f613160e78"
-            NETWORK_ID: "rinkeby"
+            NETWORK_ID: "8995"
             MARKETPLACE_ADDRESS: "0xf1371c0f40528406dc4f4caf89924ea9da49e866"
             ETHEREUM_SERVER_URL: "http://10.200.10.1:8545"
         volumes:
