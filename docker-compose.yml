@@ -511,7 +511,6 @@ networks:
 volumes:
     mysql_init_scripts:
     cassandra_init_scripts:
-    cassandra_init_scripts:
     data-bridge-data-rabbitmq:
     data-bridge-data-redis:
     data-mysql:
