@@ -556,12 +556,6 @@ services:
             - parity-sidechain-node0
             - postgres
             - chainlink-external-adapter
-        deploy:
-            restart_policy:
-                condition: on-failure
-                delay: 3s
-                max_attempts: 5
-                window: 60s
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
