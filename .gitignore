@@ -2,3 +2,4 @@ data/
 .idea
 .env
 certs/
+/chainlink_config/tempkeys
