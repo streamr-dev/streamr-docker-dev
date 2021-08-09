@@ -69,7 +69,7 @@ services:
             - "30301:30301"
         volumes:
           - ./certs:/certs
-        command: node tracker.js 0xa4fc7b912ed4588080ac9f2044cb3d6cab961bcf0d96de6fa9e773860bf59e1c tracker-1 --port=30301 ${TRACKER_ARGS}
+        command: node tracker.js 0xe5abc5ee43b8830e7b0f98d03efff5d6cae574d52a43204528eab7b52cd6408d tracker-1 --port=30301 ${TRACKER_ARGS}
         healthcheck:
             test: ["CMD", "curl", "-sS", "--insecure", "${STREAMR_BASE_URL}:30301/topology/"]
             interval: 30s
@@ -83,7 +83,7 @@ services:
             - "30302:30302"
         volumes:
           - ./certs:/certs
-        command: node tracker.js 0x3b328103c0d043cd1b34f1203c0313eb70c98443444dfdf7125f2d4479b89eb9 tracker-2 --port=30302 ${TRACKER_ARGS}
+        command: node tracker.js 0x96de9d06f9e409119a2cd9b57dfc326f66d953a0418f3937b92c8930f930893c tracker-2 --port=30302 ${TRACKER_ARGS}
         healthcheck:
             test: ["CMD", "curl", "-sS", "--insecure", "${STREAMR_BASE_URL}:30302/topology/"]
             interval: 30s
@@ -97,7 +97,7 @@ services:
             - "30303:30303"
         volumes:
           - ./certs:/certs
-        command: node tracker.js 0xf456bb2a958574416f4b9e1b1b642cb3092953aa6131aba6e36f7529d1137795 tracker-3 --port=30303 ${TRACKER_ARGS}
+        command: node tracker.js 0x6117b7a7cb8f3c8d40e3b7e87823c11af7f401515bc4fdf2bfdda70f1b833027 tracker-3 --port=30303 ${TRACKER_ARGS}
         healthcheck:
             test: ["CMD", "curl", "-sS", "--insecure", "${STREAMR_BASE_URL}:30303/topology/"]
             interval: 30s
