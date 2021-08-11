@@ -3,6 +3,8 @@ services:
     cassandra:
         container_name: streamr-dev-cassandra
         image: streamr/cassandra:v0.0.1
+        networks:
+            - streamr-network
         ports:
             - "7000:7000"
             - "7001:7001"
@@ -15,6 +17,8 @@ services:
     init-keyspace:
         container_name: streamr-dev-init-keyspace
         image: cassandra:3.11.5
+        networks:
+            - streamr-network
         command: bash -c "sleep 5 && cqlsh cassandra -f /init_scripts/keyspace.cql && echo keyspace initialized"
         restart: on-failure # exits on success
         volumes:
@@ -24,6 +28,8 @@ services:
     mysql:
         container_name: streamr-dev-mysql
         image: streamr/mysql:v0.0.1
+        networks:
+            - streamr-network
         ports:
             - "3306:3306"
         volumes:
@@ -36,24 +42,24 @@ services:
     redis:
         container_name: streamr-dev-redis
         image: streamr/redis:v0.0.1
+        networks:
+            - streamr-network
         ports:
             - "6379:6379"
-        networks:
-            - default
-            - net-db-bridge-request
-            - net-db-bridge-affirmation
-            - net-db-bridge-senderhome
-            - net-db-bridge-senderforeign
         restart: unless-stopped
         volumes: ['data-bridge-data-redis:/data']
     smtp:
         container_name: streamr-dev-smtp
         image: streamr/smtp:v0.0.1
+        networks:
+            - streamr-network
         ports:
             - "25:25"
     nginx:
         container_name: streamr-dev-nginx
         image: streamr/nginx:v0.0.3
+        networks:
+            - streamr-network
         restart: unless-stopped
         ports:
           - "80:80"
@@ -64,6 +70,8 @@ services:
     tracker-1:
         container_name: streamr-dev-tracker-1
         image: streamr/broker-node:dev
+        networks:
+            - streamr-network
         restart: unless-stopped
         ports:
             - "30301:30301"
@@ -78,6 +86,8 @@ services:
     tracker-2:
         container_name: streamr-dev-tracker-2
         image: streamr/broker-node:dev
+        networks:
+            - streamr-network
         restart: unless-stopped
         ports:
             - "30302:30302"
@@ -92,6 +102,8 @@ services:
     tracker-3:
         container_name: streamr-dev-tracker-3
         image: streamr/broker-node:dev
+        networks:
+            - streamr-network
         restart: unless-stopped
         ports:
             - "30303:30303"
@@ -106,6 +118,8 @@ services:
     broker-node-storage-1:
         container_name: streamr-dev-broker-node-storage-1
         image: streamr/broker-node:dev
+        networks:
+            - streamr-network
         restart: unless-stopped
         ports:
             - "8890:8890"
@@ -130,6 +144,8 @@ services:
     broker-node-no-storage-1:
         container_name: streamr-dev-broker-node-no-storage-1
         image: streamr/broker-node:dev
+        networks:
+            - streamr-network
         restart: unless-stopped
         ports:
             - "8790:8790"
@@ -151,6 +167,8 @@ services:
     broker-node-no-storage-2:
         container_name: streamr-dev-broker-node-no-storage-2
         image: streamr/broker-node:dev
+        networks:
+            - streamr-network
         restart: unless-stopped
         ports:
             - "8690:8690"
@@ -172,6 +190,8 @@ services:
     core-api:
         container_name: streamr-dev-core-api
         image: streamr/core-api:dev
+        networks:
+            - streamr-network
         ports:
             - "8081:8081"
         depends_on:
@@ -196,6 +216,8 @@ services:
     ethereum-watcher:
         container_name: streamr-dev-ethereum-watcher
         image: streamr/ethereum-watcher:dev
+        networks:
+            - streamr-network
         restart: unless-stopped
         depends_on:
             - parity-node0
@@ -216,6 +238,8 @@ services:
     data-union-server:
         container_name: streamr-dev-data-union-server
         image: streamr/data-union-server:dev
+        networks:
+            - streamr-network
         ports:
           - "8085:8085"
         restart: unless-stopped
@@ -234,6 +258,8 @@ services:
     platform:
         container_name: streamr-dev-platform
         image: streamr/platform:dev
+        networks:
+            - streamr-network
         ports:
             - "3333:80"
         depends_on:
@@ -249,6 +275,8 @@ services:
     network-explorer:
         container_name: streamr-dev-network-explorer
         image: streamr/network-explorer:dev
+        networks:
+            - streamr-network
         ports:
             - "3334:3000"
         healthcheck:
@@ -270,6 +298,8 @@ services:
          environment:
             CHAIN_ID: 0x2323
          image: streamr/open-ethereum-poa-mainchain-preload1:dev
+         networks:
+             - streamr-network
          ports:
            - "8545:8540"
            - "8450:8450"
@@ -288,6 +318,8 @@ services:
          environment:
             CHAIN_ID: 0x2325
          image: streamr/open-ethereum-poa-sidechain-preload1:dev
+         networks:
+             - streamr-network
          ports:
            - "8546:8540"
            - "8451:8450"
@@ -307,10 +339,7 @@ services:
         hostname: bridge-rabbitmq
         image: rabbitmq:3
         networks:
-            - net-rabbit-bridge-request
-            - net-rabbit-bridge-affirmation
-            - net-rabbit-bridge-senderhome
-            - net-rabbit-bridge-senderforeign
+            - streamr-network
         restart: unless-stopped
         volumes: ['data-bridge-data-rabbitmq:/var/lib/rabbitmq/mnesia']
         healthcheck:
@@ -321,13 +350,12 @@ services:
     bridge-request:
         container_name: streamr-dev-bridge-request
         image: poanetwork/tokenbridge-oracle:latest
+        networks:
+            - streamr-network
         env_file:
             - ./oracles.env
         restart: unless-stopped
         entrypoint: yarn watcher:signature-request
-        networks:
-            - net-db-bridge-request
-            - net-rabbit-bridge-request
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -336,13 +364,12 @@ services:
     bridge-affirmation:
         container_name: streamr-dev-bridge-affirmation
         image: poanetwork/tokenbridge-oracle:latest
+        networks:
+            - streamr-network
         env_file:
             - ./oracles.env
         restart: unless-stopped
         entrypoint: yarn watcher:affirmation-request
-        networks:
-            - net-db-bridge-affirmation
-            - net-rabbit-bridge-affirmation
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -351,13 +378,12 @@ services:
     bridge-senderhome:
         container_name: streamr-dev-bridge-senderhome
         image: poanetwork/tokenbridge-oracle:latest
+        networks:
+            - streamr-network
         env_file:
             - ./oracles.env
         restart: unless-stopped
         entrypoint: yarn sender:home
-        networks:
-            - net-db-bridge-senderhome
-            - net-rabbit-bridge-senderhome
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -366,13 +392,12 @@ services:
     bridge-senderforeign:
         container_name: streamr-dev-bridge-senderforeign
         image: poanetwork/tokenbridge-oracle:latest
+        networks:
+            - streamr-network
         env_file:
             - ./oracles.env
         restart: unless-stopped
         entrypoint: yarn sender:foreign
-        networks:
-            - net-db-bridge-senderforeign
-            - net-rabbit-bridge-senderforeign
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -381,6 +406,8 @@ services:
     bridge:
         container_name: streamr-dev-bridge
         image: tianon/true  # dummy image that does nothing
+        networks:
+            - streamr-network
         depends_on:
             - bridge-senderforeign
             - bridge-senderhome
@@ -391,6 +418,8 @@ services:
     graph-node:
         container_name: streamr-dev-thegraph-node
         image: graphprotocol/graph-node
+        networks:
+            - streamr-network
         ports:
             - '8000:8000'
             - '8001:8001'
@@ -417,6 +446,8 @@ services:
     graph-deploy-streamregistry-subgraph:
         container_name: streamr-dev-graph-deploy-streamreg-subgraph
         image: streamr/graph-deploy-streamregistry-subgraph:dev
+        networks:
+            - streamr-network
         depends_on:
             - graph-node
         volumes:
@@ -424,6 +455,8 @@ services:
     ipfs:
         container_name: streamr-dev-ipfs
         image: ipfs/go-ipfs:v0.4.23
+        networks:
+            - streamr-network
         ports:
             - '5001:5001'
         volumes:
@@ -436,6 +469,8 @@ services:
     postgres:
         container_name: streamr-dev-postgres
         image: postgres
+        networks:
+            - streamr-network
         ports:
             - '5432:5432'
         command: ["postgres", "-cshared_preload_libraries=pg_stat_statements"]
@@ -454,6 +489,8 @@ services:
     chainlink:
         container_name: streamr-dev-chainlink-node
         image: smartcontract/chainlink:0.10.5
+        networks:
+            - streamr-network
         ports:
             - '6688:6688'
         command: ["local", "n", "-p", "/chainlink/.password", "-a", "/chainlink/.api"]
@@ -480,6 +517,8 @@ services:
     chainlink-external-adapter:
         container_name: streamr-dev-chainlink-adapter
         image: streamr/chainlink-external-adapter:dev
+        networks:
+            - streamr-network
         ports:
             - 6691:8080
         depends_on:
@@ -491,21 +530,7 @@ services:
             retries: 60
 
 networks:
-    net-db-bridge-request:
-        driver: bridge
-    net-db-bridge-affirmation:
-        driver: bridge
-    net-db-bridge-senderhome:
-        driver: bridge
-    net-db-bridge-senderforeign:
-        driver: bridge
-    net-rabbit-bridge-request:
-        driver: bridge
-    net-rabbit-bridge-affirmation:
-        driver: bridge
-    net-rabbit-bridge-senderhome:
-        driver: bridge
-    net-rabbit-bridge-senderforeign:
+    streamr-network:
         driver: bridge
 
 volumes:
