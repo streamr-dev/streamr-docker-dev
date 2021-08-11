@@ -350,53 +350,53 @@ services:
             REACT_APP_MAPBOX_TOKEN: "pk.eyJ1IjoibWF0dGlubmVzIiwiYSI6ImNrNWhrN2FubDA0cGgzam1ycHV6Nmg2dHoifQ.HC5_Wu1R-OqRLza1u6P3Ig"
             REACT_APP_MOCK_API_URL: "${STREAMR_BASE_URL}/network-explorer-mock-api"
     parity-node0:
-         container_name: streamr-dev-parity-node0
-         environment:
+        container_name: streamr-dev-parity-node0
+        environment:
             CHAIN_ID: 0x2323
-         image: streamr/open-ethereum-poa-mainchain-preload1:dev
-         networks:
-             - streamr-network
-         ports:
-           - "8545:8540"
-           - "8450:8450"
-           - "30309:30309"
-         restart: unless-stopped
-         healthcheck:
+        image: streamr/open-ethereum-poa-mainchain-preload1:dev
+        networks:
+            - streamr-network
+        ports:
+            - "8545:8540"
+            - "8450:8450"
+            - "30309:30309"
+        restart: unless-stopped
+        healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8540"]
             interval: 1m30s
             timeout: 10s
             retries: 3
-         command: --chain ./streamr-spec.json --config ./node0.toml
-         volumes:
-             - type: volume
-               source: data-parity-node0
-               target: /home/parity/parity_data
-               volume:
-                   nocopy: true
+        command: --chain ./streamr-spec.json --config ./node0.toml
+        volumes:
+            - type: volume
+              source: data-parity-node0
+              target: /home/parity/parity_data
+              volume:
+                  nocopy: true
     parity-sidechain-node0:
-         container_name: streamr-dev-parity-sidechain-node0
-         environment:
+        container_name: streamr-dev-parity-sidechain-node0
+        environment:
             CHAIN_ID: 0x2325
-         image: streamr/open-ethereum-poa-sidechain-preload1:dev
-         networks:
-             - streamr-network
-         ports:
-           - "8546:8540"
-           - "8451:8450"
-           - "30310:30309"
-         restart: unless-stopped
-         healthcheck:
+        image: streamr/open-ethereum-poa-sidechain-preload1:dev
+        networks:
+            - streamr-network
+        ports:
+            - "8546:8540"
+            - "8451:8450"
+            - "30310:30309"
+        restart: unless-stopped
+        healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8540"]
             interval: 1m30s
             timeout: 10s
             retries: 3
-         command: --chain ./streamr-spec.json --config ./node0.toml
-         volumes:
-             - type: volume
-               source: data-parity-sidechain-node0
-               target: /home/parity/parity_data
-               volume:
-                   nocopy: true
+        command: --chain ./streamr-spec.json --config ./node0.toml
+        volumes:
+            - type: volume
+              source: data-parity-sidechain-node0
+              target: /home/parity/parity_data
+              volume:
+                  nocopy: true
     bridge-rabbitmq:
         container_name: streamr-dev-bridge-rabbitmq
         environment: ['RABBITMQ_NODENAME=node@bridge-rabbitmq']
