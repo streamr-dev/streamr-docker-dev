@@ -10,6 +10,7 @@ Commands:
     help                show this screen
     start               start services
     stop                stop services
+    services            list all services
     restart             stop and start services
     wait                wait for all health checks to pass
     ps                  list docker containers
