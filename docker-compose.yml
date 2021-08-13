@@ -797,10 +797,10 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.5'
-                    memory: 100M
+                    cpus: '1.0'
+                    memory: 1G
                 reservations:
-                    memory: 20M
+                    memory: 6M
     chainlink-external-adapter:
         container_name: streamr-dev-chainlink-external-adapter
         image: streamr/chainlink-external-adapter:dev
