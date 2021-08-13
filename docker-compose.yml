@@ -704,7 +704,7 @@ services:
             resources:
                 limits:
                     cpus: '0.5'
-                    memory: 20M
+                    memory: 150M
                 reservations:
                     memory: 6M
     ipfs:
