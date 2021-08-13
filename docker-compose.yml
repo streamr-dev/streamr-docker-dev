@@ -11,11 +11,7 @@ services:
             - "9160:9160"
         volumes:
             - data-cassandra:/var/lib/cassandra
-        healthcheck:
-            test: ["CMD", "cqlsh", "-e", "SHOW HOST"]
-            interval: 10s
-            timeout: 10s
-            retries: 60
+        restart: unless-stopped
     init-keyspace:
         container_name: streamr-dev-init-keyspace
         image: cassandra:3.11.5
@@ -34,7 +30,7 @@ services:
             - data-mysql:/var/lib/mysql:rw
             - ./mysql_init_scripts:/docker-entrypoint-initdb.d
             - ./custom-mysql-settings.cnf:/etc/mysql/conf.d/custom-mysql-settings.cnf
-        restart: on-failure
+        restart: unless-stopped
         environment:
             MYSQL_ROOT_PASSWORD: password
     redis:
@@ -42,6 +38,14 @@ services:
         image: streamr/redis:v0.0.1
         ports:
             - "6379:6379"
+        networks:
+            - default
+            - net-db-bridge-request
+            - net-db-bridge-affirmation
+            - net-db-bridge-senderhome
+            - net-db-bridge-senderforeign
+        restart: unless-stopped
+        volumes: ['data-bridge-data-redis:/data']
     smtp:
         container_name: streamr-dev-smtp
         image: streamr/smtp:v0.0.1
@@ -50,7 +54,7 @@ services:
     nginx:
         container_name: streamr-dev-nginx
         image: streamr/nginx:v0.0.3
-        restart: on-failure
+        restart: unless-stopped
         ports:
           - "80:80"
           - "443:443"
@@ -60,49 +64,49 @@ services:
     tracker-1:
         container_name: streamr-dev-tracker-1
         image: streamr/broker-node:dev
-        restart: on-failure
+        restart: unless-stopped
         ports:
             - "30301:30301"
         volumes:
           - ./certs:/certs
-        command: node tracker.js 0xa4fc7b912ed4588080ac9f2044cb3d6cab961bcf0d96de6fa9e773860bf59e1c tracker-1 --port=30301 ${TRACKER_ARGS}
+        command: node tracker.js 0xe5abc5ee43b8830e7b0f98d03efff5d6cae574d52a43204528eab7b52cd6408d tracker-1 --port=30301 ${TRACKER_ARGS}
         healthcheck:
-            test: ["CMD", "curl", "-sS", "${STREAMR_BASE_URL}:30301/topology/"]
+            test: ["CMD", "curl", "-sS", "--insecure", "${STREAMR_BASE_URL}:30301/topology/"]
             interval: 30s
             timeout: 10s
             retries: 20
     tracker-2:
         container_name: streamr-dev-tracker-2
         image: streamr/broker-node:dev
-        restart: on-failure
+        restart: unless-stopped
         ports:
             - "30302:30302"
         volumes:
           - ./certs:/certs
-        command: node tracker.js 0x3b328103c0d043cd1b34f1203c0313eb70c98443444dfdf7125f2d4479b89eb9 tracker-2 --port=30302 ${TRACKER_ARGS}
+        command: node tracker.js 0x96de9d06f9e409119a2cd9b57dfc326f66d953a0418f3937b92c8930f930893c tracker-2 --port=30302 ${TRACKER_ARGS}
         healthcheck:
-            test: ["CMD", "curl", "-sS", "${STREAMR_BASE_URL}:30302/topology/"]
+            test: ["CMD", "curl", "-sS", "--insecure", "${STREAMR_BASE_URL}:30302/topology/"]
             interval: 30s
             timeout: 10s
             retries: 20
     tracker-3:
         container_name: streamr-dev-tracker-3
         image: streamr/broker-node:dev
-        restart: on-failure
+        restart: unless-stopped
         ports:
             - "30303:30303"
         volumes:
           - ./certs:/certs
-        command: node tracker.js 0xf456bb2a958574416f4b9e1b1b642cb3092953aa6131aba6e36f7529d1137795 tracker-3 --port=30303 ${TRACKER_ARGS}
+        command: node tracker.js 0x6117b7a7cb8f3c8d40e3b7e87823c11af7f401515bc4fdf2bfdda70f1b833027 tracker-3 --port=30303 ${TRACKER_ARGS}
         healthcheck:
-            test: ["CMD", "curl", "-sS", "${STREAMR_BASE_URL}:30303/topology/"]
+            test: ["CMD", "curl", "-sS", "--insecure", "${STREAMR_BASE_URL}:30303/topology/"]
             interval: 30s
             timeout: 10s
             retries: 20
     broker-node-storage-1:
         container_name: streamr-dev-broker-node-storage-1
         image: streamr/broker-node:dev
-        restart: on-failure
+        restart: unless-stopped
         ports:
             - "8890:8890"
             - "8891:8891"
@@ -126,7 +130,7 @@ services:
     broker-node-no-storage-1:
         container_name: streamr-dev-broker-node-no-storage-1
         image: streamr/broker-node:dev
-        restart: on-failure
+        restart: unless-stopped
         ports:
             - "8790:8790"
             - "8791:8791"
@@ -147,7 +151,7 @@ services:
     broker-node-no-storage-2:
         container_name: streamr-dev-broker-node-no-storage-2
         image: streamr/broker-node:dev
-        restart: on-failure
+        restart: unless-stopped
         ports:
             - "8690:8690"
             - "8691:8691"
@@ -165,9 +169,9 @@ services:
             interval: 30s
             timeout: 10s
             retries: 20
-    engine-and-editor:
-        container_name: streamr-dev-engine-and-editor
-        image: streamr/engine-and-editor:dev
+    core-api:
+        container_name: streamr-dev-core-api
+        image: streamr/core-api:dev
         ports:
             - "8081:8081"
         depends_on:
@@ -192,16 +196,16 @@ services:
     ethereum-watcher:
         container_name: streamr-dev-ethereum-watcher
         image: streamr/ethereum-watcher:dev
-        restart: on-failure
+        restart: unless-stopped
         depends_on:
             - parity-node0
-            - engine-and-editor
+            - core-api
         environment:
             STREAMR_API_URL: "${STREAMR_BASE_URL}/api/v1"
-            METRICS: null
-            ETHEREUM_SERVER_URL: "http://10.200.10.1:8545"
+            DEVOPS_KEY: "0x628acb12df34bb30a0b2f95ec2e6a743b386c5d4f63aa9f338bec6f613160e78"
+            NETWORK_ID: "8995"
             MARKETPLACE_ADDRESS: "0xf1371c0f40528406dc4f4caf89924ea9da49e866"
-            DEVOPS_KEY: "devops-user-key"
+            ETHEREUM_SERVER_URL: "http://10.200.10.1:8545"
         volumes:
             - data-ethereum-watcher/:/app/logs
         healthcheck:
@@ -214,7 +218,7 @@ services:
         image: streamr/data-union-server:dev
         ports:
           - "8085:8085"
-        restart: on-failure
+        restart: unless-stopped
         environment:
             ETHEREUM_SERVER: http://10.200.10.1:8545
             ETHEREUM_PRIVATE_KEY: 5e98cce00cff5dea6b454889f359a4ec06b9fa6b88e9d69b86de8e1c81887da0
@@ -233,7 +237,7 @@ services:
         ports:
             - "3333:80"
         depends_on:
-            - engine-and-editor
+            - core-api
             - parity-node0
         environment:
             DATA_UNIONS: "on"
@@ -269,7 +273,7 @@ services:
            - "8545:8540"
            - "8450:8450"
            - "30309:30309"
-         restart: on-failure
+         restart: unless-stopped
          healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8540"]
             interval: 1m30s
@@ -287,7 +291,7 @@ services:
            - "8546:8540"
            - "8451:8450"
            - "30310:30309"
-         restart: on-failure
+         restart: unless-stopped
          healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8540"]
             interval: 1m30s
@@ -308,23 +312,6 @@ services:
             - net-rabbit-bridge-senderforeign
         restart: unless-stopped
         volumes: ['data-bridge-data-rabbitmq:/var/lib/rabbitmq/mnesia']
-        healthcheck:
-            test: ["CMD", "echo"] # TODO: health check
-            interval: 10s
-            timeout: 10s
-            retries: 60
-    bridge-redis:
-        container_name: streamr-dev-bridge-redis
-        command: [redis-server, --appendonly, 'yes']
-        hostname: bridge-redis
-        image: redis:4
-        networks:
-            - net-db-bridge-request
-            - net-db-bridge-affirmation
-            - net-db-bridge-senderhome
-            - net-db-bridge-senderforeign
-        restart: unless-stopped
-        volumes: ['data-bridge-data-redis:/data']
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -392,15 +379,115 @@ services:
             retries: 60
     bridge:
         container_name: streamr-dev-bridge
-        image: poanetwork/tokenbridge-oracle:latest
         image: tianon/true  # dummy image that does nothing
         depends_on:
             - bridge-senderforeign
             - bridge-senderhome
             - bridge-affirmation
             - bridge-rabbitmq
-            - bridge-redis
+            - redis
             - bridge-request
+    graph-node:
+        container_name: streamr-dev-thegraph-node
+        image: graphprotocol/graph-node
+        ports:
+            - '8000:8000'
+            - '8001:8001'
+            - '8020:8020'
+            - '8030:8030'
+            - '8040:8040'
+        depends_on:
+            - ipfs
+            - postgres
+            - parity-sidechain-node0
+        environment:
+            postgres_host: postgres
+            postgres_user: streamr
+            postgres_pass: let-me-in
+            postgres_db: streamr
+            ipfs: 'streamr-dev-ipfs:5001'
+            ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8540'
+            RUST_LOG: info
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
+    graph-deploy-streamregistry-subgraph:
+        container_name: streamr-dev-graph-deploy-streamreg-subgraph
+        image: streamr/graph-deploy-streamregistry-subgraph:dev
+        depends_on:
+            - graph-node
+        volumes:
+            - data-graph-deploy:/firstrun
+    ipfs:
+        container_name: streamr-dev-ipfs
+        image: ipfs/go-ipfs:v0.4.23
+        ports:
+            - '5001:5001'
+        volumes:
+            - data-ipfs:/data/ipfs
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
+    postgres:
+        container_name: streamr-dev-postgres
+        image: postgres
+        ports:
+            - '5432:5432'
+        command: ["postgres", "-cshared_preload_libraries=pg_stat_statements"]
+        environment:
+            POSTGRES_USER: streamr
+            POSTGRES_PASSWORD: let-me-in
+            POSTGRES_DB: streamr
+        volumes:
+            - data-postgres:/var/lib/postgresql/data
+            - ./postgres_init_scripts:/docker-entrypoint-initdb.d
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
+    chainlink:
+        container_name: streamr-dev-chainlink-node
+        image: smartcontract/chainlink:0.10.5
+        ports:
+            - '6688:6688'
+        command: ["local", "n", "-p", "/chainlink/.password", "-a", "/chainlink/.api"]
+        env_file:
+            - ./chainlink_config/.env_streamr_sidechain
+        volumes:
+            - ./chainlink_config:/chainlink
+        user: ${CURRENT_UID}
+        depends_on:
+            - parity-sidechain-node0
+            - postgres
+            - chainlink-external-adapter
+        deploy:
+            restart_policy:
+                condition: on-failure
+                delay: 3s
+                max_attempts: 5
+                window: 60s
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
+    chainlink-external-adapter:
+        container_name: streamr-dev-chainlink-adapter
+        image: streamr/chainlink-external-adapter:dev
+        ports:
+            - 6691:8080
+        depends_on:
+            - parity-node0
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
 
 networks:
     net-db-bridge-request:
@@ -431,3 +518,6 @@ volumes:
     data-parity-node0:
     data-parity-sidechain-node0:
     data-ethereum-watcher:
+    data-ipfs:
+    data-postgres:
+    data-graph-deploy:
