@@ -452,7 +452,7 @@ services:
             timeout: 10s
             retries: 60
     chainlink:
-        container_name: streamr-dev-chainlink-node
+        container_name: streamr-dev-chainlink
         image: smartcontract/chainlink:0.10.5
         ports:
             - '6688:6688'
@@ -478,7 +478,7 @@ services:
             timeout: 10s
             retries: 60
     chainlink-external-adapter:
-        container_name: streamr-dev-chainlink-adapter
+        container_name: streamr-dev-chainlink-external-adapter
         image: streamr/chainlink-external-adapter:dev
         ports:
             - 6691:8080
