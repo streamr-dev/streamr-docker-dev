@@ -21,7 +21,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '2.0'
                     memory: 3G
                 reservations:
                     memory: 1.7G
@@ -44,7 +43,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '1.0'
                     memory: 100M
                 reservations:
                     memory: 6M
@@ -79,7 +77,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '2.0'
                     memory: 500M
                 reservations:
                     memory: 250M
@@ -100,7 +97,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.50'
                     memory: 50M
                 reservations:
                     memory: 20M
@@ -114,7 +110,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.2'
                     memory: 30M
                 reservations:
                     memory: 10M
@@ -143,7 +138,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '1.0'
                     memory: 500M
                 reservations:
                     memory: 6M
@@ -171,7 +165,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '2.0'
                     memory: 200M
                 reservations:
                     memory: 150M
@@ -199,7 +192,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '2.0'
                     memory: 200M
                 reservations:
                     memory: 150M
@@ -227,7 +219,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '2.0'
                     memory: 200M
                 reservations:
                     memory: 150M
@@ -260,7 +251,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '2.0'
                     memory: 200M
                 reservations:
                     memory: 150M
@@ -290,7 +280,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '2.0'
                     memory: 200M
                 reservations:
                     memory: 150M
@@ -320,7 +309,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '2.0'
                     memory: 200M
                 reservations:
                     memory: 150M
@@ -353,7 +341,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '2.0'
                     memory: 1G
                 reservations:
                     memory: 100M
@@ -386,7 +373,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.50'
                     memory: 300M
                 reservations:
                     memory: 100M
@@ -413,7 +399,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.50'
                     memory: 100M
                 reservations:
                     memory: 10M
@@ -437,7 +422,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.50'
                     memory: 50M
                 reservations:
                     memory: 10M
@@ -464,7 +448,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.2'
                     memory: 970M
                 reservations:
                     memory: 10M
@@ -495,7 +478,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '1.0'
                     memory: 100M
                 reservations:
                     memory: 20M
@@ -526,7 +508,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '1.0'
                     memory: 100M
                 reservations:
                     memory: 20M
@@ -552,7 +533,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.5'
                     memory: 150M
                 reservations:
                     memory: 50M
@@ -573,7 +553,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.5'
                     memory: 100M
                 reservations:
                     memory: 10M
@@ -594,7 +573,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.5'
                     memory: 100M
                 reservations:
                     memory: 10M
@@ -615,7 +593,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.5'
                     memory: 100M
                 reservations:
                     memory: 10M
@@ -636,7 +613,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.5'
                     memory: 100M
                 reservations:
                     memory: 10M
@@ -683,7 +659,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.5'
                     memory: 50M
                 reservations:
                     memory: 10M
@@ -703,7 +678,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.5'
                     memory: 150M
                 reservations:
                     memory: 6M
@@ -728,7 +702,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '1.0'
                     memory: 150M
                 reservations:
                     memory: 10M
@@ -764,7 +737,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '1.0'
                     memory: 100M
                 reservations:
                     memory: 10M
@@ -797,7 +769,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '1.0'
                     memory: 500M 
                 reservations:
                     memory: 6M
@@ -818,7 +789,6 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '0.5'
                     memory: 100M
                 reservations:
                     memory: 10M
