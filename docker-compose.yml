@@ -121,7 +121,7 @@ services:
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
             CASSANDRA_HOST: 10.200.10.1:9042
-            CONFIG_FILE: configs/docker-1.env.json
+        command: node packages/broker/bin/broker.js packages/broker/configs/docker-1.env.json
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8891/api/v1/volume"]
             interval: 30s
@@ -142,7 +142,7 @@ services:
             - tracker-3
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
-            CONFIG_FILE: configs/docker-2.env.json
+        command: node packages/broker/bin/broker.js packages/broker/configs/docker-2.env.json
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8791/api/v1/volume"]
             interval: 30s
@@ -163,7 +163,7 @@ services:
             - tracker-3
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
-            CONFIG_FILE: configs/docker-3.env.json
+        command: node packages/broker/bin/broker.js packages/broker/configs/docker-3.env.json
         healthcheck:
             test: ["CMD", "curl", "-sS", "http://localhost:8691/api/v1/volume"]
             interval: 30s
