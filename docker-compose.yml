@@ -258,7 +258,7 @@ services:
             retries: 60
         stdin_open: true
         environment:
-            PUBLIC_URL: "/network-explorer"
+            REACT_APP_BASENAME: "/network-explorer"
             REACT_APP_STREAMR_API_URL: "${STREAMR_BASE_URL}/api/v1"
             REACT_APP_TRACKER_REGISTRY_PROVIDER: "${STREAMR_BASE_URL}/mainchain-rpc/http/"
             REACT_APP_TRACKER_REGISTRY_ADDRESS: "0xBFCF120a8fD17670536f1B27D9737B775b2FD4CF"
