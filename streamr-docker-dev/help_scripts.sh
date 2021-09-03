@@ -10,6 +10,7 @@ Commands:
     help                show this screen
     start               start services
     stop                stop services
+    services            list all services
     restart             stop and start services
     wait                wait for all health checks to pass
     ps                  list docker containers
@@ -18,9 +19,10 @@ Commands:
     pull                pulls latest versions of images
     update              updates streamr-docker-dev by doing git pull
     wipe                wipes the data persisted by all services
-    factory-reset       removes images and generated files
-
-
+    factory-reset       removes all docker images and generated files
+                          (WARNING: this deletes ALL docker images on 
+			            your system and their state -
+				    not just Streamr-related ones!)
 Examples:
     streamr-docker-dev start
     streamr-docker-dev stop tracker
@@ -163,7 +165,9 @@ Usage: streamr-docker-dev wipe
 
 factory-reset_help() {
     echo "
-Resets the environment by removing all persisted data and all related Docker images.
+Resets the environment by removing all persisted data and all Docker images. 
+Warning: this deletes ALL docker images on your system and their state - 
+not just Streamr-related ones!
 
 Usage: streamr-docker-dev factory-reset
 "
