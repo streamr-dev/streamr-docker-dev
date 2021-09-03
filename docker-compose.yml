@@ -681,7 +681,7 @@ services:
             resources:
                 limits:
                    cpus: '0.5'
-                   memory: 100M
+                   memory: 200M
                 reservations:
                    memory: 20M
     chainlink-external-adapter:
