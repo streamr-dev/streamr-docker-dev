@@ -12,6 +12,13 @@ services:
         volumes:
             - data-cassandra:/var/lib/cassandra
         restart: unless-stopped
+        deploy:
+             resources:
+                 limits:
+                     cpus: '2.0'
+                     memory: 3G
+                 reservations:
+                     memory: 1.7G
     init-keyspace:
         container_name: streamr-dev-init-keyspace
         image: cassandra:3.11.5
@@ -21,6 +28,13 @@ services:
             - ./cassandra_init_scripts:/init_scripts
         depends_on:
             - cassandra
+        deploy:
+             resources:
+                 limits:
+                     cpus: '1.0'
+                     memory: 100M
+                 reservations:
+                     memory: 6M
     mysql:
         container_name: streamr-dev-mysql
         image: streamr/mysql:v0.0.1
@@ -33,6 +47,13 @@ services:
         restart: unless-stopped
         environment:
             MYSQL_ROOT_PASSWORD: password
+        deploy:
+             resources:
+                 limits:
+                     cpus: '2.0'
+                     memory: 500M
+                 reservations:
+                     memory: 250M
     redis:
         container_name: streamr-dev-redis
         image: streamr/redis:v0.0.1
@@ -46,11 +67,25 @@ services:
             - net-db-bridge-senderforeign
         restart: unless-stopped
         volumes: ['data-bridge-data-redis:/data']
+        deploy:
+             resources:
+                 limits:
+                     cpus: '0.50'
+                     memory: 50M
+                 reservations:
+                     memory: 20M
     smtp:
         container_name: streamr-dev-smtp
         image: streamr/smtp:v0.0.1
         ports:
             - "25:25"
+        deploy:
+             resources:
+                 limits:
+                     cpus: '0.2'
+                     memory: 30M
+                 reservations:
+                     memory: 10M
     nginx:
         container_name: streamr-dev-nginx
         image: streamr/nginx:v0.0.3
@@ -61,6 +96,13 @@ services:
         volumes:
           - ./custom-nginx-reverse-proxy.conf:/etc/nginx/nginx.conf:ro
           - ./certs:/etc/nginx/mounted-certs
+        deploy:
+             resources:
+                 limits:
+                     cpus: '1.0'
+                     memory: 500M
+                 reservations:
+                     memory: 6M
     tracker-1:
         container_name: streamr-dev-tracker-1
         image: streamr/broker-node:dev
@@ -75,6 +117,13 @@ services:
             interval: 30s
             timeout: 10s
             retries: 20
+        deploy:
+             resources:
+                 limits:
+                     cpus: '2.0'
+                     memory: 200M
+                 reservations:
+                     memory: 150M
     tracker-2:
         container_name: streamr-dev-tracker-2
         image: streamr/broker-node:dev
@@ -89,6 +138,13 @@ services:
             interval: 30s
             timeout: 10s
             retries: 20
+        deploy:
+             resources:
+                 limits:
+                     cpus: '2.0'
+                     memory: 200M
+                 reservations:
+                     memory: 150M
     tracker-3:
         container_name: streamr-dev-tracker-3
         image: streamr/broker-node:dev
@@ -103,6 +159,13 @@ services:
             interval: 30s
             timeout: 10s
             retries: 20
+        deploy:
+             resources:
+                 limits:
+                     cpus: '2.0'
+                     memory: 200M
+                 reservations:
+                     memory: 150M
     broker-node-storage-1:
         container_name: streamr-dev-broker-node-storage-1
         image: streamr/broker-node:dev
@@ -127,6 +190,13 @@ services:
             interval: 30s
             timeout: 10s
             retries: 20
+        deploy:
+             resources:
+                 limits:
+                     cpus: '2.0'
+                     memory: 200M
+                 reservations:
+                     memory: 150M
     broker-node-no-storage-1:
         container_name: streamr-dev-broker-node-no-storage-1
         image: streamr/broker-node:dev
@@ -148,6 +218,13 @@ services:
             interval: 30s
             timeout: 10s
             retries: 20
+        deploy:
+             resources:
+                 limits:
+                     cpus: '2.0'
+                     memory: 200M
+                 reservations:
+                     memory: 150M
     broker-node-no-storage-2:
         container_name: streamr-dev-broker-node-no-storage-2
         image: streamr/broker-node:dev
@@ -169,6 +246,13 @@ services:
             interval: 30s
             timeout: 10s
             retries: 20
+        deploy:
+             resources:
+                 limits:
+                     cpus: '2.0'
+                     memory: 200M
+                 reservations:
+                     memory: 150M
     core-api:
         container_name: streamr-dev-core-api
         image: streamr/core-api:dev
@@ -193,6 +277,13 @@ services:
             HTTPS_API_SERVER: "${STREAMR_BASE_URL}/api/v1"
             WS_SERVER: "${STREAMR_WS_URL}"
             CPS_URL: "http://10.200.10.1:8085/dataunions/"
+        deploy:
+             resources:
+                 limits:
+                     cpus: '2.0'
+                     memory: 1G
+                 reservations:
+                     memory: 100M
     ethereum-watcher:
         container_name: streamr-dev-ethereum-watcher
         image: streamr/ethereum-watcher:dev
@@ -213,6 +304,13 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
+        deploy:
+             resources:
+                 limits:
+                     cpus: '0.50'
+                     memory: 300M
+                 reservations:
+                     memory: 100M
     data-union-server:
         container_name: streamr-dev-data-union-server
         image: streamr/data-union-server:dev
@@ -231,6 +329,13 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.50'
+                    memory: 100M
+                reservations:
+                    memory: 10M
     platform:
         container_name: streamr-dev-platform
         image: streamr/platform:dev
@@ -246,6 +351,13 @@ services:
           interval: 10s
           timeout: 10s
           retries: 60
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.50'
+                    memory: 50M
+                reservations:
+                    memory: 10M
     network-explorer:
         container_name: streamr-dev-network-explorer
         image: streamr/network-explorer:dev
@@ -265,6 +377,13 @@ services:
             REACT_APP_TRACKER_REGISTRY_ADDRESS: "0xBFCF120a8fD17670536f1B27D9737B775b2FD4CF"
             REACT_APP_MAPBOX_TOKEN: "pk.eyJ1IjoibWF0dGlubmVzIiwiYSI6ImNrNWhrN2FubDA0cGgzam1ycHV6Nmg2dHoifQ.HC5_Wu1R-OqRLza1u6P3Ig"
             REACT_APP_MOCK_API_URL: "${STREAMR_BASE_URL}/network-explorer-mock-api"
+        deploy:
+             resources:
+                 limits:
+                     cpus: '0.2'
+                     memory: 970M
+                 reservations:
+                     memory: 10M
     parity-node0:
          container_name: streamr-dev-parity-node0
          environment:
@@ -283,6 +402,13 @@ services:
          command: --chain ./streamr-spec.json --config ./node0.toml
          volumes:
            - data-parity-node0/:/home/parity/parity_data
+         deploy:
+             resources:
+                 limits:
+                     cpus: '1.0'
+                     memory: 100M
+                 reservations:
+                     memory: 20M
     parity-sidechain-node0:
          container_name: streamr-dev-parity-sidechain-node0
          environment:
@@ -301,6 +427,13 @@ services:
          command: --chain ./streamr-spec.json --config ./node0.toml
          volumes:
            - data-parity-sidechain-node0/:/home/parity/parity_data
+         deploy:
+             resources:
+                 limits:
+                     cpus: '1.0'
+                     memory: 100M
+                 reservations:
+                     memory: 20M
     bridge-rabbitmq:
         container_name: streamr-dev-bridge-rabbitmq
         environment: ['RABBITMQ_NODENAME=node@bridge-rabbitmq']
@@ -318,6 +451,13 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
+        deploy:
+             resources:
+                 limits:
+                     cpus: '0.5'
+                     memory: 150M
+                 reservations:
+                     memory: 50M
     bridge-request:
         container_name: streamr-dev-bridge-request
         image: poanetwork/tokenbridge-oracle:latest
@@ -333,6 +473,13 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
+        deploy:
+             resources:
+                 limits:
+                     cpus: '0.5'
+                     memory: 100M
+                 reservations:
+                     memory: 10M
     bridge-affirmation:
         container_name: streamr-dev-bridge-affirmation
         image: poanetwork/tokenbridge-oracle:latest
@@ -348,6 +495,13 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
+        deploy:
+             resources:
+                 limits:
+                     cpus: '0.5'
+                     memory: 100M
+                 reservations:
+                     memory: 10M
     bridge-senderhome:
         container_name: streamr-dev-bridge-senderhome
         image: poanetwork/tokenbridge-oracle:latest
@@ -363,6 +517,13 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
+        deploy:
+             resources:
+                 limits:
+                     cpus: '0.5'
+                     memory: 100M
+                 reservations:
+                     memory: 10M
     bridge-senderforeign:
         container_name: streamr-dev-bridge-senderforeign
         image: poanetwork/tokenbridge-oracle:latest
@@ -378,6 +539,13 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
+        deploy:
+             resources:
+                 limits:
+                     cpus: '0.5'
+                     memory: 100M
+                 reservations:
+                     memory: 10M
     bridge:
         container_name: streamr-dev-bridge
         image: tianon/true  # dummy image that does nothing
@@ -388,6 +556,13 @@ services:
             - bridge-rabbitmq
             - redis
             - bridge-request
+        deploy:
+             resources:
+                 limits:
+                     cpus: '0.1'
+                     memory: 10M
+                 reservations:
+                     memory: 10M
     graph-node:
         container_name: streamr-dev-thegraph-node
         image: graphprotocol/graph-node
@@ -421,6 +596,13 @@ services:
             - graph-node
         volumes:
             - data-graph-deploy:/firstrun
+        deploy:
+             resources:
+                 limits:
+                     cpus: '0.5'
+                     memory: 20M
+                 reservations:
+                     memory: 6M
     ipfs:
         container_name: streamr-dev-ipfs
         image: ipfs/go-ipfs:v0.4.23
@@ -433,6 +615,13 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
+        deploy:
+             resources:
+                 limits:
+                     cpus: '1.0'
+                     memory: 150M
+                 reservations:
+                     memory: 10M
     postgres:
         container_name: streamr-dev-postgres
         image: postgres
@@ -451,6 +640,13 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
+        deploy:
+             resources:
+                 limits:
+                     cpus: '1.0'
+                     memory: 100M
+                 reservations:
+                     memory: 10M
     chainlink:
         container_name: streamr-dev-chainlink-node
         image: smartcontract/chainlink:0.10.5
@@ -466,17 +662,23 @@ services:
             - parity-sidechain-node0
             - postgres
             - chainlink-external-adapter
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
         deploy:
             restart_policy:
                 condition: on-failure
                 delay: 3s
                 max_attempts: 5
                 window: 60s
-        healthcheck:
-            test: ["CMD", "echo"] # TODO: health check
-            interval: 10s
-            timeout: 10s
-            retries: 60
+            resources:
+                limits:
+                   cpus: '0.5'
+                   memory: 100M
+                reservations:
+                   memory: 20M
     chainlink-external-adapter:
         container_name: streamr-dev-chainlink-adapter
         image: streamr/chainlink-external-adapter:dev
@@ -489,7 +691,13 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
-
+        deploy:
+             resources:
+                 limits:
+                     cpus: '0.5'
+                     memory: 50M
+                 reservations:
+                     memory: 10M
 networks:
     net-db-bridge-request:
         driver: bridge
