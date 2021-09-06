@@ -10,7 +10,11 @@ services:
             - "9042:9042"
             - "9160:9160"
         volumes:
-            - data-cassandra:/var/lib/cassandra
+            - type: volume
+              source: data-cassandra
+              target: /var/lib/cassandra
+              volume:
+                  nocopy: true
         restart: unless-stopped
     init-keyspace:
         container_name: streamr-dev-init-keyspace
@@ -18,7 +22,12 @@ services:
         command: bash -c "sleep 5 && cqlsh cassandra -f /init_scripts/keyspace.cql && echo keyspace initialized"
         restart: on-failure # exits on success
         volumes:
-            - ./cassandra_init_scripts:/init_scripts
+            - type: bind
+              source: ./cassandra_init_scripts
+              target: /init_scripts
+              read_only: true
+              bind:
+                  propagation: rprivate
         depends_on:
             - cassandra
     mysql:
@@ -27,9 +36,23 @@ services:
         ports:
             - "3306:3306"
         volumes:
-            - data-mysql:/var/lib/mysql:rw
-            - ./mysql_init_scripts:/docker-entrypoint-initdb.d
-            - ./custom-mysql-settings.cnf:/etc/mysql/conf.d/custom-mysql-settings.cnf
+            - type: volume
+              source: data-mysql
+              target: /var/lib/mysql
+              volume:
+                  nocopy: true
+            - type: bind
+              source: ./mysql_init_scripts
+              target: /docker-entrypoint-initdb.d
+              read_only: true
+              bind:
+                  propagation: rprivate
+            - type: bind
+              source: ./custom-mysql-settings.cnf
+              target: /etc/mysql/conf.d/custom-mysql-settings.cnf
+              read_only: true
+              bind:
+                  propagation: rprivate
         restart: unless-stopped
         environment:
             MYSQL_ROOT_PASSWORD: password
@@ -45,7 +68,12 @@ services:
             - net-db-bridge-senderhome
             - net-db-bridge-senderforeign
         restart: unless-stopped
-        volumes: ['data-bridge-data-redis:/data']
+        volumes:
+            - type: volume
+              source: data-bridge-data-redis
+              target: /data
+              volume:
+                  nocopy: true
     smtp:
         container_name: streamr-dev-smtp
         image: streamr/smtp:v0.0.1
@@ -59,8 +87,18 @@ services:
           - "80:80"
           - "443:443"
         volumes:
-          - ./custom-nginx-reverse-proxy.conf:/etc/nginx/nginx.conf:ro
-          - ./certs:/etc/nginx/mounted-certs
+            - type: bind
+              source: ./custom-nginx-reverse-proxy.conf
+              target: /etc/nginx/nginx.conf
+              read_only: true
+              bind:
+                  propagation: rprivate
+            - type: bind
+              source: ./certs
+              target: /etc/nginx/mounted-certs
+              read_only: true
+              bind:
+                  propagation: rprivate
     tracker-1:
         container_name: streamr-dev-tracker-1
         image: streamr/broker-node:dev
@@ -68,7 +106,12 @@ services:
         ports:
             - "30301:30301"
         volumes:
-          - ./certs:/certs
+            - type: bind
+              source: ./certs
+              target: /certs
+              read_only: true
+              bind:
+                  propagation: rprivate
         command: node tracker.js 0xe5abc5ee43b8830e7b0f98d03efff5d6cae574d52a43204528eab7b52cd6408d tracker-1 --port=30301 ${TRACKER_ARGS}
         healthcheck:
             test: ["CMD", "curl", "-sS", "--insecure", "${STREAMR_BASE_URL}:30301/topology/"]
@@ -82,7 +125,12 @@ services:
         ports:
             - "30302:30302"
         volumes:
-          - ./certs:/certs
+            - type: bind
+              source: ./certs
+              target: /certs
+              read_only: true
+              bind:
+                  propagation: rprivate
         command: node tracker.js 0x96de9d06f9e409119a2cd9b57dfc326f66d953a0418f3937b92c8930f930893c tracker-2 --port=30302 ${TRACKER_ARGS}
         healthcheck:
             test: ["CMD", "curl", "-sS", "--insecure", "${STREAMR_BASE_URL}:30302/topology/"]
@@ -96,7 +144,12 @@ services:
         ports:
             - "30303:30303"
         volumes:
-          - ./certs:/certs
+            - type: bind
+              source: ./certs
+              target: /certs
+              read_only: true
+              bind:
+                  propagation: rprivate
         command: node tracker.js 0x6117b7a7cb8f3c8d40e3b7e87823c11af7f401515bc4fdf2bfdda70f1b833027 tracker-3 --port=30303 ${TRACKER_ARGS}
         healthcheck:
             test: ["CMD", "curl", "-sS", "--insecure", "${STREAMR_BASE_URL}:30303/topology/"]
@@ -207,7 +260,11 @@ services:
             MARKETPLACE_ADDRESS: "0xf1371c0f40528406dc4f4caf89924ea9da49e866"
             ETHEREUM_SERVER_URL: "http://10.200.10.1:8545"
         volumes:
-            - data-ethereum-watcher/:/app/logs
+            - type: volume
+              source: data-ethereum-watcher
+              target: /app/logs
+              volume:
+                  nocopy: true
         healthcheck:
             test: ["CMD", "echo"] # TODO: Health check
             interval: 10s
@@ -282,7 +339,11 @@ services:
             retries: 3
          command: --chain ./streamr-spec.json --config ./node0.toml
          volumes:
-           - data-parity-node0/:/home/parity/parity_data
+             - type: volume
+               source: data-parity-node0
+               target: /home/parity/parity_data
+               volume:
+                   nocopy: true
     parity-sidechain-node0:
          container_name: streamr-dev-parity-sidechain-node0
          environment:
@@ -300,7 +361,11 @@ services:
             retries: 3
          command: --chain ./streamr-spec.json --config ./node0.toml
          volumes:
-           - data-parity-sidechain-node0/:/home/parity/parity_data
+             - type: volume
+               source: data-parity-sidechain-node0
+               target: /home/parity/parity_data
+               volume:
+                   nocopy: true
     bridge-rabbitmq:
         container_name: streamr-dev-bridge-rabbitmq
         environment: ['RABBITMQ_NODENAME=node@bridge-rabbitmq']
@@ -312,7 +377,12 @@ services:
             - net-rabbit-bridge-senderhome
             - net-rabbit-bridge-senderforeign
         restart: unless-stopped
-        volumes: ['data-bridge-data-rabbitmq:/var/lib/rabbitmq/mnesia']
+        volumes:
+            - type: volume
+              source: data-bridge-data-rabbitmq
+              target: /var/lib/rabbitmq/mnesia
+              volume:
+                  nocopy: true
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -420,14 +490,22 @@ services:
         depends_on:
             - graph-node
         volumes:
-            - data-graph-deploy:/firstrun
+            - type: volume
+              source: data-graph-deploy
+              target: /firstrun
+              volume:
+                  nocopy: true
     ipfs:
         container_name: streamr-dev-ipfs
         image: ipfs/go-ipfs:v0.4.23
         ports:
             - '5001:5001'
         volumes:
-            - data-ipfs:/data/ipfs
+            - type: volume
+              source: data-ipfs
+              target: /data/ipfs
+              volume:
+                  nocopy: true
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -444,8 +522,17 @@ services:
             POSTGRES_PASSWORD: let-me-in
             POSTGRES_DB: streamr
         volumes:
-            - data-postgres:/var/lib/postgresql/data
-            - ./postgres_init_scripts:/docker-entrypoint-initdb.d
+            - type: volume
+              source: data-postgres
+              target: /var/lib/postgresql/data
+              volume:
+                  nocopy: true
+            - type: bind
+              source: ./postgres_init_scripts
+              target: /docker-entrypoint-initdb.d
+              read_only: true
+              bind:
+                  propagation: rprivate
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -460,7 +547,11 @@ services:
         env_file:
             - ./chainlink_config/.env_streamr_sidechain
         volumes:
-            - ./chainlink_config:/chainlink
+            - type: bind
+              source: ./chainlink_config
+              target: /chainlink
+              bind:
+                  propagation: rprivate
         user: ${CURRENT_UID}
         depends_on:
             - parity-sidechain-node0
