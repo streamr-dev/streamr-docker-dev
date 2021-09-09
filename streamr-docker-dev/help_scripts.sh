@@ -20,15 +20,15 @@ Commands:
     update              updates streamr-docker-dev by doing git pull
     wipe                wipes the data persisted by all services
     factory-reset       removes all docker images and generated files
-                          (WARNING: this deletes ALL docker images on 
+                          (WARNING: this deletes ALL docker images on
 			            your system and their state -
 				    not just Streamr-related ones!)
 Examples:
     streamr-docker-dev start
-    streamr-docker-dev stop tracker
-    streamr-docker-dev start --except tracker --wait
-    streamr-docker-dev log -f tracker
-    streamr-docker-dev shell tracker
+    streamr-docker-dev stop tracker-1
+    streamr-docker-dev start --except tracker-1 --wait
+    streamr-docker-dev log -f tracker-1
+    streamr-docker-dev shell tracker-1
     streamr-docker-dev pull
 
 Options:
@@ -47,8 +47,8 @@ Usage: streamr-docker-dev start [--] <service>...
 
 Examples:
     streamr-docker-dev start
-    streamr-docker-dev start tracker ganache
-    streamr-docker-dev start --except tracker --wait
+    streamr-docker-dev start tracker-1 parity-node0
+    streamr-docker-dev start --except tracker-1 --wait
 
 Options:
     --except [service]      start services except the one given
@@ -65,7 +65,7 @@ Usage: streamr-docker-dev stop [options] [--] <service>...
 
 Examples:
     streamr-docker-dev stop
-    streamr-docker-dev stop tracker ganache
+    streamr-docker-dev stop tracker-1 parity-node0
 "
 }
 
@@ -77,7 +77,7 @@ Usage: streamr-docker-dev restart [options] [--] <service>...
 
 Examples:
     streamr-docker-dev restart
-    streamr-docker-dev restart tracker ganache
+    streamr-docker-dev restart tracker-1 parity-node0
 "
 }
 
@@ -104,7 +104,7 @@ Usage: streamr-docker-dev ps [<service>...]
 
 Examples:
     streamr-docker-dev ps
-    streamr-docker-dev ps tracker
+    streamr-docker-dev ps tracker-1
 "
 }
 
@@ -116,8 +116,8 @@ Usage: streamr-docker-dev log [[options] [--] <service>...]
 
 Examples:
     streamr-docker-dev log
-    streamr-docker-dev log tracker ganache
-    streamr-docker-dev log -f tracker ganache
+    streamr-docker-dev log tracker-1 parity-node0
+    streamr-docker-dev log -f tracker-1 parity-node0
 
 Options:
     -f --follow        	    follow log in realtime
@@ -131,7 +131,7 @@ Opens an interactive shell into the target container.
 Usage: streamr-docker-dev shell <service>
 
 Examples:
-    streamr-docker-dev shell tracker
+    streamr-docker-dev shell tracker-1
 "
 }
 
@@ -143,7 +143,7 @@ Usage: streamr-docker-dev pull [ [--] <service>...]
 
 Examples:
     streamr-docker-dev pull
-    streamr-docker-dev pull tracker ganache
+    streamr-docker-dev pull tracker-1 parity-node0
 "
 }
 
@@ -165,8 +165,8 @@ Usage: streamr-docker-dev wipe
 
 factory-reset_help() {
     echo "
-Resets the environment by removing all persisted data and all Docker images. 
-Warning: this deletes ALL docker images on your system and their state - 
+Resets the environment by removing all persisted data and all Docker images.
+Warning: this deletes ALL docker images on your system and their state -
 not just Streamr-related ones!
 
 Usage: streamr-docker-dev factory-reset
