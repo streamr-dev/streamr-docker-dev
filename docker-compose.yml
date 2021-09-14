@@ -466,7 +466,7 @@ services:
              resources:
                  limits:
                      cpus: '0.2'
-                     memory: 970M
+                     memory: 1500M
                  reservations:
                      memory: 10M
     parity-node0:
