@@ -4,7 +4,7 @@
   </a>
 </p>
 <h1 align="left">
-   
+
 # Streamr development environment
 
 This repository contains Docker compose files and command line tool `streamr_docker_dev` for setting up a local Streamr development environment. The environment consists of Streamr services and supporting (3rd party) services. The data of the services is persisted on the local disk.
@@ -40,6 +40,16 @@ ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 
 The docker stack has not been tested in a Windows environment and is not recommended at this time.
 
+If you know what services you need, you don't need to use the `bin.sh`, you can just use `docker-compose` directly, like so:
+
+1. Install and start Docker service.
+
+2. Clone this repo: `git clone git@github.com:streamr-dev/streamr-docker-dev.git`, change into that directory `cd streamr-docker-dev`
+
+3. Bind the loopback interface to 10.200.10.1: `netsh int ip add address "Loopback" 10.200.10.1`
+
+4. For instance, for the Ethereum environment without core-api: `docker-compose up parity-node0 parity-sidechain-node0 bridge`
+
 ## Quickstart
 
 **Option 1**
@@ -66,7 +76,7 @@ The recommended way to interact with the blockchain is through Metamask. Here is
 
 ### Getting ETH on the local blockchain
 
-There are pre-filled wallets with ETH & DATA on this chain to use. 
+There are pre-filled wallets with ETH & DATA on this chain to use.
 
 #### Available Accounts
 
@@ -166,7 +176,7 @@ Wipe the persisted data of all services: `streamr-docker-dev wipe`
 
 ### `factory-reset`
 
-"Factory reset" the docker environment by removing all images and persisted data: `streamr-docker-dev factory-reset`. 
+"Factory reset" the docker environment by removing all images and persisted data: `streamr-docker-dev factory-reset`.
 **Warning: this will delete all your docker images and their state, not just ones related to the Streamr stack.**
 
 ## Accessing the Core app and Streamr API
@@ -187,13 +197,13 @@ streamr-docker-dev start --except [service-under-development]
 
 In CI, the `--wait` flag can be used with `start` to block until all health checks are passing. This ensures that the services are up and running before starting your tests.
 
-For integration tests, use the `--except` option to exclude the service under test: 
+For integration tests, use the `--except` option to exclude the service under test:
 
 ```
 streamr-docker-dev start --except [service-under-test] --wait
 ```
 
-When testing the SDKs or running other end-to-end tests, just start the full stack before your tests: 
+When testing the SDKs or running other end-to-end tests, just start the full stack before your tests:
 
 ```
 streamr-docker-dev start --wait
@@ -202,7 +212,7 @@ streamr-docker-dev start --wait
 ## Included services
 
 ### Streamr services
-- 3 x [Broker](https://github.com/streamr-dev/broker) nodes 
+- 3 x [Broker](https://github.com/streamr-dev/broker) nodes
   - 2 broker nodes + 1 storage Streamr network nodes. This creates a local and private Streamr Network.
 - 3 x [Tracker](https://github.com/streamr-dev/broker)
   - Helps node discovery in the Strearm Network
@@ -210,8 +220,8 @@ streamr-docker-dev start --wait
   - See more detailed build instructions in the streamr-platform repo
 - 1 x [Core backend](https://github.com/streamr-dev/engine-and-editor)
   - Centralized backend for the streamr-platform
-- 1 x [Data Union Server](https://github.com/streamr-dev/streamr-community-products) 
-  - The Data Union Server manages the state of the 
+- 1 x [Data Union Server](https://github.com/streamr-dev/streamr-community-products)
+  - The Data Union Server manages the state of the
   - The Data Union Server will be retired when Data Unions 2.0 is launched in Q1 of 2021
 - 1 x [ethereum-watcher](https://github.com/streamr-dev/streamr-ethereum-watcher)
 - 1 x [Chainlink node](https://github.com/streamr-dev/network-contracts)
