@@ -2,7 +2,9 @@
 extends: default
 rules:
   new-line-at-end-of-file:
-    level: warning
+    level: error
+  hyphens:
+    max-spaces-after: 1
   trailing-spaces:
     level: error
   line-length:

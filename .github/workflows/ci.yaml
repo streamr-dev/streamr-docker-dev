@@ -19,7 +19,6 @@ jobs:
         uses: ibiqlik/action-yamllint@v3.0.4
         with:
           file_or_dir: .
-          format: parsable
           strict: true
           no_warnings: false
           config_file: yamllint-config.yaml
