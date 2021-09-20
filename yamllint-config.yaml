@@ -1,0 +1,16 @@
+---
+extends: default
+rules:
+  new-line-at-end-of-file:
+    level: warning
+  trailing-spaces:
+    level: error
+  line-length:
+    max: 140
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true
+  comments:
+    require-starting-space: false
+    ignore-shebangs: false
+    min-spaces-from-content: 1
+  truthy: disable
