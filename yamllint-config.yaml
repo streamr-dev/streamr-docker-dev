@@ -1,4 +1,7 @@
 ---
+
+# https://yamllint.readthedocs.io/en/stable/configuration.html
+
 extends: default
 rules:
   new-line-at-end-of-file:
