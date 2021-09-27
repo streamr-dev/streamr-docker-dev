@@ -137,7 +137,7 @@ Examples:
 
 pull_help() {
 echo "
-Pulls images defined in docker-compose files. If no services are given, pulls all of them.
+Pulls images defined in docker compose files. If no services are given, pulls all of them.
 
 Usage: streamr-docker-dev pull [ [--] <service>...]
 

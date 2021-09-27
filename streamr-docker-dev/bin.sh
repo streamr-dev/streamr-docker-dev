@@ -135,7 +135,7 @@ wait() {
     while [[ $time_waited -lt $WAIT_TIMEOUT ]]; do
         waiting_for_services=()
 
-        # Get the id of each image we have in docker-compose
+        # Get the id of each image we have in docker compose
         for image_id in $($DOCKER_COMPOSE ps -q)
         do
             service_name=$(docker inspect -f "{{.Name}}" "$image_id")

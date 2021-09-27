@@ -11,6 +11,8 @@ SHELL := /bin/bash
 YAMLLINT := /usr/local/bin/yamllint
 YAMLLINTFLAGS := --config-file yamllint-config.yaml
 
+COMPOSE := docker compose
+
 $(YAMLLINT):
 	pip3 install --user yamllint
 
@@ -20,7 +22,7 @@ lint-yaml: $(YAMLLINT)
 
 .PHONY: test-smoke
 test-smoke:
-	docker-compose -f docker-compose.yml config
+	$(COMPOSE) -f docker-compose.yml config
 
 .PHONY: test-docker-dev
 test-docker-dev:
