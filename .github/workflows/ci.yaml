@@ -1,3 +1,4 @@
+---
 name: Build
 on:
   push:
@@ -8,7 +9,24 @@ on:
       - master
 
 jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2.3.4
+      - name: Run YAML Lint
+        uses: ibiqlik/action-yamllint@v3.0.4
+        with:
+          file_or_dir: .
+          strict: true
+          no_warnings: false
+          config_file: yamllint-config.yaml
+      - name: Run smoke tests
+        run: make test-smoke
   build:
+    needs:
+      - lint
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     continue-on-error: true
@@ -16,14 +34,10 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-16.04
           - ubuntu-18.04
           - ubuntu-20.04
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2.3.4
-      - name: Run smoke tests
-        run: make test-smoke
       - name: Run streamr-docker-dev
         run: make test-docker-dev
-
