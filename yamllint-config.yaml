@@ -10,12 +10,22 @@ rules:
     max-spaces-after: 1
   trailing-spaces:
     level: error
-  line-length:
-    max: 140
-    allow-non-breakable-words: true
-    allow-non-breakable-inline-mappings: true
-  comments:
-    require-starting-space: false
-    ignore-shebangs: false
-    min-spaces-from-content: 1
+  line-length: disable
   truthy: disable
+  comments: disable
+  comments-indentation: disable
+  braces:
+    max-spaces-inside: 1
+    level: error
+  brackets:
+    max-spaces-inside: 1
+    level: error
+  colons:
+    max-spaces-after: -1
+    level: error
+  commas:
+    max-spaces-after: -1
+    level: error
+  empty-lines:
+    max: 3
+    level: error
