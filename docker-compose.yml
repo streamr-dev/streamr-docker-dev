@@ -466,8 +466,8 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: '2.0'
-                    memory: 2000M
+                    cpus: '1.0'
+                    memory: 50M
                 reservations:
                     memory: 10M
     parity-node0:
