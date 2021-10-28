@@ -450,7 +450,7 @@ services:
         ports:
             - "3334:80"
         healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:3000"]
+            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost"]
             interval: 10s
             timeout: 10s
             retries: 60
