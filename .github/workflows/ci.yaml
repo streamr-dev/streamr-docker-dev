@@ -7,7 +7,12 @@ on:
   pull_request:
     branches:
       - master
-
+concurrency:
+  group: ci-${{ github.head_ref }}
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
 jobs:
   lint:
     name: Lint
