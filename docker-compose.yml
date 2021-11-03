@@ -448,21 +448,13 @@ services:
         networks:
             - streamr-network
         ports:
-            - "3334:3000"
+            - "3334:80"
         healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:3000"]
+            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost"]
             interval: 10s
             timeout: 10s
             retries: 60
         stdin_open: true
-        environment:
-            PUBLIC_URL: "/network-explorer"
-            REACT_APP_BASENAME: "/network-explorer"
-            REACT_APP_STREAMR_API_URL: "${STREAMR_BASE_URL}/api/v1"
-            REACT_APP_TRACKER_REGISTRY_PROVIDER: "${STREAMR_BASE_URL}/mainchain-rpc/http/"
-            REACT_APP_TRACKER_REGISTRY_ADDRESS: "0xBFCF120a8fD17670536f1B27D9737B775b2FD4CF"
-            REACT_APP_MAPBOX_TOKEN: "pk.eyJ1IjoibWF0dGlubmVzIiwiYSI6ImNrNWhrN2FubDA0cGgzam1ycHV6Nmg2dHoifQ.HC5_Wu1R-OqRLza1u6P3Ig"
-            REACT_APP_MOCK_API_URL: "${STREAMR_BASE_URL}/network-explorer-mock-api"
         deploy:
             resources:
                 limits:
