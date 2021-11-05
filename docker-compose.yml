@@ -466,7 +466,7 @@ services:
         container_name: streamr-dev-parity-node0
         environment:
             CHAIN_ID: 0x2323
-        image: streamr/open-ethereum-poa-mainchain-preload1:dev
+        image: streamr/open-ethereum-poa-mainchain-preload1:fasterchains
         networks:
             - streamr-network
         ports:
@@ -497,7 +497,7 @@ services:
         container_name: streamr-dev-parity-sidechain-node0
         environment:
             CHAIN_ID: 0x2325
-        image: streamr/open-ethereum-poa-sidechain-preload1:dev
+        image: streamr/open-ethereum-poa-sidechain-preload1:fasterchains
         networks:
             - streamr-network
         ports:
