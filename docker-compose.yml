@@ -682,6 +682,9 @@ services:
             timeout: 10s
             retries: 60
         deploy:
+            restart_policy:
+                condition: on-failure
+                max_attempts: 5
             resources:
                 limits:
                     cpus: '0.5'
@@ -699,8 +702,6 @@ services:
             - type: volume
               source: data-graph-deploy
               target: /firstrun
-              volume:
-                  nocopy: true
         deploy:
             resources:
                 limits:
@@ -715,6 +716,7 @@ services:
             - streamr-network
         ports:
             - '5001:5001'
+            - '6695:8080'
         volumes:
             - type: volume
               source: data-ipfs
