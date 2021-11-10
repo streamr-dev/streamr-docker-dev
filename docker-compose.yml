@@ -708,6 +708,26 @@ services:
                     memory: 200M
                 reservations:
                     memory: 20M
+    graph-deploy-dataunion-subgraph:
+        container_name: streamr-dev-graph-deploy-dataunion-subgraph
+        image: streamr/graph-deploy-dataunion-subgraph:dev
+        networks:
+            - streamr-network
+        depends_on:
+            - graph-node
+        volumes:
+            - type: volume
+              source: data-graph-deploy-dataunion
+              target: /firstrun
+              volume:
+                  nocopy: true
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.5'
+                    memory: 200M
+                reservations:
+                    memory: 20M
     ipfs:
         container_name: streamr-dev-ipfs
         image: ipfs/go-ipfs:v0.4.23
@@ -844,3 +864,4 @@ volumes:
     data-ipfs:
     data-postgres:
     data-graph-deploy:
+    data-graph-deploy-dataunion:
