@@ -454,7 +454,6 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
-        stdin_open: true
         deploy:
             resources:
                 limits:
