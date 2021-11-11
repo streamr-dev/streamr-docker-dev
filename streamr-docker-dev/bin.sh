@@ -78,16 +78,23 @@ start() {
         COMMANDS_TO_RUN+=("echo This requires sudo privileges, so please provide your password if requested")
 
         # Binding the loopback address is OS-specific
-        if [ "$(uname)" == "Darwin" ]; then
+        case "$OSTYPE" in
+        darwin*)
             COMMANDS_TO_RUN+=("sudo ifconfig lo0 alias 10.200.10.1/24")
-        elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+        ;;
+        linux*)
             COMMANDS_TO_RUN+=("sudo ip addr add 10.200.10.1 dev lo label lo:1")
-        #elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
-            # TODO: bind under 32 bits Windows NT platform
+        ;;
+        msys*|cygwin*) # windows
             # maybe something like this: netsh interface ip add address "loopback" 10.200.10.1 255.255.255.255
-        #elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-            # TODO: bind under 64 bits Windows NT platform
-        fi
+            echo "streamr-docker-dev: unsupported operating system: $OSTYPE" 1>&2
+            exit 1
+        ;;
+        *)
+            echo "streamr-docker-dev: unknown operating system: $OSTYPE" 1>&2
+            exit 1
+        ;;
+        esac
     fi
     [[ $DETACHED == 1 ]] && FLAGS+=" -d"
     [[ $SERVICES == "" ]] && msg="Starting all" || msg="Starting $SERVICES"
