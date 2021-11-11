@@ -27,6 +27,8 @@ jobs:
           strict: true
           no_warnings: false
           config_file: yamllint-config.yaml
+      - name: Run shellcheck
+        run: shellcheck --color=never --check-sourced --shell=bash streamr-docker-dev/bin.sh streamr-docker-dev/help_scripts.sh
       - name: Run smoke tests
         run: make test-smoke
   build:
