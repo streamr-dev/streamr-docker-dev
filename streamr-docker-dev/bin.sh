@@ -47,6 +47,7 @@ cd "$ROOT_DIR" || exit 1
 if [ -f .env ]; then
     # Read .env (from https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs/20909045#20909045)
     set -o allexport
+    # shellcheck disable=SC1091
     source .env
     set +o allexport
 fi
@@ -64,6 +65,7 @@ else
 fi
 
 help() {
+    # shellcheck disable=SC2086
     "$ORIG_DIRNAME/help_scripts.sh" $SERVICES
 }
 
@@ -148,6 +150,7 @@ wait() {
             service_name=$(docker inspect -f "{{.Name}}" "$image_id")
             # Try to read health state of each image
             health_state=$(docker inspect -f "{{.State.Health.Status}}" "$image_id" 2> /dev/null)
+            # shellcheck disable=SC2181
             if [ $? -eq 0 ]; then
                 # Successfully got health state. Is the service healthy?
                 if [ "$health_state" != "healthy" ]; then
@@ -265,8 +268,10 @@ while [ $# -gt 0 ]; do # if there are arguments
     shift
 done
 
+# shellcheck disable=SC2207
 EXCEPT_SERVICES_DEFAULT=($(expandServiceAliases "${EXCEPT_SERVICES_DEFAULT[*]}"))
 SERVICES=$(expandServiceAliases "$SERVICES")
+# shellcheck disable=SC2207
 EXCEPT_SERVICES=($(expandServiceAliases "${EXCEPT_SERVICES[*]}"))
 
 # Populate COMMANDS_TO_RUN by executing the relevant method
