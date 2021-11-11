@@ -320,5 +320,10 @@ do
         echo "$command"
     else
         $command
+        EXIT=$?
+        if [  $EXIT -ne 0 ]; then
+            echo "streamr-docker-dev: error while running command: \"$command\"" 1>&2
+            exit $EXIT
+        fi
     fi
 done

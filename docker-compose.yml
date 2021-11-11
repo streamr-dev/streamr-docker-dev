@@ -4,6 +4,7 @@ services:
     cassandra:
         container_name: streamr-dev-cassandra
         image: streamr/cassandra:v0.0.1
+        init: true
         networks:
             - streamr-network
         ports:
@@ -22,6 +23,7 @@ services:
     init-keyspace:
         container_name: streamr-dev-init-keyspace
         image: cassandra:3.11.5
+        init: true
         networks:
             - streamr-network
         command: bash -c "sleep 5 && cqlsh cassandra -f /init_scripts/keyspace.cql && echo keyspace initialized"
@@ -38,6 +40,7 @@ services:
     mysql:
         container_name: streamr-dev-mysql
         image: streamr/mysql:v0.0.1
+        init: true
         networks:
             - streamr-network
         ports:
@@ -109,6 +112,7 @@ services:
     tracker-1:
         container_name: streamr-dev-tracker-1
         image: streamr/broker-node:dev
+        init: true
         networks:
             - streamr-network
         restart: unless-stopped
@@ -130,6 +134,7 @@ services:
     tracker-2:
         container_name: streamr-dev-tracker-2
         image: streamr/broker-node:dev
+        init: true
         networks:
             - streamr-network
         restart: unless-stopped
@@ -151,6 +156,7 @@ services:
     tracker-3:
         container_name: streamr-dev-tracker-3
         image: streamr/broker-node:dev
+        init: true
         networks:
             - streamr-network
         restart: unless-stopped
@@ -172,6 +178,7 @@ services:
     broker-node-storage-1:
         container_name: streamr-dev-broker-node-storage-1
         image: streamr/broker-node:dev
+        init: true
         networks:
             - streamr-network
         restart: unless-stopped
@@ -198,6 +205,7 @@ services:
     broker-node-no-storage-1:
         container_name: streamr-dev-broker-node-no-storage-1
         image: streamr/broker-node:dev
+        init: true
         networks:
             - streamr-network
         restart: unless-stopped
@@ -221,6 +229,7 @@ services:
     broker-node-no-storage-2:
         container_name: streamr-dev-broker-node-no-storage-2
         image: streamr/broker-node:dev
+        init: true
         networks:
             - streamr-network
         restart: unless-stopped
@@ -270,6 +279,7 @@ services:
     ethereum-watcher:
         container_name: streamr-dev-ethereum-watcher
         image: streamr/ethereum-watcher:dev
+        init: true
         networks:
             - streamr-network
         restart: unless-stopped
@@ -296,6 +306,7 @@ services:
     data-union-server:
         container_name: streamr-dev-data-union-server
         image: streamr/data-union-server:dev
+        init: true
         networks:
             - streamr-network
         ports:
@@ -441,6 +452,7 @@ services:
     bridge-senderhome:
         container_name: streamr-dev-bridge-senderhome
         image: poanetwork/tokenbridge-oracle:latest
+        init: true
         networks:
             - streamr-network
         env_file:
