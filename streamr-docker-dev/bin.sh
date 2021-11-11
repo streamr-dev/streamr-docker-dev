@@ -50,6 +50,7 @@ cd "$ROOT_DIR" || exit 1
 if [ -f .env ]; then
     # Read .env (from https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs/20909045#20909045)
     set -o allexport
+    # shellcheck disable=SC1091
     source .env
     set +o allexport
 fi
@@ -67,6 +68,7 @@ else
 fi
 
 help() {
+    # shellcheck disable=SC2086
     "$ORIG_DIRNAME/help_scripts.sh" $SERVICES
 }
 
@@ -81,16 +83,23 @@ start() {
         COMMANDS_TO_RUN+=("echo This requires sudo privileges, so please provide your password if requested")
 
         # Binding the loopback address is OS-specific
-        if [ "$(uname)" == "Darwin" ]; then
+        case "$OSTYPE" in
+        darwin*)
             COMMANDS_TO_RUN+=("sudo ifconfig lo0 alias 10.200.10.1/24")
-        elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+        ;;
+        linux*)
             COMMANDS_TO_RUN+=("sudo ip addr add 10.200.10.1 dev lo label lo:1")
-        #elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
-            # TODO: bind under 32 bits Windows NT platform
+        ;;
+        msys*|cygwin*) # windows
             # maybe something like this: netsh interface ip add address "loopback" 10.200.10.1 255.255.255.255
-        #elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-            # TODO: bind under 64 bits Windows NT platform
-        fi
+            echo "streamr-docker-dev: unsupported operating system: $OSTYPE" 1>&2
+            exit 1
+        ;;
+        *)
+            echo "streamr-docker-dev: unknown operating system: $OSTYPE" 1>&2
+            exit 1
+        ;;
+        esac
     fi
     [[ $DETACHED == 1 ]] && FLAGS+=" -d"
     [[ $SERVICES == "" ]] && msg="Starting all" || msg="Starting $SERVICES"
@@ -144,6 +153,7 @@ wait() {
             service_name=$(docker inspect -f "{{.Name}}" "$image_id")
             # Try to read health state of each image
             health_state=$(docker inspect -f "{{.State.Health.Status}}" "$image_id" 2> /dev/null)
+            # shellcheck disable=SC2181
             if [ $? -eq 0 ]; then
                 # Successfully got health state. Is the service healthy?
                 if [ "$health_state" != "healthy" ]; then
@@ -261,8 +271,10 @@ while [ $# -gt 0 ]; do # if there are arguments
     shift
 done
 
+# shellcheck disable=SC2207
 EXCEPT_SERVICES_DEFAULT=($(expandServiceAliases "${EXCEPT_SERVICES_DEFAULT[*]}"))
 SERVICES=$(expandServiceAliases "$SERVICES")
+# shellcheck disable=SC2207
 EXCEPT_SERVICES=($(expandServiceAliases "${EXCEPT_SERVICES[*]}"))
 
 # Populate COMMANDS_TO_RUN by executing the relevant method
