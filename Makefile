@@ -22,7 +22,7 @@ lint-yaml: $(YAMLLINT)
 
 .PHONY: test-smoke
 test-smoke:
-	$(COMPOSE) -f docker-compose.yml config
+	$(COMPOSE) -f docker-compose.yml -f docker-compose-ci.yml config
 
 .PHONY: test-docker-dev
 test-docker-dev:
