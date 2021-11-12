@@ -36,7 +36,7 @@ jobs:
       - lint
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    continue-on-error: true
+    continue-on-error: false
     strategy:
       fail-fast: false
       matrix:
