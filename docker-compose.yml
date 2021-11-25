@@ -353,7 +353,6 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
-        stdin_open: true
     parity-node0:
         container_name: streamr-dev-parity-node0
         environment:
