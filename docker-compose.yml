@@ -545,17 +545,20 @@ services:
                   nocopy: true
     ipfs:
         container_name: streamr-dev-ipfs
-        image: ipfs/go-ipfs:v0.4.23
+        image: ipfs/go-ipfs:v0.11.0
         networks:
             - streamr-network
         ports:
             - '5001:5001'
+            - '6695:8080'
         volumes:
             - type: volume
               source: data-ipfs
               target: /data/ipfs
               volume:
                   nocopy: true
+        environment:
+            IPFS_PROFILE: test # sets the test profile
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
