@@ -113,14 +113,6 @@ services:
                     memory: 500M
                 reservations:
                     memory: 100M
-    data-union-server:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.50'
-                    memory: 100M
-                reservations:
-                    memory: 10M
     platform:
         deploy:
             resources:
