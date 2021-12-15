@@ -520,6 +520,7 @@ services:
     graph-deploy-streamregistry-subgraph:
         container_name: streamr-dev-graph-deploy-streamreg-subgraph
         image: streamr/graph-deploy-streamregistry-subgraph:arm
+        restart: on-failure # exits on success
         networks:
             - streamr-network
         depends_on:
@@ -533,6 +534,7 @@ services:
     graph-deploy-dataunion-subgraph:
         container_name: streamr-dev-graph-deploy-dataunion-subgraph
         image: streamr/graph-deploy-dataunion-subgraph:dev
+        restart: on-failure # exits on success
         networks:
             - streamr-network
         depends_on:
@@ -567,6 +569,7 @@ services:
     postgres:
         container_name: streamr-dev-postgres
         image: postgres
+        restart: unless-stopped
         networks:
             - streamr-network
         ports:
