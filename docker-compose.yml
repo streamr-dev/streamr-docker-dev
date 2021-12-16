@@ -530,7 +530,7 @@ services:
               source: data-graph-deploy
               target: /firstrun
               volume:
-                  nocopy: true
+                  nocopy: false
     graph-deploy-dataunion-subgraph:
         container_name: streamr-dev-graph-deploy-dataunion-subgraph
         image: streamr/graph-deploy-dataunion-subgraph:dev
@@ -544,7 +544,7 @@ services:
               source: data-graph-deploy-dataunion
               target: /firstrun
               volume:
-                  nocopy: true
+                  nocopy: false
     ipfs:
         container_name: streamr-dev-ipfs
         image: ipfs/go-ipfs:v0.11.0
