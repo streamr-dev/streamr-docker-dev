@@ -539,7 +539,7 @@ services:
               volume:
                   nocopy: true
         environment:
-            IPFS_PROFILE: test # sets the test profile
+            IPFS_PROFILE: server # sets the server profile
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
