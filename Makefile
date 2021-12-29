@@ -24,7 +24,8 @@ test-smoke:
 
 .PHONY: test-docker-dev
 test-docker-dev:
-	./streamr-docker-dev/bin.sh start --wait
+	./streamr-docker-dev/bin.sh start --wait --except chainlink
+	./streamr-docker-dev/bin.sh start chainlink &
 	./streamr-docker-dev/bin.sh log -f chainlink &
 	./streamr-docker-dev/bin.sh stop
 
