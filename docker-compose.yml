@@ -471,6 +471,7 @@ services:
     graph-node:
         container_name: streamr-dev-thegraph-node
         image: streamr/graph-node:arm
+        restart: unless-stopped
         networks:
             - streamr-network
         ports:
