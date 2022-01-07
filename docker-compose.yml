@@ -599,16 +599,21 @@ services:
     chainlink:
         container_name: streamr-dev-chainlink-node
         image: smartcontract/chainlink:0.10.5
+        # image: smartcontract/chainlink:1.0.1
         networks:
             - streamr-network
         ports:
             - '6688:6688'
         command: ["local", "n", "-p", "/chainlink/.password", "-a", "/chainlink/.api"]
+        # command: ["local", "import", "/chainlink/k1.json"]
+        # command: ["keys", "eth", "import", "-p", "/chainlink/.password", "/chainlink/k1.json"]
         env_file:
-            - ./chainlink_config/.env_streamr_sidechain
+            # - ./chainlink_config/mumbai-testnet/.env_config
+            - ./chainlink_config/docker-dev-env/.env_config
         volumes:
             - type: bind
-              source: ./chainlink_config
+            #   source: ./chainlink_config/mumbai-testnet
+              source: ./chainlink_config/docker-dev-env
               target: /chainlink
               bind:
                   propagation: rprivate
@@ -622,7 +627,7 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
-        restart: unless-stopped
+        # restart: unless-stopped
     chainlink-external-adapter:
         container_name: streamr-dev-chainlink-adapter
         image: streamr/chainlink-external-adapter:dev
