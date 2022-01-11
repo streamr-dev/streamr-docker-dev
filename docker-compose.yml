@@ -610,10 +610,12 @@ services:
         env_file:
             - ./chainlink_config/mumbai-testnet/.env_config
             # - ./chainlink_config/docker-dev-env/.env_config
+            # - ./chainlink_config/polygon-mainnet/.env_config
         volumes:
             - type: bind
               source: ./chainlink_config/mumbai-testnet
             #   source: ./chainlink_config/docker-dev-env
+            #   source: ./chainlink_config/polygon-mainnet
               target: /chainlink
               bind:
                   propagation: rprivate
