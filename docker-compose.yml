@@ -599,7 +599,7 @@ services:
             - postgres
             - chainlink-external-adapter
         healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--insecure", "http://localhost:6688/"]
+            test: ["CMD", "wget", "--timeout=9", "--tries=1", "--quiet", "-O-", "http://localhost:6688"]
             interval: 60s
             timeout: 10s
             retries: 20
