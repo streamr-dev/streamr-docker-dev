@@ -600,9 +600,9 @@ services:
             - chainlink-external-adapter
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--insecure", "http://localhost:6688/"]
-            interval: 30s
+            interval: 60s
             timeout: 10s
-            retries: 4
+            retries: 20
         restart: on-failure
     chainlink-external-adapter:
         container_name: streamr-dev-chainlink-adapter
