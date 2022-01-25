@@ -600,7 +600,7 @@ services:
             - chainlink-external-adapter
         healthcheck:
             test: ["CMD", "wget", "--timeout=9", "--tries=1", "--quiet", "-O-", "http://localhost:6688"]
-            interval: 60s
+            interval: 30s
             timeout: 10s
             retries: 20
         restart: on-failure
