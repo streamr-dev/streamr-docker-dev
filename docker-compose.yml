@@ -583,7 +583,8 @@ services:
             - streamr-network
         ports:
             - '6688:6688'
-        command: ["local", "n", "-p", "/chainlink/.password", "-a", "/chainlink/.api"]
+        entrypoint: ""
+        command: bash -c "echo \"sleeping for 5s\" && sleep 5 && chainlink local n -p /chainlink/.password -a /chainlink/.api"
         env_file:
             - ./chainlink_config/.env_streamr_sidechain
         volumes:
