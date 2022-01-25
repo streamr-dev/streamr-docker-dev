@@ -602,7 +602,7 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
-        restart: unless-stopped
+        restart: on-failure
     chainlink-external-adapter:
         container_name: streamr-dev-chainlink-adapter
         image: streamr/chainlink-external-adapter:dev
