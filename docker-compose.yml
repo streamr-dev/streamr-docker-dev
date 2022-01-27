@@ -252,7 +252,7 @@ services:
             retries: 20
     core-api:
         container_name: streamr-dev-core-api
-        image: streamr/core-api:dev
+        image: streamr/core-api:BACK-200
         networks:
             - streamr-network
         ports:
