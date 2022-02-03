@@ -198,7 +198,7 @@ services:
             CASSANDRA_HOST: 10.200.10.1:9042
         command: node bin/broker.js configs/docker-1.env.json
         healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8891/api/v1/volume"]
+            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8891/volume"]
             interval: 30s
             timeout: 10s
             retries: 20
@@ -222,7 +222,7 @@ services:
             STREAMR_URL: "${STREAMR_BASE_URL}"
         command: node bin/broker.js configs/docker-2.env.json
         healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8791/api/v1/volume"]
+            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8791/volume"]
             interval: 30s
             timeout: 10s
             retries: 20
@@ -246,7 +246,7 @@ services:
             STREAMR_URL: "${STREAMR_BASE_URL}"
         command: node bin/broker.js configs/docker-3.env.json
         healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8691/api/v1/volume"]
+            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8691/volume"]
             interval: 30s
             timeout: 10s
             retries: 20
