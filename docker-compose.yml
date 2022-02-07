@@ -264,7 +264,7 @@ services:
             - redis
             - parity-node0
         healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8081/streamr-core/api/v1/products"]
+            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8081/streamr-core/api/v2/products"]
             interval: 30s
             timeout: 10s
             retries: 20
@@ -273,7 +273,7 @@ services:
             AWS_SECRET_KEY: "${AWS_SECRET_ACCESS_KEY}"
             FILEUPLOAD_S3_BUCKET: "${FILEUPLOAD_S3_BUCKET}"
             STREAMR_URL: "${STREAMR_BASE_URL}"
-            HTTPS_API_SERVER: "${STREAMR_BASE_URL}/api/v1"
+            HTTPS_API_SERVER: "${STREAMR_BASE_URL}/api/v2"
             WS_SERVER: "${STREAMR_WS_URL}"
             CPS_URL: "http://10.200.10.1:8085/dataunions/"
     ethereum-watcher:
@@ -287,7 +287,7 @@ services:
             - parity-node0
             - core-api
         environment:
-            STREAMR_API_URL: "${STREAMR_BASE_URL}/api/v1"
+            STREAMR_API_URL: "${STREAMR_BASE_URL}/api/v2"
             DEVOPS_KEY: "0x628acb12df34bb30a0b2f95ec2e6a743b386c5d4f63aa9f338bec6f613160e78"
             NETWORK_ID: "8995"
             MARKETPLACE_ADDRESS: "0xf1371c0f40528406dc4f4caf89924ea9da49e866"
