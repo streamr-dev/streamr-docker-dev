@@ -62,7 +62,7 @@ else
 fi
 
 if [[ -z "${STREAMR_WS_URL}" ]]; then
-    export STREAMR_WS_URL=${STREAMR_BASE_URL/http/ws}/api/v1/ws # replace "http" with "ws"
+    export STREAMR_WS_URL=${STREAMR_BASE_URL/http/ws}/api/v2/ws # replace "http" with "ws"
 else
     echo "Using STREAMR_WS_URL: ${STREAMR_WS_URL}"
 fi

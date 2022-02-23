@@ -183,7 +183,7 @@ Wipe the persisted data of all services: `streamr-docker-dev wipe`
 
 Once the services are running, browse to [http://localhost](http://localhost) to use Core.
 
-The API root is at `http://localhost/api/v1`.
+The API root is at `http://localhost/api/v2`.
 
 ## Usage in Streamr development
 

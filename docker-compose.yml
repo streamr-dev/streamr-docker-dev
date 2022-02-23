@@ -198,7 +198,7 @@ services:
             CASSANDRA_HOST: 10.200.10.1:9042
         command: node bin/broker.js configs/docker-1.env.json
         healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8891/api/v1/volume"]
+            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8891/volume"]
             interval: 30s
             timeout: 10s
             retries: 20
@@ -222,7 +222,7 @@ services:
             STREAMR_URL: "${STREAMR_BASE_URL}"
         command: node bin/broker.js configs/docker-2.env.json
         healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8791/api/v1/volume"]
+            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8791/volume"]
             interval: 30s
             timeout: 10s
             retries: 20
@@ -246,7 +246,7 @@ services:
             STREAMR_URL: "${STREAMR_BASE_URL}"
         command: node bin/broker.js configs/docker-3.env.json
         healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8691/api/v1/volume"]
+            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8691/volume"]
             interval: 30s
             timeout: 10s
             retries: 20
@@ -264,7 +264,7 @@ services:
             - redis
             - parity-node0
         healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8081/streamr-core/api/v1/products"]
+            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8081/streamr-core/api/v2/products"]
             interval: 30s
             timeout: 10s
             retries: 20
@@ -273,7 +273,7 @@ services:
             AWS_SECRET_KEY: "${AWS_SECRET_ACCESS_KEY}"
             FILEUPLOAD_S3_BUCKET: "${FILEUPLOAD_S3_BUCKET}"
             STREAMR_URL: "${STREAMR_BASE_URL}"
-            HTTPS_API_SERVER: "${STREAMR_BASE_URL}/api/v1"
+            HTTPS_API_SERVER: "${STREAMR_BASE_URL}/api/v2"
             WS_SERVER: "${STREAMR_WS_URL}"
             CPS_URL: "http://10.200.10.1:8085/dataunions/"
     ethereum-watcher:
@@ -287,7 +287,7 @@ services:
             - parity-node0
             - core-api
         environment:
-            STREAMR_API_URL: "${STREAMR_BASE_URL}/api/v1"
+            STREAMR_API_URL: "${STREAMR_BASE_URL}/api/v2"
             DEVOPS_KEY: "0x628acb12df34bb30a0b2f95ec2e6a743b386c5d4f63aa9f338bec6f613160e78"
             NETWORK_ID: "8995"
             MARKETPLACE_ADDRESS: "0xf1371c0f40528406dc4f4caf89924ea9da49e866"
@@ -583,7 +583,8 @@ services:
             - streamr-network
         ports:
             - '6688:6688'
-        command: ["local", "n", "-p", "/chainlink/.password", "-a", "/chainlink/.api"]
+        entrypoint: ""
+        command: bash -c "echo \"sleeping for 5s\" && sleep 5 && chainlink local n -p /chainlink/.password -a /chainlink/.api"
         env_file:
             - ./chainlink_config/.env_streamr_sidechain
         volumes:
@@ -598,11 +599,11 @@ services:
             - postgres
             - chainlink-external-adapter
         healthcheck:
-            test: ["CMD", "echo"] # TODO: health check
-            interval: 10s
+            test: ["CMD", "wget", "--timeout=9", "--tries=1", "--quiet", "-O-", "http://localhost:6688"]
+            interval: 30s
             timeout: 10s
-            retries: 60
-        restart: unless-stopped
+            retries: 20
+        restart: on-failure
     chainlink-external-adapter:
         container_name: streamr-dev-chainlink-adapter
         image: streamr/chainlink-external-adapter:dev
