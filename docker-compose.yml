@@ -305,7 +305,7 @@ services:
             retries: 60
     platform:
         container_name: streamr-dev-platform
-        image: streamr/platform:dev
+        image: streamr/platform:latest
         networks:
             - streamr-network
         ports:
