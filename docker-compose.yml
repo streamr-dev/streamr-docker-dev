@@ -305,6 +305,33 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
+    ethereum-watcher-sidechain:
+        container_name: streamr-dev-ethereum-watcher
+        image: streamr/ethereum-watcher:dev
+        init: true
+        networks:
+            - streamr-network
+        restart: unless-stopped
+        depends_on:
+            - parity-sidechain-node0
+            - core-api
+        environment:
+            STREAMR_API_URL: "${STREAMR_BASE_URL}/api/v2"
+            DEVOPS_KEY: "0x628acb12df34bb30a0b2f95ec2e6a743b386c5d4f63aa9f338bec6f613160e78"
+            NETWORK_ID: "8997"
+            MARKETPLACE_ADDRESS: "0xa072C42CB167d68D4c1cA15d0e4d0bd93E74A80f"
+            ETHEREUM_SERVER_URL: "http://10.200.10.1:8546"
+        volumes:
+            - type: volume
+              source: data-ethereum-watcher
+              target: /app/logs
+              volume:
+                  nocopy: true
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: Health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
     platform:
         container_name: streamr-dev-platform
         image: streamr/platform:dev
