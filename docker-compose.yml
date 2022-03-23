@@ -662,6 +662,7 @@ volumes:
     data-parity-node0:
     data-parity-sidechain-node0:
     data-ethereum-watcher:
+    data-ethereum-watcher-sidechain:
     data-ipfs:
     data-postgres:
     data-graph-deploy:
