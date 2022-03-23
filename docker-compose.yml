@@ -306,7 +306,7 @@ services:
             timeout: 10s
             retries: 60
     ethereum-watcher-sidechain:
-        container_name: streamr-dev-ethereum-watcher
+        container_name: streamr-dev-ethereum-watcher-sidechain
         image: streamr/ethereum-watcher:dev
         init: true
         networks:
