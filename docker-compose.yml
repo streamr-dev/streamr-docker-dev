@@ -321,6 +321,8 @@ services:
             NETWORK_ID: "8997"
             MARKETPLACE_ADDRESS: "0xa072C42CB167d68D4c1cA15d0e4d0bd93E74A80f"
             ETHEREUM_SERVER_URL: "http://10.200.10.1:8546"
+            MATIC_SERVER_URL: "http://10.200.10.1:8546"
+            STREAM_REGISTRY_ADDRESS: "0x6cCdd5d866ea766f6DF5965aA98DeCCD629ff222"
         volumes:
             - type: volume
               source: data-ethereum-watcher-sidechain
