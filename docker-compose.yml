@@ -111,7 +111,7 @@ services:
                   propagation: rprivate
     tracker-1:
         container_name: streamr-dev-tracker-1
-        image: streamr/broker-node:dev
+        image: streamr/tracker:dev
         init: true
         networks:
             - streamr-network
@@ -125,7 +125,7 @@ services:
               read_only: true
               bind:
                   propagation: rprivate
-        command: node tracker.js 0xe5abc5ee43b8830e7b0f98d03efff5d6cae574d52a43204528eab7b52cd6408d tracker-1 --port=30301 ${TRACKER_ARGS}
+        command: node bin/tracker.js 0xe5abc5ee43b8830e7b0f98d03efff5d6cae574d52a43204528eab7b52cd6408d tracker-1 --port=30301 ${TRACKER_ARGS}
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--insecure", "${STREAMR_BASE_URL}:30301/topology/"]
             interval: 30s
@@ -133,7 +133,7 @@ services:
             retries: 20
     tracker-2:
         container_name: streamr-dev-tracker-2
-        image: streamr/broker-node:dev
+        image: streamr/tracker:dev
         init: true
         networks:
             - streamr-network
@@ -147,7 +147,7 @@ services:
               read_only: true
               bind:
                   propagation: rprivate
-        command: node tracker.js 0x96de9d06f9e409119a2cd9b57dfc326f66d953a0418f3937b92c8930f930893c tracker-2 --port=30302 ${TRACKER_ARGS}
+        command: node bin/tracker.js 0x96de9d06f9e409119a2cd9b57dfc326f66d953a0418f3937b92c8930f930893c tracker-2 --port=30302 ${TRACKER_ARGS}
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--insecure", "${STREAMR_BASE_URL}:30302/topology/"]
             interval: 30s
@@ -155,7 +155,7 @@ services:
             retries: 20
     tracker-3:
         container_name: streamr-dev-tracker-3
-        image: streamr/broker-node:dev
+        image: streamr/tracker:dev
         init: true
         networks:
             - streamr-network
@@ -169,7 +169,7 @@ services:
               read_only: true
               bind:
                   propagation: rprivate
-        command: node tracker.js 0x6117b7a7cb8f3c8d40e3b7e87823c11af7f401515bc4fdf2bfdda70f1b833027 tracker-3 --port=30303 ${TRACKER_ARGS}
+        command: node bin/tracker.js 0x6117b7a7cb8f3c8d40e3b7e87823c11af7f401515bc4fdf2bfdda70f1b833027 tracker-3 --port=30303 ${TRACKER_ARGS}
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--insecure", "${STREAMR_BASE_URL}:30303/topology/"]
             interval: 30s
