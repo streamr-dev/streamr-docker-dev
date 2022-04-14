@@ -77,7 +77,7 @@ services() {
 }
 
 start() {
-    ip_lines=$(ifconfig | grep -c 10.200.10.1)
+    ip_lines=$(/sbin/ifconfig | grep -c 10.200.10.1)
     if [ "$ip_lines" -eq "0" ]; then
         COMMANDS_TO_RUN+=("echo Binding the internal IP address 10.200.10.1 to the loopback interface.")
         COMMANDS_TO_RUN+=("echo This requires sudo privileges, so please provide your password if requested")

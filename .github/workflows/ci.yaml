@@ -48,3 +48,19 @@ jobs:
         uses: actions/checkout@v2.4.0
       - name: Run streamr-docker-dev
         run: make test-docker-dev
+      - name: Collect docker logs on failure
+        if: failure()
+        uses: jwalton/gh-docker-logs@v2.2.0
+        with:
+          dest: 'logs'
+      - name: Upload logs to GitHub
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-logs-${{ matrix.os }}-${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt}}
+          path: 'logs'
+      - name: Stop Streamr Docker Stack
+        if: always()
+        run: |
+          docker kill $(docker ps -q)
+          docker rm $(docker ps -a -q)
