@@ -39,7 +39,8 @@ services:
             - cassandra
     mysql:
         container_name: streamr-dev-mysql
-        image: mariadb:latest
+        platform: linux/x86_64
+        image: mysql:5.7
         init: true
         networks:
             - streamr-network
@@ -89,7 +90,7 @@ services:
             - "25:25"
     nginx:
         container_name: streamr-dev-nginx
-        image: nginx:latest
+        image: streamr/nginx:v0.0.3
         networks:
             - streamr-network
         restart: unless-stopped
@@ -501,7 +502,7 @@ services:
             - bridge-request
     graph-node:
         container_name: streamr-dev-thegraph-node
-        image: streamr/graph-node:arm
+        image: graphprotocol/graph-node
         restart: unless-stopped
         networks:
             - streamr-network
@@ -530,7 +531,7 @@ services:
             retries: 60
     graph-deploy-streamregistry-subgraph:
         container_name: streamr-dev-graph-deploy-streamreg-subgraph
-        image: streamr/graph-deploy-streamregistry-subgraph:arm
+        image: streamr/graph-deploy-streamregistry-subgraph:dev
         restart: on-failure # exits on success
         networks:
             - streamr-network
