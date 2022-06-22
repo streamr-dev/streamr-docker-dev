@@ -71,8 +71,10 @@ The local Streamr Stack is configured to interact with the local Ethereum Parity
 
 The recommended way to interact with the blockchain is through Metamask. Here is the network configuration to add:
 - Network Name: Streamr Local
-- RPC URL: http://localhost:8545
-- ChainID: 8995
+- RPC URL: http://localhost:8545 (mainchain) or http://localhost:8546 (sidechain)
+- ChainID: 8995 (mainchain) or 8997 (sidechain)
+
+If you use `StreamrClient`, please configure MetaMask with the sidechain values.
 
 ### Getting ETH on the local blockchain
 
