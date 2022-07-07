@@ -556,6 +556,20 @@ services:
               target: /firstrun
               volume:
                   nocopy: false
+    graph-deploy-tatum-subgraph:
+        container_name: streamr-dev-graph-deploy-tatum-subgraph
+        image: streamr/graph-deploy-tatum-subgraph:dev
+        restart: on-failure # exits on success
+        networks:
+            - streamr-network
+        depends_on:
+            - graph-node
+        volumes:
+            - type: volume
+              source: data-graph-deploy-tatum
+              target: /firstrun
+              volume:
+                  nocopy: false
     ipfs:
         container_name: streamr-dev-ipfs
         image: ipfs/go-ipfs:v0.11.0
@@ -669,3 +683,4 @@ volumes:
     data-postgres:
     data-graph-deploy:
     data-graph-deploy-dataunion:
+    data-graph-deploy-tatum:
