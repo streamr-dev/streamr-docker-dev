@@ -285,6 +285,7 @@ services:
         restart: unless-stopped
         depends_on:
             - parity-node0
+            - parity-sidechain-node0
             - core-api
         environment:
             STREAMR_API_URL: "${STREAMR_BASE_URL}/api/v2"
