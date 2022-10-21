@@ -40,7 +40,7 @@ ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 
 The docker stack has not been tested in a Windows environment and is not recommended at this time.
 
-If you know what services you need, you don't need to use the `bin.sh`, you can just use `docker-compose` directly, like so:
+If you know what services you need, you don't need to use the `bin.sh`, you can just use `docker compose` directly, like so:
 
 1. Install and start Docker service.
 
@@ -48,7 +48,7 @@ If you know what services you need, you don't need to use the `bin.sh`, you can 
 
 3. Bind the loopback interface to 10.200.10.1: `netsh int ip add address "Loopback" 10.200.10.1`
 
-4. For instance, for the Ethereum environment without core-api: `docker-compose up parity-node0 parity-sidechain-node0 bridge`
+4. For instance, for the Ethereum environment without core-api: `docker compose up parity-node0 parity-sidechain-node0 bridge`
 
 ## Quickstart
 
@@ -289,8 +289,7 @@ I received this error only during `docker login`, after login I could resume usi
 
 | File                        | Description                                                    |
 |:-----------------------------|:----------------------------------------------------------------|
-| docker-compose.yml          | Supporting services stack (MySQL, Cassandra, Redis, etc.)      |
-| docker-compose.override.yml | Streamr service stack                                          |
+| docker-compose.yml          | Streamr and supporting services stack (MySQL, Cassandra, Redis, etc.)|
 | custom-mysql-settings.cnf   | Custom MySQL settings                                          |
 | mysql\_init\_scripts        | Database dumps used to initalize MySQL databases               |
 | keyspace.cql                | Keyspace definitions and demo data for Cassandra               |
