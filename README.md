@@ -59,7 +59,7 @@ If you know what services you need, you don't need to use the `bin.sh`, you can 
 
 **Option 2**
 - Start the full stack and wait until it's up and running: `streamr-docker-dev start --except platform --wait `
-- Install and run the Streamr Platform independantly - [Streamr Platform Repo](https://github.com/streamr-dev/streamr-platform/blob/development/app/README.md)
+- Install and run the Streamr Platform independently - [Streamr Platform Repo](https://github.com/streamr-dev/streamr-platform/blob/development/app/README.md)
 - Browse to [http://localhost](http://localhost) to use the Core UI
 - Log in with your Ethereum wallet (install [MetaMask](https://metamask.io/) if you don't have one)
 
