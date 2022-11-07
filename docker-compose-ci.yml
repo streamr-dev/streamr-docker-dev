@@ -209,6 +209,14 @@ services:
                     memory: 200M
                 reservations:
                     memory: 20M
+    deploy-project-registry-subgraph:
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.5'
+                    memory: 200M
+                reservations:
+                    memory: 20M
     graph-deploy-dataunion-subgraph:
         deploy:
             resources:

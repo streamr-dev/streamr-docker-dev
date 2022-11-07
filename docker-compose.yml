@@ -543,6 +543,20 @@ services:
               target: /firstrun
               volume:
                   nocopy: false
+    deploy-project-registry-subgraph:
+        container_name: streamr-dev-deploy-project-registry-subgraph
+        image: streamr/deploy-project-registry-subgraph:dev
+        restart: on-failure # exits on success
+        networks:
+            - streamr-network
+        depends_on:
+            - graph-node
+        volumes:
+            - type: volume
+              source: data-deploy-project-registry
+              target: /firstrun
+              volume:
+                  nocopy: false
     graph-deploy-dataunion-subgraph:
         container_name: streamr-dev-graph-deploy-dataunion-subgraph
         image: streamr/graph-deploy-dataunion-subgraph:dev
@@ -683,5 +697,6 @@ volumes:
     data-ipfs:
     data-postgres:
     data-graph-deploy:
+    data-deploy-project-registry:
     data-graph-deploy-dataunion:
     data-graph-deploy-tatum:
