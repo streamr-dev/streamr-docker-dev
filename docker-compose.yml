@@ -52,6 +52,12 @@ services:
               volume:
                   nocopy: true
             - type: bind
+              source: ./mysql-files
+              target: /var/lib/mysql-files
+              read_only: false
+              bind:
+                  propagation: rprivate
+            - type: bind
               source: ./mysql_init_scripts
               target: /docker-entrypoint-initdb.d
               read_only: true
@@ -671,6 +677,7 @@ networks:
 
 volumes:
     mysql_init_scripts:
+    mysql-files:
     cassandra_init_scripts:
     data-bridge-data-rabbitmq:
     data-bridge-data-redis:

@@ -2,3 +2,5 @@
 max_allowed_packet=32M
 sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
 lower_case_table_names=1
+local_infile=1
+secure-file-priv=
