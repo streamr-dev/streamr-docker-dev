@@ -524,6 +524,7 @@ services:
             ipfs: 'streamr-dev-ipfs:5001'
             ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8540'
             RUST_LOG: info
+            GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: "true"
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
