@@ -524,6 +524,7 @@ services:
             ipfs: 'streamr-dev-ipfs:5001'
             ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8540'
             RUST_LOG: info
+            GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: "true"
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -540,6 +541,20 @@ services:
         volumes:
             - type: volume
               source: data-graph-deploy
+              target: /firstrun
+              volume:
+                  nocopy: false
+    deploy-hub-subgraph:
+        container_name: streamr-dev-deploy-hub-subgraph
+        image: streamr/deploy-hub-subgraph:dev
+        restart: on-failure # exits on success
+        networks:
+            - streamr-network
+        depends_on:
+            - graph-node
+        volumes:
+            - type: volume
+              source: data-deploy-hub-subgraph
               target: /firstrun
               volume:
                   nocopy: false
@@ -683,5 +698,6 @@ volumes:
     data-ipfs:
     data-postgres:
     data-graph-deploy:
+    data-deploy-hub-subgraph:
     data-graph-deploy-dataunion:
     data-graph-deploy-tatum:
