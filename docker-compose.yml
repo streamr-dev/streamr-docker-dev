@@ -693,6 +693,11 @@ services:
             - tracker-1
             - tracker-2
             - tracker-3
+        healthcheck:
+            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "${STREAMR_BASE_URL}:4001/api"]
+            interval: 10s
+            timeout: 10s
+            retries: 60
 
 networks:
     streamr-network:
