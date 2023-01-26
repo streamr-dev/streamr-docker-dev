@@ -679,6 +679,20 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
+    stream-metrics-index:
+        container_name: streamr-dev-stream-metrics-index
+        image: streamr/stream-metrics-index
+        networks:
+            - streamr-network
+        restart: unless-stopped
+        ports:
+            - "4001:4001"
+        depends_on:
+            - mysql
+            - graph-deploy-streamregistry-subgraph
+            - tracker-1
+            - tracker-2
+            - tracker-3
 
 networks:
     streamr-network:
