@@ -113,6 +113,7 @@ services:
     tracker-1:
         container_name: streamr-dev-tracker-1
         image: streamr/tracker:dev
+        platform: linux/x86_64
         init: true
         networks:
             - streamr-network
@@ -135,6 +136,7 @@ services:
     tracker-2:
         container_name: streamr-dev-tracker-2
         image: streamr/tracker:dev
+        platform: linux/x86_64
         init: true
         networks:
             - streamr-network
@@ -157,6 +159,7 @@ services:
     tracker-3:
         container_name: streamr-dev-tracker-3
         image: streamr/tracker:dev
+        platform: linux/x86_64
         init: true
         networks:
             - streamr-network
