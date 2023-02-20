@@ -127,7 +127,7 @@ services:
               read_only: true
               bind:
                   propagation: rprivate
-        command: node bin/tracker.js 0xe5abc5ee43b8830e7b0f98d03efff5d6cae574d52a43204528eab7b52cd6408d tracker-1 --port=30301 ${TRACKER_ARGS}
+        command: npm exec -- streamr-tracker 0xe5abc5ee43b8830e7b0f98d03efff5d6cae574d52a43204528eab7b52cd6408d tracker-1 --port=30301 ${TRACKER_ARGS}
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--insecure", "${STREAMR_BASE_URL}:30301/topology/"]
             interval: 30s
@@ -150,7 +150,7 @@ services:
               read_only: true
               bind:
                   propagation: rprivate
-        command: node bin/tracker.js 0x96de9d06f9e409119a2cd9b57dfc326f66d953a0418f3937b92c8930f930893c tracker-2 --port=30302 ${TRACKER_ARGS}
+        command: npm exec -- streamr-tracker 0x96de9d06f9e409119a2cd9b57dfc326f66d953a0418f3937b92c8930f930893c tracker-2 --port=30302 ${TRACKER_ARGS}
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--insecure", "${STREAMR_BASE_URL}:30302/topology/"]
             interval: 30s
@@ -173,7 +173,7 @@ services:
               read_only: true
               bind:
                   propagation: rprivate
-        command: node bin/tracker.js 0x6117b7a7cb8f3c8d40e3b7e87823c11af7f401515bc4fdf2bfdda70f1b833027 tracker-3 --port=30303 ${TRACKER_ARGS}
+        command: npm exec -- streamr-tracker 0x6117b7a7cb8f3c8d40e3b7e87823c11af7f401515bc4fdf2bfdda70f1b833027 tracker-3 --port=30303 ${TRACKER_ARGS}
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--insecure", "${STREAMR_BASE_URL}:30303/topology/"]
             interval: 30s
@@ -200,7 +200,7 @@ services:
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
             CASSANDRA_HOST: 10.200.10.1:9042
-        command: node bin/broker.js configs/docker-1.env.json
+        command: npm exec -- streamr-broker configs/docker-1.env.json
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8891/info"]
             interval: 30s
@@ -224,7 +224,7 @@ services:
             - tracker-3
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
-        command: node bin/broker.js configs/docker-2.env.json
+        command: npm exec -- streamr-broker configs/docker-2.env.json
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8791/info"]
             interval: 30s
@@ -248,7 +248,7 @@ services:
             - tracker-3
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
-        command: node bin/broker.js configs/docker-3.env.json
+        command: npm exec -- streamr-broker configs/docker-3.env.json
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8691/info"]
             interval: 30s
@@ -289,12 +289,13 @@ services:
         restart: unless-stopped
         depends_on:
             - parity-node0
+            - parity-sidechain-node0
             - core-api
         environment:
             STREAMR_API_URL: "${STREAMR_BASE_URL}/api/v2"
             DEVOPS_KEY: "0x628acb12df34bb30a0b2f95ec2e6a743b386c5d4f63aa9f338bec6f613160e78"
             NETWORK_ID: "8995"
-            MARKETPLACE_ADDRESS: "0xf1371c0f40528406dc4f4caf89924ea9da49e866"
+            MARKETPLACE_ADDRESS: "0x56e57Bf7422eDe1ED75520D4387829feEe8a8319"
             MATIC_SERVER_URL: "http://10.200.10.1:8546"
             STREAM_REGISTRY_ADDRESS: "0x6cCdd5d866ea766f6DF5965aA98DeCCD629ff222"
             ETHEREUM_SERVER_URL: "http://10.200.10.1:8545"
@@ -527,6 +528,7 @@ services:
             ipfs: 'streamr-dev-ipfs:5001'
             ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8540'
             RUST_LOG: info
+            GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: "true"
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -543,6 +545,20 @@ services:
         volumes:
             - type: volume
               source: data-graph-deploy
+              target: /firstrun
+              volume:
+                  nocopy: false
+    deploy-hub-subgraph:
+        container_name: streamr-dev-deploy-hub-subgraph
+        image: streamr/deploy-hub-subgraph:dev
+        restart: on-failure # exits on success
+        networks:
+            - streamr-network
+        depends_on:
+            - graph-node
+        volumes:
+            - type: volume
+              source: data-deploy-hub-subgraph
               target: /firstrun
               volume:
                   nocopy: false
@@ -667,6 +683,20 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
+    stream-metrics-index:
+        container_name: streamr-dev-stream-metrics-index
+        image: streamr/stream-metrics-index
+        networks:
+            - streamr-network
+        restart: unless-stopped
+        ports:
+            - "4001:4001"
+        depends_on:
+            - mysql
+            - graph-deploy-streamregistry-subgraph
+            - tracker-1
+            - tracker-2
+            - tracker-3
 
 networks:
     streamr-network:
@@ -686,5 +716,6 @@ volumes:
     data-ipfs:
     data-postgres:
     data-graph-deploy:
+    data-deploy-hub-subgraph:
     data-graph-deploy-dataunion:
     data-graph-deploy-tatum:
