@@ -506,7 +506,7 @@ services:
             - bridge-request
     graph-node:
         container_name: streamr-dev-thegraph-node
-        image: graphprotocol/graph-node:v0.27.0
+        image: graphprotocol/graph-node:v0.30.0
         restart: unless-stopped
         networks:
             - streamr-network
