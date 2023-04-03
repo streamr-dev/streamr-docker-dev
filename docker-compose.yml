@@ -525,13 +525,6 @@ services:
             ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8540'
             RUST_LOG: info
             GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: "true"
-            LC_COLLATE: "C"
-            LC_CTYPE: "C"
-            LC_MESSAGES: "C"
-            LC_MONETARY: "C"
-            LC_NUMERIC: "C"
-            LC_TIME: "C"
-            LC_ALL: "C"
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
@@ -627,6 +620,7 @@ services:
             POSTGRES_USER: streamr
             POSTGRES_PASSWORD: let-me-in
             POSTGRES_DB: streamr
+            POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"
         volumes:
             - type: volume
               source: data-postgres
