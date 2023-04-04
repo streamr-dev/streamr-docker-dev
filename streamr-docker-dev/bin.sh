@@ -15,7 +15,7 @@ DETACHED=1
 DRY_RUN=0
 FOLLOW=0
 WAIT=0
-WAIT_TIMEOUT=300     # seconds
+WAIT_TIMEOUT=500     # seconds
 DOCKER_COMPOSE="docker-compose --ansi never -f docker-compose.yml"
 if [ -n "${CI-}" ]; then # Apply CI override when running on CI server
 	DOCKER_COMPOSE="$DOCKER_COMPOSE -f docker-compose-ci.yml"

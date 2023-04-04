@@ -502,7 +502,7 @@ services:
             - bridge-request
     graph-node:
         container_name: streamr-dev-thegraph-node
-        image: graphprotocol/graph-node:v0.27.0
+        image: graphprotocol/graph-node:v0.30.0
         restart: unless-stopped
         networks:
             - streamr-network
@@ -620,6 +620,7 @@ services:
             POSTGRES_USER: streamr
             POSTGRES_PASSWORD: let-me-in
             POSTGRES_DB: streamr
+            POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"
         volumes:
             - type: volume
               source: data-postgres
