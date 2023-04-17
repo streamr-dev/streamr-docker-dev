@@ -602,7 +602,7 @@ services:
                   nocopy: false
     ipfs:
         container_name: streamr-dev-ipfs
-        image: ipfs/go-ipfs:v0.11.0
+        image: ipfs/go-ipfs:v0.19.1
         networks:
             - streamr-network
         ports:
