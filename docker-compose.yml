@@ -708,6 +708,19 @@ services:
             - tracker-1
             - tracker-2
             - tracker-3
+    ens-sync-script:
+        container_name: ens-sync-script
+        image: streamr/ens-sync-script:dev
+        networks:
+            - streamr-network
+        depends_on:
+            - parity-node0
+            - parity-sidechain-node0
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
 
 networks:
     streamr-network:
