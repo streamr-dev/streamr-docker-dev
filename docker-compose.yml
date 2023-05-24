@@ -548,6 +548,20 @@ services:
               target: /firstrun
               volume:
                   nocopy: false
+    deploy-network-subgraphs:
+        container_name: streamr-dev-deploy-network-subgraphs
+        image: streamr/deploy-network-subgraphs:dev
+        restart: on-failure # exits on success
+        networks:
+            - streamr-network
+        depends_on:
+            - graph-node
+        volumes:
+            - type: volume
+              source: data-graph-deploy
+              target: /firstrun
+              volume:
+                  nocopy: false
     deploy-hub-subgraph:
         container_name: streamr-dev-deploy-hub-subgraph
         image: streamr/deploy-hub-subgraph:dev
@@ -592,7 +606,7 @@ services:
                   nocopy: false
     ipfs:
         container_name: streamr-dev-ipfs
-        image: ipfs/go-ipfs:v0.11.0
+        image: ipfs/go-ipfs:v0.19.1
         networks:
             - streamr-network
         ports:
@@ -624,6 +638,7 @@ services:
             POSTGRES_USER: streamr
             POSTGRES_PASSWORD: let-me-in
             POSTGRES_DB: streamr
+            POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"
         volumes:
             - type: volume
               source: data-postgres
@@ -697,6 +712,19 @@ services:
             - tracker-1
             - tracker-2
             - tracker-3
+    ens-sync-script:
+        container_name: ens-sync-script
+        image: streamr/ens-sync-script:dev
+        networks:
+            - streamr-network
+        depends_on:
+            - parity-node0
+            - parity-sidechain-node0
+        healthcheck:
+            test: ["CMD", "echo"] # TODO: health check
+            interval: 10s
+            timeout: 10s
+            retries: 60
 
 networks:
     streamr-network:
