@@ -540,7 +540,7 @@ services:
             - graph-node
         volumes:
             - type: volume
-              source: data-graph-deploy
+              source: data-graph-deploy-legacy
               target: /firstrun
               volume:
                   nocopy: false
@@ -740,6 +740,7 @@ volumes:
     data-ipfs:
     data-postgres:
     data-graph-deploy:
+    data-graph-deploy-legacy:
     data-deploy-hub-subgraph:
     data-graph-deploy-dataunion:
     data-graph-deploy-tatum:
