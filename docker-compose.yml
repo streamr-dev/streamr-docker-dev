@@ -8,7 +8,7 @@ services:
         networks:
             - streamr-network
         ports:
-            - "7000:7000"
+            # - "7000:7000" # Conflicts with "Control Centre" service on MacOS. Cassandra uses it for cluster communication, which isn't necessary in a single-node cluster.
             - "7001:7001"
             - "7199:7199"
             - "9042:9042"
