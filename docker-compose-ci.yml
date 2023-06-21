@@ -25,22 +25,6 @@ services:
                     memory: 500M
                 reservations:
                     memory: 250M
-    redis:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.50'
-                    memory: 50M
-                reservations:
-                    memory: 20M
-    smtp:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.2'
-                    memory: 30M
-                reservations:
-                    memory: 10M
     nginx:
         deploy:
             resources:
@@ -97,23 +81,7 @@ services:
                     memory: 200M
                 reservations:
                     memory: 150M
-    core-api:
-        deploy:
-            resources:
-                limits:
-                    cpus: '2.0'
-                    memory: 1500M
-                reservations:
-                    memory: 500M
-    ethereum-watcher:
-        deploy:
-            resources:
-                limits:
-                    cpus: '2.00'
-                    memory: 500M
-                reservations:
-                    memory: 100M
-    platform:
+    hub:
         deploy:
             resources:
                 limits:
@@ -145,54 +113,6 @@ services:
                     memory: 100M
                 reservations:
                     memory: 20M
-    bridge-rabbitmq:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 150M
-                reservations:
-                    memory: 50M
-    bridge-request:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 100M
-                reservations:
-                    memory: 10M
-    bridge-affirmation:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 100M
-                reservations:
-                    memory: 10M
-    bridge-senderhome:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 100M
-                reservations:
-                    memory: 10M
-    bridge-senderforeign:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 100M
-                reservations:
-                    memory: 10M
-    bridge:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.1'
-                    memory: 10M
-                reservations:
-                    memory: 10M
     graph-node:
         deploy:
             resources:
@@ -249,22 +169,3 @@ services:
                     memory: 100M
                 reservations:
                     memory: 10M
-    chainlink:
-        deploy:
-            restart_policy:
-                condition: on-failure
-                max_attempts: 5
-            resources:
-                limits:
-                    cpus: '1.0'
-                    memory: 1G
-                reservations:
-                    memory: 50M
-    chainlink-external-adapter:
-        deploy:
-            resources:
-                limits:
-                    cpus: '1.0'
-                    memory: 1G
-                reservations:
-                    memory: 50M
