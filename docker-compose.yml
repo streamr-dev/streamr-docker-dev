@@ -348,10 +348,10 @@ services:
             RUST_LOG: info
             GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: "true"
         healthcheck:
-            test: ["CMD", "echo"] # TODO: health check - unfortunately no curl or wget in image
-            interval: 10s
-            timeout: 10s
-            retries: 60
+          test: ["CMD", "nc", "-z", "localhost", "8000"]
+          interval: 5s
+          timeout: 10s
+          retries: 10
     graph-deploy-streamregistry-subgraph:
         container_name: streamr-dev-graph-deploy-streamregistry-subgraph
         image: streamr/graph-deploy-streamregistry-subgraph:dev
