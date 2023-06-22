@@ -73,7 +73,7 @@ services:
           retries: 10
     nginx:
         container_name: streamr-dev-nginx
-        image: streamr/nginx:v0.0.3
+        image: nginx:1.25.0
         networks:
             - streamr-network
         restart: unless-stopped
