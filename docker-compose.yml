@@ -448,12 +448,6 @@ services:
               target: /var/lib/postgresql/data
               volume:
                   nocopy: true
-            - type: bind
-              source: ./postgres_init_scripts
-              target: /docker-entrypoint-initdb.d
-              read_only: true
-              bind:
-                  propagation: rprivate
         healthcheck:
             test: ["CMD", "echo"] # TODO: health check
             interval: 10s
