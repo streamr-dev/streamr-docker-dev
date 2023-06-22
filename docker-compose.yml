@@ -93,6 +93,11 @@ services:
               read_only: true
               bind:
                   propagation: rprivate
+        healthcheck:
+          test: ["CMD", "curl", "-f", "http://localhost/health_check"]
+          interval: 5s
+          timeout: 10s
+          retries: 10
     tracker-1:
         container_name: streamr-dev-tracker-1
         image: streamr/tracker:dev
