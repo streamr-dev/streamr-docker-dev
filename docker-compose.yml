@@ -464,10 +464,10 @@ services:
               volume:
                   nocopy: true
         healthcheck:
-            test: ["CMD", "echo"] # TODO: health check
-            interval: 10s
-            timeout: 10s
-            retries: 60
+          test: ["CMD-SHELL", "pg_isready -U streamr -d streamr"]
+          interval: 5s
+          timeout: 10s
+          retries: 10
     stream-metrics-index:
         container_name: streamr-dev-stream-metrics-index
         image: streamr/stream-metrics-index
