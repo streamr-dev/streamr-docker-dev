@@ -81,7 +81,7 @@ services:
                     memory: 200M
                 reservations:
                     memory: 150M
-    hub:
+    platform:
         deploy:
             resources:
                 limits:
