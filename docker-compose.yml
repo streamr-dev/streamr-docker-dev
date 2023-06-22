@@ -323,7 +323,7 @@ services:
               volume:
                   nocopy: true
     graph-node:
-        container_name: streamr-dev-graph-node
+        container_name: streamr-dev-thegraph-node
         image: graphprotocol/graph-node:v0.30.0
         restart: unless-stopped
         networks:
