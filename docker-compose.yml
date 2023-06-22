@@ -343,7 +343,7 @@ services:
             RUST_LOG: info
             GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: "true"
         healthcheck:
-            test: ["CMD", "echo"] # TODO: health check
+            test: ["CMD", "echo"] # TODO: health check - unfortunately no curl or wget in image
             interval: 10s
             timeout: 10s
             retries: 60
@@ -434,10 +434,10 @@ services:
         environment:
             IPFS_PROFILE: server # sets the server profile
         healthcheck:
-            test: ["CMD", "echo"] # TODO: health check
-            interval: 10s
-            timeout: 10s
-            retries: 60
+          test: ["CMD", "ipfs", "id"]
+          interval: 5s
+          timeout: 10s
+          retries: 10
     postgres:
         container_name: streamr-dev-postgres
         image: postgres
