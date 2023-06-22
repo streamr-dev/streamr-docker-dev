@@ -338,7 +338,7 @@ services:
             timeout: 10s
             retries: 60
     graph-deploy-streamregistry-subgraph:
-        container_name: streamr-dev-graph-deploy-streamreg-subgraph
+        container_name: streamr-dev-graph-deploy-streamregistry-subgraph
         image: streamr/graph-deploy-streamregistry-subgraph:dev
         restart: on-failure # exits on success
         networks:
