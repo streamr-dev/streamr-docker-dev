@@ -66,6 +66,11 @@ services:
         restart: unless-stopped
         environment:
             MYSQL_ROOT_PASSWORD: password
+        healthcheck:
+          test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+          interval: 5s
+          timeout: 10s
+          retries: 10
     nginx:
         container_name: streamr-dev-nginx
         image: streamr/nginx:v0.0.3
