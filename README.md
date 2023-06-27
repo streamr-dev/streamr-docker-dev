@@ -53,17 +53,8 @@ If you know what services you need, you don't need to use the `bin.sh`, you can 
 ## Quickstart
 
 **Option 1**
-- Start the full stack and wait until it's up and running: `streamr-docker-dev start --wait `
-- Browse to [http://localhost](http://localhost) to use the Core UI
-- Log in with your Ethereum wallet (install [MetaMask](https://metamask.io/) if you don't have one)
 
-**Option 2**
-- Start the full stack and wait until it's up and running: `streamr-docker-dev start --except platform --wait `
-- Install and run the Streamr Platform independantly - [Streamr Platform Repo](https://github.com/streamr-dev/streamr-platform/blob/development/app/README.md)
-- Browse to [http://localhost](http://localhost) to use the Core UI
-- Log in with your Ethereum wallet (install [MetaMask](https://metamask.io/) if you don't have one)
-
-Option 2 is for when you would like to make changes to the frontend (Platform) code.
+`streamr-docker-dev start --wait `
 
 ### Interacting with the local blockchain
 
@@ -218,16 +209,8 @@ streamr-docker-dev start --wait
   - 2 broker nodes + 1 storage Streamr network nodes. This creates a local and private Streamr Network.
 - 3 x [Tracker](https://github.com/streamr-dev/broker)
   - Helps node discovery in the Strearm Network
-- 1 x [Core frontend](https://github.com/streamr-dev/streamr-platform/app)
+- 1 x [Hub frontend](https://github.com/streamr-dev/streamr-platform/app)
   - See more detailed build instructions in the streamr-platform repo
-- 1 x [Core backend](https://github.com/streamr-dev/engine-and-editor)
-  - Centralized backend for the streamr-platform
-- 1 x [Data Union Server](https://github.com/streamr-dev/streamr-community-products)
-  - The Data Union Server manages the state of the
-  - The Data Union Server will be retired when Data Unions 2.0 is launched in Q1 of 2021
-- 1 x [ethereum-watcher](https://github.com/streamr-dev/streamr-ethereum-watcher)
-- 1 x [Chainlink node](https://github.com/streamr-dev/network-contracts)
-  - accessible at http://localhost:6688, user:a@a.com, password:testpass
 - 1 x [TheGraph node](https://github.com/streamr-dev/network-contracts)
   - GraphQL queries at http://localhost:8000/subgraphs/name/githubname/subgraphname
   - GUI to past GraphQL queries: http://192.168.0.8:8000/subgraphs/name/githubname/subgraphname/graphql
@@ -250,16 +233,14 @@ streamr-docker-dev start --wait
 }
 ```
 ### Supporting services
-- 1 x MySQL instance with databases `core_dev` and `core_test`
-- 1 x Redis instance
+- 1 x MySQL instance
 - 1 x Apache Cassandra instance with `streamr_dev` keyspace
-- 1 x SMTP server
 - 1 x [Ethereum Parity node ("mainchain")](https://github.com/streamr-dev/open-ethereum-poa)
 - 1 x [Ethereum Parity node ("sidechain")](https://github.com/streamr-dev/open-ethereum-poa)
 - 1 x nginx
-- 1 x Postgres DB for TheGraph and Chainlink
+- 1 x Postgres DB for TheGraph
 - 1 x ipfs for TheGraph
-- 1 x external adapter for ENSqueries from chainlink to mainchain
+- 1 x adapter for ENS queries from sidechain to mainchain
 
 ## Troubleshooting
 
