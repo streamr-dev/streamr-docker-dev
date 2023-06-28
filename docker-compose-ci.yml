@@ -134,9 +134,9 @@ services:
             resources:
                 limits:
                     cpus: '0.5'
-                    memory: 200M
+                    memory: 400M
                 reservations:
-                    memory: 20M
+                    memory: 40M
     deploy-hub-subgraph:
         deploy:
             resources:
