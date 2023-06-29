@@ -20,10 +20,10 @@ services:
               volume:
                   nocopy: true
         healthcheck:
-          test: ["CMD-SHELL", "[ $$(nodetool statusgossip) = running ]"]
-          interval: 5s
-          timeout: 10s
-          retries: 10
+            test: ["CMD-SHELL", "[ $$(nodetool statusgossip) = running ]"]
+            interval: 5s
+            timeout: 10s
+            retries: 10
         restart: unless-stopped
     init-keyspace:
         container_name: streamr-dev-init-keyspace
@@ -67,10 +67,10 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: password
         healthcheck:
-          test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-          interval: 5s
-          timeout: 10s
-          retries: 10
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 5s
+            timeout: 10s
+            retries: 10
     nginx:
         container_name: streamr-dev-nginx
         image: nginx:1.25.0
@@ -94,10 +94,10 @@ services:
               bind:
                   propagation: rprivate
         healthcheck:
-          test: ["CMD", "curl", "-f", "http://localhost/health_check"]
-          interval: 5s
-          timeout: 10s
-          retries: 10
+            test: ["CMD", "curl", "-f", "http://localhost/health_check"]
+            interval: 5s
+            timeout: 10s
+            retries: 10
     tracker-1:
         container_name: streamr-dev-tracker-1
         image: streamr/tracker:dev
@@ -348,10 +348,10 @@ services:
             RUST_LOG: info
             GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: "true"
         healthcheck:
-          test: ["CMD", "nc", "-z", "localhost", "8000"]
-          interval: 5s
-          timeout: 10s
-          retries: 10
+            test: ["CMD", "nc", "-z", "localhost", "8000"]
+            interval: 5s
+            timeout: 10s
+            retries: 10
     graph-deploy-streamregistry-subgraph:
         container_name: streamr-dev-graph-deploy-streamregistry-subgraph
         image: streamr/graph-deploy-streamregistry-subgraph:dev
@@ -439,10 +439,10 @@ services:
         environment:
             IPFS_PROFILE: server # sets the server profile
         healthcheck:
-          test: ["CMD", "ipfs", "id"]
-          interval: 5s
-          timeout: 10s
-          retries: 10
+            test: ["CMD", "ipfs", "id"]
+            interval: 5s
+            timeout: 10s
+            retries: 10
     postgres:
         container_name: streamr-dev-postgres
         image: postgres
@@ -464,10 +464,10 @@ services:
               volume:
                   nocopy: true
         healthcheck:
-          test: ["CMD-SHELL", "pg_isready -U streamr -d streamr"]
-          interval: 5s
-          timeout: 10s
-          retries: 10
+            test: ["CMD-SHELL", "pg_isready -U streamr -d streamr"]
+            interval: 5s
+            timeout: 10s
+            retries: 10
     stream-metrics-index:
         container_name: streamr-dev-stream-metrics-index
         image: streamr/stream-metrics-index
