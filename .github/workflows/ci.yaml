@@ -46,7 +46,7 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3.5.2
-      - name: Run streamr-docker-dev
+      - name: Start Streamr Docker Stack
         run: make test-docker-dev
       - name: Collect docker logs on failure
         if: failure()
