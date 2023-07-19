@@ -302,20 +302,21 @@ services:
         container_name: streamr-dev-parity-sidechain-node0
         environment:
             CHAIN_ID: 0x2325
-        image: streamr/open-ethereum-poa-sidechain-preload1:dev
+        # image: streamr/dev-chain-fast:latest
+        image: streamr/dev-chain-fast:latest
         networks:
             - streamr-network
         ports:
-            - "8546:8540"
-            - "8451:8450"
-            - "30310:30309"
+            - "8546:8545"
+            # - "8451:8450"
+            # - "30310:30309"
         restart: unless-stopped
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--header", "Content-Type: application/json", "--data", '[{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1},{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}]', "http://localhost:8540/api/health"]
             interval: 1m30s
             timeout: 10s
             retries: 3
-        command: --chain ./streamr-spec.json --config ./node0.toml
+        # command: --chain ./streamr-spec.json --config ./node0.toml
         volumes:
             - type: volume
               source: data-parity-sidechain-node0
@@ -344,7 +345,7 @@ services:
             postgres_pass: let-me-in
             postgres_db: streamr
             ipfs: 'streamr-dev-ipfs:5001'
-            ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8540'
+            ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8545'
             RUST_LOG: info
             GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: "true"
         healthcheck:
