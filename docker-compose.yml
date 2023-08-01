@@ -324,8 +324,6 @@ services:
                   nocopy: true
     dev-chain-fast:
         container_name: streamr-dev-chain-fast
-        environment:
-            CHAIN_ID: 0x31337
         image: streamr/dev-chain-fast
         networks:
             - streamr-network
@@ -361,7 +359,7 @@ services:
             postgres_db: streamr
             ipfs: 'streamr-dev-ipfs:5001'
             # ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8545'
-            ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8547'  # for dev-chain-fast
+            ethereum: 'xDai:http://streamr-dev-chain-fast:8545'  # for dev-chain-fast
             RUST_LOG: info
             GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: "true"
         healthcheck:
