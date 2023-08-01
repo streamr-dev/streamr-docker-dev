@@ -303,7 +303,7 @@ services:
         environment:
             CHAIN_ID: 0x2325
         # image: streamr/dev-chain-fast:latest
-        image: streamr/dev-chain-fast:latest
+        image: streamr/dev-chain-fast
         networks:
             - streamr-network
         ports:
@@ -312,7 +312,7 @@ services:
             # - "30310:30309"
         restart: unless-stopped
         healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--header", "Content-Type: application/json", "--data", '[{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1},{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}]', "http://localhost:8540/api/health"]
+            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--header", "Content-Type: application/json", "--data", '[{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1},{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}]', "http://localhost:8545/api/health"]
             interval: 1m30s
             timeout: 10s
             retries: 3
