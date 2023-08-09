@@ -350,16 +350,44 @@ services:
         depends_on:
             - ipfs
             - postgres
-            # - parity-sidechain-node0   # for parity sidechain
-            - dev-chain-fast         # for dev-chain-fast
+            - parity-sidechain-node0
         environment:
             postgres_host: postgres
             postgres_user: streamr
             postgres_pass: let-me-in
             postgres_db: streamr
             ipfs: 'streamr-dev-ipfs:5001'
-            # ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8540'   # for parity sidechain
-            ethereum: 'xDai:http://streamr-dev-chain-fast:8545'             # for dev-chain-fast
+            ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8540'
+            RUST_LOG: info
+            GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: "true"
+        healthcheck:
+            test: ["CMD", "nc", "-z", "localhost", "8000"]
+            interval: 5s
+            timeout: 10s
+            retries: 10
+    graph-node-fastchain:
+        container_name: streamr-dev-thegraph-node
+        image: graphprotocol/graph-node:v0.30.0
+        restart: unless-stopped
+        networks:
+            - streamr-network
+        ports:
+            - '8000:8000'
+            - '8001:8001'
+            - '8020:8020'
+            - '8030:8030'
+            - '8040:8040'
+        depends_on:
+            - ipfs
+            - postgres
+            - dev-chain-fast
+        environment:
+            postgres_host: postgres
+            postgres_user: streamr
+            postgres_pass: let-me-in
+            postgres_db: streamr
+            ipfs: 'streamr-dev-ipfs:5001'
+            ethereum: 'xDai:http://streamr-dev-chain-fast:8545'
             RUST_LOG: info
             GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: "true"
         healthcheck:
@@ -383,12 +411,26 @@ services:
                   nocopy: false
     deploy-network-subgraphs:
         container_name: streamr-dev-deploy-network-subgraphs
-        image: streamr/deploy-network-subgraphs:dev-fastchain
+        image: streamr/deploy-network-subgraphs:dev
         restart: on-failure # exits on success
         networks:
             - streamr-network
         depends_on:
             - graph-node
+        volumes:
+            - type: volume
+              source: data-graph-deploy
+              target: /firstrun
+              volume:
+                  nocopy: false
+    deploy-network-subgraphs-fastchain:
+        container_name: streamr-dev-deploy-network-subgraphs
+        image: streamr/deploy-network-subgraphs:dev-fastchain
+        restart: on-failure # exits on success
+        networks:
+            - streamr-network
+        depends_on:
+            - graph-node-fastchain
         volumes:
             - type: volume
               source: data-graph-deploy
