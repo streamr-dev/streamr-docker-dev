@@ -47,7 +47,7 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3.5.2
       - name: Start Streamr Docker Stack
-        run: ./streamr-docker-dev/bin.sh start --wait --timeout 600
+        run: ./streamr-docker-dev/bin.sh start --except deploy-network-subgraphs --except graph-node --except graph-deploy-tatum-subgraph --except graph-deploy-streamregistry-subgraph --except deploy-hub-subgraph --except graph-deploy-dataunion-subgraph --wait --timeout 600
       - name: Collect docker logs on failure
         if: failure()
         uses: jwalton/gh-docker-logs@v2.2.1
