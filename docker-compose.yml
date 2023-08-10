@@ -322,19 +322,6 @@ services:
               target: /home/parity/parity_data
               volume:
                   nocopy: true
-    dev-chain-fast:
-        container_name: streamr-dev-chain-fast
-        image: streamr/dev-chain-fast:dev
-        networks:
-            - streamr-network
-        ports:
-            - "8547:8545"
-        restart: unless-stopped
-        healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--header", "Content-Type: application/json", "--data", '[{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1},{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}]', "http://localhost:8545/api/health"]
-            interval: 1m30s
-            timeout: 10s
-            retries: 3
     graph-node:
         container_name: streamr-dev-thegraph-node
         image: graphprotocol/graph-node:v0.30.0
@@ -365,36 +352,6 @@ services:
             interval: 5s
             timeout: 10s
             retries: 10
-    graph-node-fastchain:
-        container_name: streamr-dev-thegraph-node
-        image: graphprotocol/graph-node:v0.30.0
-        restart: unless-stopped
-        networks:
-            - streamr-network
-        ports:
-            - '8000:8000'
-            - '8001:8001'
-            - '8020:8020'
-            - '8030:8030'
-            - '8040:8040'
-        depends_on:
-            - ipfs
-            - postgres
-            - dev-chain-fast
-        environment:
-            postgres_host: postgres
-            postgres_user: streamr
-            postgres_pass: let-me-in
-            postgres_db: streamr
-            ipfs: 'streamr-dev-ipfs:5001'
-            ethereum: 'xDai:http://streamr-dev-chain-fast:8545'
-            RUST_LOG: info
-            GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: "true"
-        healthcheck:
-            test: ["CMD", "nc", "-z", "localhost", "8000"]
-            interval: 5s
-            timeout: 10s
-            retries: 10
     graph-deploy-streamregistry-subgraph:
         container_name: streamr-dev-graph-deploy-streamregistry-subgraph
         image: streamr/graph-deploy-streamregistry-subgraph:dev
@@ -417,20 +374,6 @@ services:
             - streamr-network
         depends_on:
             - graph-node
-        volumes:
-            - type: volume
-              source: data-graph-deploy
-              target: /firstrun
-              volume:
-                  nocopy: false
-    deploy-network-subgraphs-fastchain:
-        container_name: streamr-dev-deploy-network-subgraphs
-        image: streamr/deploy-network-subgraphs:dev-fastchain
-        restart: on-failure # exits on success
-        networks:
-            - streamr-network
-        depends_on:
-            - graph-node-fastchain
         volumes:
             - type: volume
               source: data-graph-deploy
@@ -500,6 +443,88 @@ services:
             interval: 5s
             timeout: 10s
             retries: 10
+    dev-chain-fast:
+        container_name: streamr-dev-chain-fast
+        image: streamr/dev-chain-fast:dev
+        networks:
+            - streamr-network
+        ports:
+            - "8547:8545"
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--header", "Content-Type: application/json", "--data", '[{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1},{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}]', "http://localhost:8545/api/health"]
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
+    graph-node-fastchain:
+        container_name: streamr-dev-thegraph-node-fastchain
+        image: graphprotocol/graph-node:v0.30.0
+        restart: unless-stopped
+        networks:
+            - streamr-network
+        ports:
+            - '8800:8000'
+            # - '8001:8001'
+            # - '8020:8020'
+            # - '8030:8030'
+            # - '8040:8040'
+        depends_on:
+            - ipfs
+            - postgres-fastchain
+            - dev-chain-fast
+        environment:
+            postgres_host: postgres-fastchain
+            postgres_user: streamr
+            postgres_pass: let-me-in
+            postgres_db: streamr
+            ipfs: 'streamr-dev-ipfs:5001'
+            ethereum: 'xDai:http://streamr-dev-chain-fast:8545'
+            RUST_LOG: info
+            GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: "true"
+        healthcheck:
+            test: ["CMD", "nc", "-z", "localhost", "8000"]
+            interval: 5s
+            timeout: 10s
+            retries: 10
+    deploy-network-subgraphs-fastchain:
+        container_name: streamr-dev-deploy-network-subgraphs-fastchain
+        image: streamr/deploy-network-subgraphs:dev-fastchain
+        restart: on-failure # exits on success
+        networks:
+            - streamr-network
+        depends_on:
+            - graph-node-fastchain
+        volumes:
+            - type: volume
+              source: data-graph-deploy-fastchain
+              target: /firstrun
+              volume:
+                  nocopy: false
+    postgres-fastchain:
+        container_name: streamr-dev-postgres-fastchain
+        image: postgres
+        restart: unless-stopped
+        networks:
+            - streamr-network
+        # ports:
+        #     - '5432:5432'
+        command: ["postgres", "-cshared_preload_libraries=pg_stat_statements"]
+        environment:
+            POSTGRES_USER: streamr
+            POSTGRES_PASSWORD: let-me-in
+            POSTGRES_DB: streamr
+            POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"
+        volumes:
+            - type: volume
+              source: data-postgres-fastchain
+              target: /var/lib/postgresql/data
+              volume:
+                  nocopy: true
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U streamr -d streamr"]
+            interval: 5s
+            timeout: 10s
+            retries: 10
     postgres:
         container_name: streamr-dev-postgres
         image: postgres
@@ -565,7 +590,9 @@ volumes:
     data-parity-sidechain-node0:
     data-ipfs:
     data-postgres:
+    data-postgres-fastchain:
     data-graph-deploy:
+    data-graph-deploy-fastchain:
     data-graph-deploy-legacy:
     data-deploy-hub-subgraph:
     data-graph-deploy-dataunion:
