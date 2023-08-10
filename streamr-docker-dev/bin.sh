@@ -22,7 +22,7 @@ if [ -n "${CI-}" ]; then # Apply CI override when running on CI server
 fi
 
 # don't start these services unless explicitly started
-EXCEPT_SERVICES_DEFAULT=() # array of string e.g. ("a" "b")
+EXCEPT_SERVICES_DEFAULT=("deploy-network-subgraphs-fastchain" "graph-node-fastchain" "dev-chain-fast") # array of string e.g. ("a" "b")
 
 # Service Aliases
 NODE_NO_STORAGE='broker-node-no-storage-1 broker-node-no-storage-2'
