@@ -223,7 +223,7 @@ update() {
 wipe() {
     stop
     COMMANDS_TO_RUN+=("echo Wiping persistent data of services")
-    COMMANDS_TO_RUN+=("docker volume prune -f")
+    COMMANDS_TO_RUN+=("docker volume prune --all --force")
 }
 
 factory-reset() {
