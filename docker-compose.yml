@@ -456,7 +456,7 @@ services:
             test: ["CMD", "ipfs", "id"]
             interval: 5s
             timeout: 10s
-            retries: 10
+            retries: 20
     dev-chain-fast:
         container_name: streamr-dev-chain-fast
         image: streamr/dev-chain-fast:dev
