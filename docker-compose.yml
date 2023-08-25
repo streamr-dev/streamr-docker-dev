@@ -438,7 +438,7 @@ services:
                   nocopy: false
     ipfs:
         container_name: streamr-dev-ipfs
-        image: ipfs/go-ipfs:v0.19.1
+        image: ipfs/kubo:v0.22.0
         networks:
             - streamr-network
         ports:
