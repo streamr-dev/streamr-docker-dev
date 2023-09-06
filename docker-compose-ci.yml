@@ -158,9 +158,9 @@ services:
             resources:
                 limits:
                     cpus: '1.0'
-                    memory: 150M
+                    memory: 250M
                 reservations:
-                    memory: 10M
+                    memory: 20M
     postgres:
         deploy:
             resources:
