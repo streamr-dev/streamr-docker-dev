@@ -599,7 +599,7 @@ services:
         depends_on:
             - dev-chain-fast
         healthcheck:
-            test: ["CMD", "echo"] # TODO: health check
+            test: ["CMD", "/home/node/app/script/healthcheck.sh"]
             interval: 10s
             timeout: 10s
             retries: 60
