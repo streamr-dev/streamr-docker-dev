@@ -591,6 +591,18 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
+    ens-sync-script-fastchain:
+        container_name: ens-sync-script-fastchain
+        image: streamr/ens-sync-script:dev-fastchain
+        networks:
+            - streamr-network
+        depends_on:
+            - dev-chain-fast
+        healthcheck:
+            test: ["CMD", "/home/node/app/script/healthcheck.sh"]
+            interval: 10s
+            timeout: 10s
+            retries: 60
 
 networks:
     streamr-network:
