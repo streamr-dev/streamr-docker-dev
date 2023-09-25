@@ -167,6 +167,27 @@ services:
             interval: 30s
             timeout: 10s
             retries: 20
+    entry-point:
+        # NOTE THIS IS NOT USABLE YET as streamr/broker-node:dev images are in brubeck era, not in streamr-1.0 era
+        # - we currently publish images only from main, not from streamr-1.0
+        # - i.e. in the current streamr/broker-node:dev image there is no "entry-point" script at all
+        # TODO could move entry-point.ts from broker/bin to dht/bin then create a dht docker image and then use it here
+        # - also remove "entry-point" from broker's package.json bin script list 
+        # TODO add this as a dependency for all brokers
+        container_name: streamr-dev-entry-point
+        image: streamr/broker-node:dev
+        init: true
+        networks:
+            - streamr-network
+        restart: unless-stopped
+        ports:
+            - "40500:40500"
+        command: npm exec -- entry-point
+        healthcheck:
+            test: ["CMD", "curl", "${STREAMR_BASE_URL}:40500"]
+            interval: 1s
+            timeout: 5s
+            retries: 10
     broker-node-storage-1:
         container_name: streamr-dev-broker-node-storage-1
         image: streamr/broker-node:dev
