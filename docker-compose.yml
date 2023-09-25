@@ -172,7 +172,7 @@ services:
         # - we currently publish images only from main, not from streamr-1.0
         # - i.e. in the current streamr/broker-node:dev image there is no "entry-point" script at all
         # TODO could move entry-point.ts from broker/bin to dht/bin then create a dht docker image and then use it here
-        # - also remove "entry-point" from broker's package.json bin script list 
+        # - also remove "entry-point" from broker's package.json bin script list
         # TODO add this as a dependency for all brokers
         container_name: streamr-dev-entry-point
         image: streamr/broker-node:dev
