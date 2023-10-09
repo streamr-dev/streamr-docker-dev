@@ -33,30 +33,6 @@ services:
                     memory: 500M
                 reservations:
                     memory: 6M
-    tracker-1:
-        deploy:
-            resources:
-                limits:
-                    cpus: '2.0'
-                    memory: 200M
-                reservations:
-                    memory: 150M
-    tracker-2:
-        deploy:
-            resources:
-                limits:
-                    cpus: '2.0'
-                    memory: 200M
-                reservations:
-                    memory: 150M
-    tracker-3:
-        deploy:
-            resources:
-                limits:
-                    cpus: '2.0'
-                    memory: 200M
-                reservations:
-                    memory: 150M
     broker-node-storage-1:
         deploy:
             resources:
