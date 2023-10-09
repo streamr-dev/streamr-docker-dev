@@ -157,9 +157,7 @@ services:
             - "9100:9100"
             - "30316:30316"
         depends_on:
-            - tracker-1
-            - tracker-2
-            - tracker-3
+            - entry-point
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
         command: npm exec -- streamr-broker configs/docker-2.env.json
@@ -510,20 +508,19 @@ services:
             interval: 5s
             timeout: 10s
             retries: 10
-    stream-metrics-index:
-        container_name: streamr-dev-stream-metrics-index
-        image: streamr/stream-metrics-index
-        networks:
-            - streamr-network
-        restart: unless-stopped
-        ports:
-            - "4001:4001"
-        depends_on:
-            - mysql
-            - graph-deploy-streamregistry-subgraph
-            - tracker-1
-            - tracker-2
-            - tracker-3
+    # TODO enable when upstream-metrics-index application updated to use streamr-1.0 network
+    # stream-metrics-index:
+    #     container_name: streamr-dev-stream-metrics-index
+    #     image: streamr/stream-metrics-index
+    #     networks:
+    #         - streamr-network
+    #     restart: unless-stopped
+    #     ports:
+    #         - "4001:4001"
+    #     depends_on:
+    #         - mysql
+    #         - graph-deploy-streamregistry-subgraph
+    #         - entry-point
     ens-sync-script:
         container_name: ens-sync-script
         image: streamr/ens-sync-script:dev
