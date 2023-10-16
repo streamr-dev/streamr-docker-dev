@@ -205,9 +205,9 @@ streamr-docker-dev start --wait
 ## Included services
 
 ### Streamr services
-- 3 x [Broker](https://github.com/streamr-dev/broker) nodes
+- 3 x [Broker](https://github.com/streamr-dev/network) nodes
   - 2 broker nodes + 1 storage Streamr network nodes. This creates a local and private Streamr Network.
-- 3 x [Tracker](https://github.com/streamr-dev/broker)
+- 1 x [Entry point](https://github.com/streamr-dev/network)
   - Helps node discovery in the Strearm Network
 - 1 x [Hub frontend](https://github.com/streamr-dev/streamr-platform/app)
   - See more detailed build instructions in the streamr-platform repo
