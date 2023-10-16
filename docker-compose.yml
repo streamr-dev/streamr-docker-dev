@@ -131,6 +131,8 @@ services:
             - init-keyspace
             - cassandra
             - entry-point
+            - dev-chain-fast
+            - deploy-network-subgraphs-fastchain
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
             CASSANDRA_HOST: 10.200.10.1:9042
@@ -154,6 +156,8 @@ services:
             - "30316:30316"
         depends_on:
             - entry-point
+            - dev-chain-fast
+            - deploy-network-subgraphs-fastchain
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
         command: npm exec -- streamr-broker configs/docker-2.env.json
@@ -176,6 +180,8 @@ services:
             - "30317:30317"
         depends_on:
             - entry-point
+            - dev-chain-fast
+            - deploy-network-subgraphs-fastchain
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
         command: npm exec -- streamr-broker configs/docker-3.env.json
