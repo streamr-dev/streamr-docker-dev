@@ -418,7 +418,7 @@ services:
             retries: 3
     graph-node-fastchain:
         container_name: streamr-dev-thegraph-node-fastchain
-        image: graphprotocol/graph-node:v0.30.0
+        image: graphprotocol/graph-node:v0.32.0
         restart: unless-stopped
         networks:
             - streamr-network
