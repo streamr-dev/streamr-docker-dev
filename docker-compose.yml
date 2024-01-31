@@ -190,7 +190,7 @@ services:
             retries: 10
     broker-node-storage-1:
         container_name: streamr-dev-broker-node-storage-1
-        image: streamr/broker-node:v33.4.0
+        image: streamr/broker-node:dev
         init: true
         networks:
             - streamr-network
@@ -217,7 +217,7 @@ services:
             retries: 20
     broker-node-no-storage-1:
         container_name: streamr-dev-broker-node-no-storage-1
-        image: streamr/broker-node:v33.4.0
+        image: streamr/broker-node:dev
         init: true
         networks:
             - streamr-network
@@ -241,7 +241,7 @@ services:
             retries: 20
     broker-node-no-storage-2:
         container_name: streamr-dev-broker-node-no-storage-2
-        image: streamr/broker-node:v33.4.0
+        image: streamr/broker-node:dev
         init: true
         networks:
             - streamr-network
