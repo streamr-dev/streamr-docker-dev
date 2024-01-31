@@ -263,6 +263,81 @@ services:
             interval: 30s
             timeout: 10s
             retries: 20
+    broker-node-storage-1-brubeck:
+        container_name: streamr-dev-broker-node-storage-1
+        image: streamr/broker-node:v33.4.0
+        init: true
+        networks:
+            - streamr-network
+        restart: unless-stopped
+        ports:
+            - "8890:8890"
+            - "8891:8891"
+            - "9000:9000"
+            - "30315:30315"
+        depends_on:
+            - init-keyspace
+            - cassandra
+            - tracker-1
+            - tracker-2
+            - tracker-3
+        environment:
+            STREAMR_URL: "${STREAMR_BASE_URL}"
+            CASSANDRA_HOST: 10.200.10.1:9042
+        command: npm exec -- streamr-broker configs/docker-1.env.json
+        healthcheck:
+            test: [ "CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8891/info" ]
+            interval: 30s
+            timeout: 10s
+            retries: 20
+    broker-node-no-storage-1-brubeck:
+        container_name: streamr-dev-broker-node-no-storage-1
+        image: streamr/broker-node:v33.4.0
+        init: true
+        networks:
+            - streamr-network
+        restart: unless-stopped
+        ports:
+            - "8790:8790"
+            - "8791:8791"
+            - "9100:9100"
+            - "30316:30316"
+        depends_on:
+            - tracker-1
+            - tracker-2
+            - tracker-3
+        environment:
+            STREAMR_URL: "${STREAMR_BASE_URL}"
+        command: npm exec -- streamr-broker configs/docker-2.env.json
+        healthcheck:
+            test: [ "CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8791/info" ]
+            interval: 30s
+            timeout: 10s
+            retries: 20
+    broker-node-no-storage-2-brubeck:
+        container_name: streamr-dev-broker-node-no-storage-2
+        image: streamr/broker-node:v33.4.0
+        init: true
+        networks:
+            - streamr-network
+        restart: unless-stopped
+        ports:
+            - "8690:8690"
+            - "8691:8691"
+            - "9200:9200"
+            - "30317:30317"
+        depends_on:
+            - tracker-1
+            - tracker-2
+            - tracker-3
+        environment:
+            STREAMR_URL: "${STREAMR_BASE_URL}"
+        command: npm exec -- streamr-broker configs/docker-3.env.json
+        healthcheck:
+            test: [ "CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8691/info" ]
+            interval: 30s
+            timeout: 10s
+            retries: 20
     platform:
         container_name: streamr-dev-platform
         image: streamr/platform:dev
