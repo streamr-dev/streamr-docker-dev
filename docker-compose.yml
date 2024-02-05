@@ -245,7 +245,7 @@ services:
             timeout: 10s
             retries: 20
     broker-node-storage-1-brubeck:
-        container_name: streamr-dev-broker-node-storage-1
+        container_name: streamr-dev-broker-node-storage-1-brubeck
         image: streamr/broker-node:v33.4.0
         init: true
         networks:
@@ -272,7 +272,7 @@ services:
             timeout: 10s
             retries: 20
     broker-node-no-storage-1-brubeck:
-        container_name: streamr-dev-broker-node-no-storage-1
+        container_name: streamr-dev-broker-node-no-storage-1-brubeck
         image: streamr/broker-node:v33.4.0
         init: true
         networks:
@@ -296,7 +296,7 @@ services:
             timeout: 10s
             retries: 20
     broker-node-no-storage-2-brubeck:
-        container_name: streamr-dev-broker-node-no-storage-2
+        container_name: streamr-dev-broker-node-no-storage-2-brubeck
         image: streamr/broker-node:v33.4.0
         init: true
         networks:
