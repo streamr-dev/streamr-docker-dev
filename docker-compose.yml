@@ -98,84 +98,11 @@ services:
             interval: 5s
             timeout: 10s
             retries: 10
-    tracker-1:
-        container_name: streamr-dev-tracker-1
-        image: streamr/tracker:dev
-        platform: linux/x86_64
-        init: true
-        networks:
-            - streamr-network
-        restart: unless-stopped
-        ports:
-            - "30301:30301"
-        volumes:
-            - type: bind
-              source: ./certs
-              target: /certs
-              read_only: true
-              bind:
-                  propagation: rprivate
-        command: npm exec -- streamr-tracker 0xe5abc5ee43b8830e7b0f98d03efff5d6cae574d52a43204528eab7b52cd6408d tracker-1 --port=30301 ${TRACKER_ARGS}
-        healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--insecure", "${STREAMR_BASE_URL}:30301/topology/"]
-            interval: 30s
-            timeout: 10s
-            retries: 20
-    tracker-2:
-        container_name: streamr-dev-tracker-2
-        image: streamr/tracker:dev
-        platform: linux/x86_64
-        init: true
-        networks:
-            - streamr-network
-        restart: unless-stopped
-        ports:
-            - "30302:30302"
-        volumes:
-            - type: bind
-              source: ./certs
-              target: /certs
-              read_only: true
-              bind:
-                  propagation: rprivate
-        command: npm exec -- streamr-tracker 0x96de9d06f9e409119a2cd9b57dfc326f66d953a0418f3937b92c8930f930893c tracker-2 --port=30302 ${TRACKER_ARGS}
-        healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--insecure", "${STREAMR_BASE_URL}:30302/topology/"]
-            interval: 30s
-            timeout: 10s
-            retries: 20
-    tracker-3:
-        container_name: streamr-dev-tracker-3
-        image: streamr/tracker:dev
-        platform: linux/x86_64
-        init: true
-        networks:
-            - streamr-network
-        restart: unless-stopped
-        ports:
-            - "30303:30303"
-        volumes:
-            - type: bind
-              source: ./certs
-              target: /certs
-              read_only: true
-              bind:
-                  propagation: rprivate
-        command: npm exec -- streamr-tracker 0x6117b7a7cb8f3c8d40e3b7e87823c11af7f401515bc4fdf2bfdda70f1b833027 tracker-3 --port=30303 ${TRACKER_ARGS}
-        healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--insecure", "${STREAMR_BASE_URL}:30303/topology/"]
-            interval: 30s
-            timeout: 10s
-            retries: 20
     entry-point:
-        # NOTE THIS IS NOT USABLE YET as streamr/broker-node:dev images are in brubeck era, not in streamr-1.0 era
-        # - we currently publish images only from main, not from streamr-1.0
-        # - i.e. in the current streamr/broker-node:dev image there is no "entry-point" script at all
         # TODO could move entry-point.ts from broker/bin to dht/bin then create a dht docker image and then use it here
         # - also remove "entry-point" from broker's package.json bin script list
-        # TODO add this as a dependency for all brokers
         container_name: streamr-dev-entry-point
-        image: streamr/broker-node:dev
+        image: streamr/broker-node:dev-tatum
         init: true
         networks:
             - streamr-network
@@ -190,7 +117,7 @@ services:
             retries: 10
     broker-node-storage-1:
         container_name: streamr-dev-broker-node-storage-1
-        image: streamr/broker-node:dev
+        image: streamr/broker-node:dev-tatum
         init: true
         networks:
             - streamr-network
@@ -203,9 +130,9 @@ services:
         depends_on:
             - init-keyspace
             - cassandra
-            - tracker-1
-            - tracker-2
-            - tracker-3
+            - entry-point
+            - dev-chain-fast
+            - deploy-network-subgraphs-fastchain
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
             CASSANDRA_HOST: 10.200.10.1:9042
@@ -217,7 +144,7 @@ services:
             retries: 20
     broker-node-no-storage-1:
         container_name: streamr-dev-broker-node-no-storage-1
-        image: streamr/broker-node:dev
+        image: streamr/broker-node:dev-tatum
         init: true
         networks:
             - streamr-network
@@ -228,9 +155,9 @@ services:
             - "9100:9100"
             - "30316:30316"
         depends_on:
-            - tracker-1
-            - tracker-2
-            - tracker-3
+            - entry-point
+            - dev-chain-fast
+            - deploy-network-subgraphs-fastchain
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
         command: npm exec -- streamr-broker configs/docker-2.env.json
@@ -241,7 +168,7 @@ services:
             retries: 20
     broker-node-no-storage-2:
         container_name: streamr-dev-broker-node-no-storage-2
-        image: streamr/broker-node:dev
+        image: streamr/broker-node:dev-tatum
         init: true
         networks:
             - streamr-network
@@ -252,9 +179,9 @@ services:
             - "9200:9200"
             - "30317:30317"
         depends_on:
-            - tracker-1
-            - tracker-2
-            - tracker-3
+            - entry-point
+            - dev-chain-fast
+            - deploy-network-subgraphs-fastchain
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
         command: npm exec -- streamr-broker configs/docker-3.env.json
@@ -362,9 +289,7 @@ services:
         ports:
             - "3334:80"
         depends_on:
-            - tracker-1
-            - tracker-2
-            - tracker-3
+            - entry-point
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost"]
             interval: 10s
@@ -660,20 +585,19 @@ services:
             interval: 5s
             timeout: 10s
             retries: 10
-    stream-metrics-index:
-        container_name: streamr-dev-stream-metrics-index
-        image: streamr/stream-metrics-index
-        networks:
-            - streamr-network
-        restart: unless-stopped
-        ports:
-            - "4001:4001"
-        depends_on:
-            - mysql
-            - graph-deploy-streamregistry-subgraph
-            - tracker-1
-            - tracker-2
-            - tracker-3
+    # TODO enable when upstream-metrics-index application updated to use streamr-1.0 network
+    # stream-metrics-index:
+    #     container_name: streamr-dev-stream-metrics-index
+    #     image: streamr/stream-metrics-index
+    #     networks:
+    #         - streamr-network
+    #     restart: unless-stopped
+    #     ports:
+    #         - "4001:4001"
+    #     depends_on:
+    #         - mysql
+    #         - graph-deploy-streamregistry-subgraph
+    #         - entry-point
     ens-sync-script:
         container_name: ens-sync-script
         image: streamr/ens-sync-script:dev
