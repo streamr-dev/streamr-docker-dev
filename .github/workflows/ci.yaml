@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4.1.2
       - name: Run YAML Lint
         uses: ibiqlik/action-yamllint@v3.1
         with:
@@ -45,7 +45,7 @@ jobs:
           - ubuntu-22.04
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4.1.2
       - name: Start Streamr Docker Stack
         # TODO the entry-point service is temporarily disabled as broker images are not yet built from streamr-1.0 branch
         run: ./streamr-docker-dev/bin.sh start --wait --timeout 600 --except entry-point
