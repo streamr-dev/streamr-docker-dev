@@ -99,14 +99,8 @@ services:
             timeout: 10s
             retries: 10
     entry-point:
-        # NOTE THIS IS NOT USABLE YET as streamr/broker-node:dev images are in brubeck era, not in streamr-1.0 era
-        # - we currently publish images only from main, not from streamr-1.0
-        # - i.e. in the current streamr/broker-node:dev image there is no "entry-point" script at all
-        # TODO could move entry-point.ts from broker/bin to dht/bin then create a dht docker image and then use it here
-        # - also remove "entry-point" from broker's package.json bin script list
-        # TODO add this as a dependency for all brokers
         container_name: streamr-dev-entry-point
-        image: streamr/broker-node:dev
+        image: streamr/node:dev
         init: true
         networks:
             - streamr-network
@@ -121,7 +115,7 @@ services:
             retries: 10
     broker-node-storage-1:
         container_name: streamr-dev-broker-node-storage-1
-        image: streamr/broker-node:dev
+        image: streamr/node:dev
         init: true
         networks:
             - streamr-network
@@ -132,11 +126,9 @@ services:
             - "9000:9000"
             - "30315:30315"
         depends_on:
+            - entry-point
             - init-keyspace
             - cassandra
-            - tracker-1
-            - tracker-2
-            - tracker-3
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
             CASSANDRA_HOST: 10.200.10.1:9042
@@ -148,7 +140,7 @@ services:
             retries: 20
     broker-node-no-storage-1:
         container_name: streamr-dev-broker-node-no-storage-1
-        image: streamr/broker-node:dev
+        image: streamr/node:dev
         init: true
         networks:
             - streamr-network
@@ -159,9 +151,7 @@ services:
             - "9100:9100"
             - "30316:30316"
         depends_on:
-            - tracker-1
-            - tracker-2
-            - tracker-3
+            - entry-point
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
         command: npm exec -- streamr-broker configs/docker-2.env.json
@@ -172,7 +162,7 @@ services:
             retries: 20
     broker-node-no-storage-2:
         container_name: streamr-dev-broker-node-no-storage-2
-        image: streamr/broker-node:dev
+        image: streamr/node:dev
         init: true
         networks:
             - streamr-network
@@ -183,9 +173,7 @@ services:
             - "9200:9200"
             - "30317:30317"
         depends_on:
-            - tracker-1
-            - tracker-2
-            - tracker-3
+            - entry-point
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
         command: npm exec -- streamr-broker configs/docker-3.env.json
