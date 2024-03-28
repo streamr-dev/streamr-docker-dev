@@ -206,9 +206,7 @@ services:
         ports:
             - "3334:80"
         depends_on:
-            - tracker-1
-            - tracker-2
-            - tracker-3
+          - entry-point
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost"]
             interval: 10s
