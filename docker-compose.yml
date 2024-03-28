@@ -513,9 +513,7 @@ services:
         depends_on:
             - mysql
             - graph-deploy-streamregistry-subgraph
-            - tracker-1
-            - tracker-2
-            - tracker-3
+            - entry-point
     ens-sync-script:
         container_name: ens-sync-script
         image: streamr/ens-sync-script:dev
