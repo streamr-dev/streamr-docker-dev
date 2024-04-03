@@ -124,11 +124,16 @@ services:
             - "8890:8890"
             - "8891:8891"
             - "9000:9000"
-            - "30315:30315"
+            - "40401:40401"
         depends_on:
-            - entry-point
-            - init-keyspace
-            - cassandra
+            entry-point:
+                condition: service_healthy
+            cassandra:
+                condition: service_healthy
+            init-keyspace:
+                condition: service_completed_successfully
+            deploy-network-subgraphs-fastchain:
+                condition: service_completed_successfully
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
             CASSANDRA_HOST: 10.200.10.1:9042
@@ -149,9 +154,12 @@ services:
             - "8790:8790"
             - "8791:8791"
             - "9100:9100"
-            - "30316:30316"
+            - "40402:40402"
         depends_on:
-            - entry-point
+            entry-point:
+                condition: service_healthy
+            deploy-network-subgraphs-fastchain:
+                condition: service_completed_successfully
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
         command: npm exec -- streamr-broker configs/docker-2.env.json
@@ -171,9 +179,12 @@ services:
             - "8690:8690"
             - "8691:8691"
             - "9200:9200"
-            - "30317:30317"
+            - "40403:40403"
         depends_on:
-            - entry-point
+            entry-point:
+                condition: service_healthy
+            deploy-network-subgraphs-fastchain:
+                condition: service_completed_successfully
         environment:
             STREAMR_URL: "${STREAMR_BASE_URL}"
         command: npm exec -- streamr-broker configs/docker-3.env.json
