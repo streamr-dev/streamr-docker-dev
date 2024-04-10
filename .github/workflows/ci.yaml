@@ -56,7 +56,7 @@ jobs:
           dest: 'logs'
       - name: Upload logs to GitHub
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: docker-logs-${{ matrix.os }}-${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt}}
           path: 'logs'
