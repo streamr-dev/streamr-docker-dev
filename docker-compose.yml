@@ -107,7 +107,7 @@ services:
         restart: unless-stopped
         ports:
             - "40500:40500"
-        command: npm exec -- entry-point
+        command: npm exec -c entry-point
         healthcheck:
             test: ["CMD", "curl", "${STREAMR_BASE_URL}:40500"]
             interval: 1s
