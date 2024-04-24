@@ -217,7 +217,7 @@ services:
         ports:
             - "3334:80"
         depends_on:
-          - entry-point
+            - entry-point
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost"]
             interval: 10s
