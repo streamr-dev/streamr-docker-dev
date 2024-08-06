@@ -16,9 +16,9 @@ DRY_RUN=0
 FOLLOW=0
 WAIT=0
 WAIT_TIMEOUT=500     # seconds
-DOCKER_COMPOSE="docker-compose --ansi never -f docker-compose.yml"
+DOCKER_COMPOSE="docker compose --ansi never -f docker-compose.yml"
 if [ -n "${CI-}" ]; then # Apply CI override when running on CI server
-	DOCKER_COMPOSE="$DOCKER_COMPOSE -f docker-compose-ci.yml"
+	DOCKER_COMPOSE="$DOCKER_COMPOSE -f docker compose-ci.yml"
 fi
 
 # don't start these services unless explicitly started
@@ -145,7 +145,7 @@ wait() {
     while [[ $time_waited -lt $WAIT_TIMEOUT ]]; do
         waiting_for_services=()
 
-        # Get the id of each image we have in docker-compose
+        # Get the id of each image we have in docker compose
         for image_id in $($DOCKER_COMPOSE ps -q)
         do
             service_name=$(docker inspect -f "{{.Name}}" "$image_id")
