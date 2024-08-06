@@ -40,7 +40,7 @@ ln -sf $(pwd)/streamr-docker-dev/bin.sh /usr/local/bin/streamr-docker-dev
 
 The docker stack has not been tested in a Windows environment and is not recommended at this time.
 
-If you know what services you need, you don't need to use the `bin.sh`, you can just use `docker compose` directly, like so:
+If you know what services you need, you don't need to use the `bin.sh`, you can just use `docker-compose` directly, like so:
 
 1. Install and start Docker service.
 
