@@ -20,7 +20,7 @@ ADDITIONAL_COMPOSE_OPTS=""
 if [ -n "${CI-}" ]; then # Apply CI override when running on CI server
 	ADDITIONAL_COMPOSE_OPTS="$DOCKER_COMPOSE -f docker-compose-ci.yml"
 fi
-DOCKER_COMPOSE="docker compose --ansi never -f docker-compose.yml $ADDITIONAL_COMPOSE_OPTS run"
+DOCKER_COMPOSE="docker compose --ansi never -f docker-compose.yml $ADDITIONAL_COMPOSE_OPTS"
 
 # don't start these services unless explicitly started
 EXCEPT_SERVICES_DEFAULT=() # array of string e.g. ("a" "b")
@@ -122,7 +122,7 @@ start() {
     FLAGS+=" --remove-orphans"
 
     COMMANDS_TO_RUN+=("echo $msg")
-    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE up $FLAGS $SERVICES")
+    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE run $FLAGS $SERVICES")
 
     if [ $WAIT == 1 ]; then
         COMMANDS_TO_RUN+=("wait")
