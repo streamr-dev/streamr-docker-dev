@@ -122,7 +122,7 @@ start() {
     FLAGS+=" --remove-orphans"
 
     COMMANDS_TO_RUN+=("echo $msg")
-    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE run $FLAGS $SERVICES")
+    COMMANDS_TO_RUN+=("$DOCKER_COMPOSE up $FLAGS $SERVICES")
 
     if [ $WAIT == 1 ]; then
         COMMANDS_TO_RUN+=("wait")
