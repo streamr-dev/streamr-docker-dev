@@ -136,7 +136,7 @@ services:
         environment:
             STREAMR_URL: "10.200.10.1"
             CASSANDRA_HOST: 10.200.10.1:9042
-        command: npm exec -c -- streamr-node configs/docker-1.env.json
+        command: npm exec streamr-node configs/docker-1.env.json
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8891/info"]
             interval: 30s
@@ -161,7 +161,7 @@ services:
                 condition: service_completed_successfully
         environment:
             STREAMR_URL: "10.200.10.1"
-        command: npm exec -c -- streamr-node configs/docker-2.env.json
+        command: npm exec streamr-node configs/docker-2.env.json
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8791/info"]
             interval: 30s
@@ -186,7 +186,7 @@ services:
                 condition: service_completed_successfully
         environment:
             STREAMR_URL: "10.200.10.1"
-        command: npm exec -c -- streamr-node configs/docker-3.env.json
+        command: npm exec streamr-node configs/docker-3.env.json
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost:8691/info"]
             interval: 30s
