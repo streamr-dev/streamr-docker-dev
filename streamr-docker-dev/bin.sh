@@ -16,10 +16,11 @@ DRY_RUN=0
 FOLLOW=0
 WAIT=0
 WAIT_TIMEOUT=500     # seconds
-DOCKER_COMPOSE="docker compose --ansi never -f docker-compose.yml run"
+ADDITIONAL_COMPOSE_OPTS=""
 if [ -n "${CI-}" ]; then # Apply CI override when running on CI server
-	DOCKER_COMPOSE="$DOCKER_COMPOSE -f docker-compose-ci.yml"
+	ADDITIONAL_COMPOSE_OPTS="$DOCKER_COMPOSE -f docker-compose-ci.yml"
 fi
+DOCKER_COMPOSE="docker compose --ansi never -f docker-compose.yml $ADDITIONAL_COMPOSE_OPTS run"
 
 # don't start these services unless explicitly started
 EXCEPT_SERVICES_DEFAULT=() # array of string e.g. ("a" "b")
