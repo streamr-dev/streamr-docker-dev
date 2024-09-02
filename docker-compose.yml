@@ -471,7 +471,11 @@ services:
             - streamr-network
         # ports:
         #     - '5432:5432'
-        command: ["postgres", "-cshared_preload_libraries=pg_stat_statements"]
+        command: >
+            bash -c "
+                rm -rf /var/lib/postgresql/data/* &&
+                postgres -cshared_preload_libraries=pg_stat_statements
+            "
         environment:
             POSTGRES_USER: streamr
             POSTGRES_PASSWORD: let-me-in
