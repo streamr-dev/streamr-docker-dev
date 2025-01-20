@@ -43,8 +43,7 @@ services:
             - cassandra
     mysql:
         container_name: streamr-dev-mysql
-        # platform: linux/x86_64
-        image: mysql #:5.7
+        image: mysql:9.1.0
         init: true
         networks:
             - streamr-network
