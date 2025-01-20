@@ -47,8 +47,7 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4.0.0
       - name: Start Streamr Docker Stack
-        # TODO the entry-point service is temporarily disabled as broker images are not yet built from streamr-1.0 branch
-        run: ./streamr-docker-dev/bin.sh start --wait --timeout 600 --except entry-point
+        run: ./streamr-docker-dev/bin.sh start --wait --timeout 600
       - name: Collect docker logs on failure
         if: failure()
         uses: jwalton/gh-docker-logs@v2.2.1
