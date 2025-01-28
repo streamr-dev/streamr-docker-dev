@@ -50,7 +50,7 @@ jobs:
         run: ./streamr-docker-dev/bin.sh start --wait --timeout 600
       - name: Collect docker logs on failure
         if: failure()
-        uses: jwalton/gh-docker-logs@v2.2.1
+        uses: jwalton/gh-docker-logs@v2.2.2
         with:
           dest: 'logs'
       - name: Upload logs to GitHub
