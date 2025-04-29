@@ -397,19 +397,6 @@ services:
             - mysql
             - deploy-network-subgraphs-fastchain
             - entry-point
-    ens-sync-script:
-        container_name: ens-sync-script
-        image: streamr/ens-sync-script:dev
-        networks:
-            - streamr-network
-        depends_on:
-            - parity-node0
-            - parity-sidechain-node0
-        healthcheck:
-            test: ["CMD", "echo"] # TODO: health check
-            interval: 10s
-            timeout: 10s
-            retries: 60
     ens-sync-script-fastchain:
         container_name: ens-sync-script-fastchain
         image: streamr/ens-sync-script:dev-fastchain
