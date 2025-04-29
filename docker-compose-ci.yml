@@ -80,14 +80,6 @@ services:
                     memory: 200M
                 reservations:
                     memory: 20M
-    deploy-hub-subgraph:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 200M
-                reservations:
-                    memory: 20M
     ipfs:
         deploy:
             resources:
