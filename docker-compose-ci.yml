@@ -56,62 +56,6 @@ services:
                     memory: 50M
                 reservations:
                     memory: 10M
-    parity-node0:
-        deploy:
-            resources:
-                limits:
-                    cpus: '1.0'
-                    memory: 100M
-                reservations:
-                    memory: 20M
-    parity-sidechain-node0:
-        deploy:
-            resources:
-                limits:
-                    cpus: '1.0'
-                    memory: 100M
-                reservations:
-                    memory: 20M
-    graph-node:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 200M
-                reservations:
-                    memory: 20M
-    graph-deploy-streamregistry-subgraph:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 200M
-                reservations:
-                    memory: 20M
-    deploy-network-subgraphs:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 400M
-                reservations:
-                    memory: 40M
-    deploy-hub-subgraph:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 200M
-                reservations:
-                    memory: 20M
-    graph-deploy-dataunion-subgraph:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 200M
-                reservations:
-                    memory: 20M
     ipfs:
         deploy:
             resources:
@@ -120,11 +64,3 @@ services:
                     memory: 250M
                 reservations:
                     memory: 20M
-    postgres:
-        deploy:
-            resources:
-                limits:
-                    cpus: '1.0'
-                    memory: 100M
-                reservations:
-                    memory: 10M

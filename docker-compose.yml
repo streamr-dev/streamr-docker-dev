@@ -178,140 +178,6 @@ services:
             interval: 10s
             timeout: 10s
             retries: 60
-    parity-node0:
-        container_name: streamr-dev-parity-node0
-        environment:
-            CHAIN_ID: 0x2323
-        image: streamr/open-ethereum-poa-mainchain-preload1:dev
-        networks:
-            - streamr-network
-        ports:
-            - "8545:8540"
-            - "8450:8450"
-            - "30309:30309"
-        restart: unless-stopped
-        healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--header", "Content-Type: application/json", "--data", '[{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1},{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}]', "http://localhost:8540/api/health"]
-            interval: 1m30s
-            timeout: 10s
-            retries: 3
-        command: --chain ./streamr-spec.json --config ./node0.toml
-        volumes:
-            - type: volume
-              source: data-parity-node0
-              target: /home/parity/parity_data
-              volume:
-                  nocopy: true
-    parity-sidechain-node0:
-        container_name: streamr-dev-parity-sidechain-node0
-        environment:
-            CHAIN_ID: 0x2325
-        image: streamr/open-ethereum-poa-sidechain-preload1:dev
-        networks:
-            - streamr-network
-        ports:
-            - "8546:8540"
-            - "8451:8450"
-            - "30310:30309"
-        restart: unless-stopped
-        healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--header", "Content-Type: application/json", "--data", '[{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1},{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}]', "http://localhost:8540/api/health"]
-            interval: 1m30s
-            timeout: 10s
-            retries: 3
-        command: --chain ./streamr-spec.json --config ./node0.toml
-        volumes:
-            - type: volume
-              source: data-parity-sidechain-node0
-              target: /home/parity/parity_data
-              volume:
-                  nocopy: true
-    graph-node:
-        container_name: streamr-dev-thegraph-node
-        image: graphprotocol/graph-node:v0.30.0
-        restart: unless-stopped
-        networks:
-            - streamr-network
-        ports:
-            - '8000:8000'
-            - '8001:8001'
-            - '8020:8020'
-            - '8030:8030'
-            - '8040:8040'
-        depends_on:
-            - ipfs
-            - postgres
-            - parity-sidechain-node0
-        environment:
-            postgres_host: postgres
-            postgres_user: streamr
-            postgres_pass: let-me-in
-            postgres_db: streamr
-            ipfs: 'streamr-dev-ipfs:5001'
-            ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8540'
-            RUST_LOG: info
-            GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: "true"
-        healthcheck:
-            test: ["CMD", "nc", "-z", "localhost", "8000"]
-            interval: 5s
-            timeout: 10s
-            retries: 10
-    graph-deploy-streamregistry-subgraph:
-        container_name: streamr-dev-graph-deploy-streamregistry-subgraph
-        image: streamr/graph-deploy-streamregistry-subgraph:dev
-        restart: on-failure # exits on success
-        networks:
-            - streamr-network
-        depends_on:
-            - graph-node
-        volumes:
-            - type: volume
-              source: data-graph-deploy-legacy
-              target: /firstrun
-              volume:
-                  nocopy: false
-    deploy-network-subgraphs:
-        container_name: streamr-dev-deploy-network-subgraphs
-        image: streamr/deploy-network-subgraphs:dev
-        restart: on-failure # exits on success
-        networks:
-            - streamr-network
-        depends_on:
-            - graph-node
-        volumes:
-            - type: volume
-              source: data-graph-deploy
-              target: /firstrun
-              volume:
-                  nocopy: false
-    deploy-hub-subgraph:
-        container_name: streamr-dev-deploy-hub-subgraph
-        image: streamr/deploy-hub-subgraph:dev
-        restart: on-failure # exits on success
-        networks:
-            - streamr-network
-        depends_on:
-            - graph-node
-        volumes:
-            - type: volume
-              source: data-deploy-hub-subgraph
-              target: /firstrun
-              volume:
-                  nocopy: false
-    graph-deploy-dataunion-subgraph:
-        container_name: streamr-dev-graph-deploy-dataunion-subgraph
-        image: streamr/graph-deploy-dataunion-subgraph:dev
-        restart: on-failure # exits on success
-        networks:
-            - streamr-network
-        depends_on:
-            - graph-node
-        volumes:
-            - type: volume
-              source: data-graph-deploy-dataunion
-              target: /firstrun
-              volume:
-                  nocopy: false
     graph-deploy-dataunion-subgraph-fastchain:
         container_name: streamr-dev-graph-deploy-dataunion-subgraph-fastchain
         image: streamr/graph-deploy-dataunion-subgraph:dev-fastchain
@@ -323,20 +189,6 @@ services:
         volumes:
             - type: volume
               source: data-graph-deploy-dataunion-fastchain
-              target: /firstrun
-              volume:
-                  nocopy: false
-    graph-deploy-tatum-subgraph:
-        container_name: streamr-dev-graph-deploy-tatum-subgraph
-        image: streamr/graph-deploy-tatum-subgraph:dev
-        restart: on-failure # exits on success
-        networks:
-            - streamr-network
-        depends_on:
-            - graph-node
-        volumes:
-            - type: volume
-              source: data-graph-deploy-tatum
               target: /firstrun
               volume:
                   nocopy: false
@@ -443,31 +295,6 @@ services:
             interval: 5s
             timeout: 10s
             retries: 10
-    postgres:
-        container_name: streamr-dev-postgres
-        image: postgres
-        restart: unless-stopped
-        networks:
-            - streamr-network
-        ports:
-            - '5432:5432'
-        command: ["postgres", "-cshared_preload_libraries=pg_stat_statements"]
-        environment:
-            POSTGRES_USER: streamr
-            POSTGRES_PASSWORD: let-me-in
-            POSTGRES_DB: streamr
-            POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"
-        volumes:
-            - type: volume
-              source: data-postgres
-              target: /var/lib/postgresql/data
-              volume:
-                  nocopy: true
-        healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U streamr -d streamr"]
-            interval: 5s
-            timeout: 10s
-            retries: 10
     stream-metrics-index:
         container_name: streamr-dev-stream-metrics-index
         image: streamr/stream-metrics-index
@@ -480,19 +307,6 @@ services:
             - mysql
             - deploy-network-subgraphs-fastchain
             - entry-point
-    ens-sync-script:
-        container_name: ens-sync-script
-        image: streamr/ens-sync-script:dev
-        networks:
-            - streamr-network
-        depends_on:
-            - parity-node0
-            - parity-sidechain-node0
-        healthcheck:
-            test: ["CMD", "echo"] # TODO: health check
-            interval: 10s
-            timeout: 10s
-            retries: 60
     ens-sync-script-fastchain:
         container_name: ens-sync-script-fastchain
         image: streamr/ens-sync-script:dev-fastchain
@@ -514,15 +328,7 @@ volumes:
     cassandra_init_scripts:
     data-mysql:
     data-cassandra:
-    data-parity-node0:
-    data-parity-sidechain-node0:
     data-ipfs:
-    data-postgres:
     data-postgres-fastchain:
-    data-graph-deploy:
     data-graph-deploy-fastchain:
-    data-graph-deploy-legacy:
-    data-deploy-hub-subgraph:
-    data-graph-deploy-dataunion:
     data-graph-deploy-dataunion-fastchain:
-    data-graph-deploy-tatum:

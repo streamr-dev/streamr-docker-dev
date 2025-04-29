@@ -47,7 +47,7 @@ Usage: streamr-docker-dev start [--] <service>...
 
 Examples:
     streamr-docker-dev start
-    streamr-docker-dev start tracker-1 parity-node0
+    streamr-docker-dev start tracker-1
     streamr-docker-dev start --except tracker-1 --wait
 
 Options:
@@ -65,7 +65,7 @@ Usage: streamr-docker-dev stop [options] [--] <service>...
 
 Examples:
     streamr-docker-dev stop
-    streamr-docker-dev stop tracker-1 parity-node0
+    streamr-docker-dev stop tracker-1
 "
 }
 
@@ -77,7 +77,7 @@ Usage: streamr-docker-dev restart [options] [--] <service>...
 
 Examples:
     streamr-docker-dev restart
-    streamr-docker-dev restart tracker-1 parity-node0
+    streamr-docker-dev restart tracker-1
 "
 }
 
@@ -116,8 +116,8 @@ Usage: streamr-docker-dev log [[options] [--] <service>...]
 
 Examples:
     streamr-docker-dev log
-    streamr-docker-dev log tracker-1 parity-node0
-    streamr-docker-dev log -f tracker-1 parity-node0
+    streamr-docker-dev log tracker-1
+    streamr-docker-dev log -f tracker-1
 
 Options:
     -f --follow        	    follow log in realtime
@@ -143,7 +143,7 @@ Usage: streamr-docker-dev pull [ [--] <service>...]
 
 Examples:
     streamr-docker-dev pull
-    streamr-docker-dev pull tracker-1 parity-node0
+    streamr-docker-dev pull tracker-1
 "
 }
 
