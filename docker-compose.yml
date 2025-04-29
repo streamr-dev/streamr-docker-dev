@@ -226,36 +226,6 @@ services:
               target: /home/parity/parity_data
               volume:
                   nocopy: true
-    graph-node:
-        container_name: streamr-dev-thegraph-node
-        image: graphprotocol/graph-node:v0.30.0
-        restart: unless-stopped
-        networks:
-            - streamr-network
-        ports:
-            - '8000:8000'
-            - '8001:8001'
-            - '8020:8020'
-            - '8030:8030'
-            - '8040:8040'
-        depends_on:
-            - ipfs
-            - postgres
-            - parity-sidechain-node0
-        environment:
-            postgres_host: postgres
-            postgres_user: streamr
-            postgres_pass: let-me-in
-            postgres_db: streamr
-            ipfs: 'streamr-dev-ipfs:5001'
-            ethereum: 'xDai:http://streamr-dev-parity-sidechain-node0:8540'
-            RUST_LOG: info
-            GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: "true"
-        healthcheck:
-            test: ["CMD", "nc", "-z", "localhost", "8000"]
-            interval: 5s
-            timeout: 10s
-            retries: 10
     graph-deploy-streamregistry-subgraph:
         container_name: streamr-dev-graph-deploy-streamregistry-subgraph
         image: streamr/graph-deploy-streamregistry-subgraph:dev
