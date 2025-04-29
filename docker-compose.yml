@@ -298,20 +298,6 @@ services:
               target: /firstrun
               volume:
                   nocopy: false
-    graph-deploy-dataunion-subgraph:
-        container_name: streamr-dev-graph-deploy-dataunion-subgraph
-        image: streamr/graph-deploy-dataunion-subgraph:dev
-        restart: on-failure # exits on success
-        networks:
-            - streamr-network
-        depends_on:
-            - graph-node
-        volumes:
-            - type: volume
-              source: data-graph-deploy-dataunion
-              target: /firstrun
-              volume:
-                  nocopy: false
     graph-deploy-dataunion-subgraph-fastchain:
         container_name: streamr-dev-graph-deploy-dataunion-subgraph-fastchain
         image: streamr/graph-deploy-dataunion-subgraph:dev-fastchain
@@ -523,6 +509,5 @@ volumes:
     data-graph-deploy-fastchain:
     data-graph-deploy-legacy:
     data-deploy-hub-subgraph:
-    data-graph-deploy-dataunion:
     data-graph-deploy-dataunion-fastchain:
     data-graph-deploy-tatum:
