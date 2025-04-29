@@ -209,8 +209,6 @@ streamr-docker-dev start --wait
   - 2 broker nodes + 1 storage Streamr network nodes. This creates a local and private Streamr Network.
 - 3 x [Tracker](https://github.com/streamr-dev/broker)
   - Helps node discovery in the Strearm Network
-- 1 x [Hub frontend](https://github.com/streamr-dev/streamr-platform/app)
-  - See more detailed build instructions in the streamr-platform repo
 - 1 x [TheGraph node](https://github.com/streamr-dev/network-contracts)
   - GraphQL queries at http://localhost:8000/subgraphs/name/githubname/subgraphname
   - GUI to past GraphQL queries: http://192.168.0.8:8000/subgraphs/name/githubname/subgraphname/graphql
@@ -237,7 +235,6 @@ streamr-docker-dev start --wait
 - 1 x Apache Cassandra instance with `streamr_dev` keyspace
 - 1 x [Ethereum Parity node ("mainchain")](https://github.com/streamr-dev/open-ethereum-poa)
 - 1 x [Ethereum Parity node ("sidechain")](https://github.com/streamr-dev/open-ethereum-poa)
-- 1 x nginx
 - 1 x Postgres DB for TheGraph
 - 1 x ipfs for TheGraph
 - 1 x adapter for ENS queries from sidechain to mainchain
