@@ -478,7 +478,7 @@ services:
             - "4001:4001"
         depends_on:
             - mysql
-            - graph-deploy-streamregistry-subgraph
+            - deploy-network-subgraphs-fastchain
             - entry-point
     ens-sync-script:
         container_name: ens-sync-script
