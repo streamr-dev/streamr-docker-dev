@@ -72,14 +72,6 @@ services:
                     memory: 100M
                 reservations:
                     memory: 20M
-    graph-deploy-streamregistry-subgraph:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 200M
-                reservations:
-                    memory: 20M
     ipfs:
         deploy:
             resources:
