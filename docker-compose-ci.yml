@@ -96,11 +96,3 @@ services:
                     memory: 250M
                 reservations:
                     memory: 20M
-    postgres:
-        deploy:
-            resources:
-                limits:
-                    cpus: '1.0'
-                    memory: 100M
-                reservations:
-                    memory: 10M

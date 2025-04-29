@@ -385,31 +385,6 @@ services:
             interval: 5s
             timeout: 10s
             retries: 10
-    postgres:
-        container_name: streamr-dev-postgres
-        image: postgres
-        restart: unless-stopped
-        networks:
-            - streamr-network
-        ports:
-            - '5432:5432'
-        command: ["postgres", "-cshared_preload_libraries=pg_stat_statements"]
-        environment:
-            POSTGRES_USER: streamr
-            POSTGRES_PASSWORD: let-me-in
-            POSTGRES_DB: streamr
-            POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"
-        volumes:
-            - type: volume
-              source: data-postgres
-              target: /var/lib/postgresql/data
-              volume:
-                  nocopy: true
-        healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U streamr -d streamr"]
-            interval: 5s
-            timeout: 10s
-            retries: 10
     stream-metrics-index:
         container_name: streamr-dev-stream-metrics-index
         image: streamr/stream-metrics-index
@@ -459,7 +434,6 @@ volumes:
     data-parity-node0:
     data-parity-sidechain-node0:
     data-ipfs:
-    data-postgres:
     data-postgres-fastchain:
     data-graph-deploy-fastchain:
     data-graph-deploy-legacy:
