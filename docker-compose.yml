@@ -240,20 +240,6 @@ services:
               target: /firstrun
               volume:
                   nocopy: false
-    deploy-network-subgraphs:
-        container_name: streamr-dev-deploy-network-subgraphs
-        image: streamr/deploy-network-subgraphs:dev
-        restart: on-failure # exits on success
-        networks:
-            - streamr-network
-        depends_on:
-            - graph-node
-        volumes:
-            - type: volume
-              source: data-graph-deploy
-              target: /firstrun
-              volume:
-                  nocopy: false
     deploy-hub-subgraph:
         container_name: streamr-dev-deploy-hub-subgraph
         image: streamr/deploy-hub-subgraph:dev
@@ -475,7 +461,6 @@ volumes:
     data-ipfs:
     data-postgres:
     data-postgres-fastchain:
-    data-graph-deploy:
     data-graph-deploy-fastchain:
     data-graph-deploy-legacy:
     data-deploy-hub-subgraph:

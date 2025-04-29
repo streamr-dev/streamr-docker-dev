@@ -80,14 +80,6 @@ services:
                     memory: 200M
                 reservations:
                     memory: 20M
-    deploy-network-subgraphs:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 400M
-                reservations:
-                    memory: 40M
     deploy-hub-subgraph:
         deploy:
             resources:
