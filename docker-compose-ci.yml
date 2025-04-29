@@ -24,14 +24,6 @@ services:
                     memory: 500M
                 reservations:
                     memory: 250M
-    nginx:
-        deploy:
-            resources:
-                limits:
-                    cpus: '1.0'
-                    memory: 500M
-                reservations:
-                    memory: 6M
     broker-node-storage-1:
         deploy:
             resources:
@@ -56,14 +48,6 @@ services:
                     memory: 200M
                 reservations:
                     memory: 150M
-    platform:
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.50'
-                    memory: 50M
-                reservations:
-                    memory: 10M
     network-explorer:
         deploy:
             resources:
