@@ -48,8 +48,6 @@ If you know what services you need, you don't need to use the `bin.sh`, you can 
 
 3. Bind the loopback interface to 10.200.10.1: `netsh int ip add address "Loopback" 10.200.10.1`
 
-4. For instance, for the Ethereum environment without core-api: `docker-compose up parity-node0 parity-sidechain-node0 bridge`
-
 ## Quickstart
 
 **Option 1**
@@ -58,7 +56,7 @@ If you know what services you need, you don't need to use the `bin.sh`, you can 
 
 ### Interacting with the local blockchain
 
-The local Streamr Stack is configured to interact with the local Ethereum Parity node. Transactions should be near instant.
+The local Streamr Stack is configured to interact with the local Ethereum node. Transactions should be near instant.
 
 The recommended way to interact with the blockchain is through Metamask. Here is the network configuration to add:
 - Network Name: Streamr Local
@@ -233,8 +231,7 @@ streamr-docker-dev start --wait
 ### Supporting services
 - 1 x MySQL instance
 - 1 x Apache Cassandra instance with `streamr_dev` keyspace
-- 1 x [Ethereum Parity node ("mainchain")](https://github.com/streamr-dev/open-ethereum-poa)
-- 1 x [Ethereum Parity node ("sidechain")](https://github.com/streamr-dev/open-ethereum-poa)
+- 1 x Ethereum node
 - 1 x Postgres DB for TheGraph
 - 1 x ipfs for TheGraph
 - 1 x adapter for ENS queries from sidechain to mainchain
