@@ -69,33 +69,6 @@ services:
             interval: 5s
             timeout: 10s
             retries: 10
-    nginx:
-        container_name: streamr-dev-nginx
-        image: nginx:1.25.0
-        networks:
-            - streamr-network
-        restart: unless-stopped
-        ports:
-            - "80:80"
-            - "443:443"
-        volumes:
-            - type: bind
-              source: ./custom-nginx-reverse-proxy.conf
-              target: /etc/nginx/nginx.conf
-              read_only: true
-              bind:
-                  propagation: rprivate
-            - type: bind
-              source: ./certs
-              target: /etc/nginx/mounted-certs
-              read_only: true
-              bind:
-                  propagation: rprivate
-        healthcheck:
-            test: ["CMD", "curl", "-f", "http://localhost/health_check"]
-            interval: 5s
-            timeout: 10s
-            retries: 10
     entry-point:
         container_name: streamr-dev-entry-point
         image: streamr/node:dev
@@ -191,22 +164,6 @@ services:
             interval: 30s
             timeout: 10s
             retries: 20
-    platform:
-        container_name: streamr-dev-platform
-        image: streamr/platform:dev
-        networks:
-            - streamr-network
-        ports:
-            - "3333:80"
-        depends_on:
-            - parity-node0
-        environment:
-            DATA_UNIONS: "on"
-        healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "http://localhost"]
-            interval: 10s
-            timeout: 10s
-            retries: 60
     network-explorer:
         container_name: streamr-dev-network-explorer
         image: streamr/network-explorer:dev
