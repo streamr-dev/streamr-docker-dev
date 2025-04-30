@@ -371,9 +371,9 @@ services:
         restart: unless-stopped
         healthcheck:
             test: ["CMD", "curl", "--fail", "--silent", "--show-error", "--max-time", "9", "--header", "Content-Type: application/json", "--data", '[{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1},{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}]', "http://localhost:8545/api/health"]
-            interval: 1m30s
-            timeout: 10s
-            retries: 3
+            interval: 10s
+            timeout: 1s
+            retries: 10
     graph-node-fastchain:
         container_name: streamr-dev-thegraph-node-fastchain
         image: graphprotocol/graph-node:v0.32.0
