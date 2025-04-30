@@ -173,12 +173,12 @@ wait() {
         done
 
         if [ ${#waiting_for_services[@]} -gt 0 ]; then
-            if (( time_waited >= 60 )); then
+            if (( time_waited >= 30 )); then
                 echo "***********************************"
                 echo "Still waiting for the following services:"
                 for s in "${waiting_for_services[@]}"; do echo "$s"; done
             fi
-            sleep 5
+            sleep 1s
             time_waited=$((time_waited+5))
         else
             echo "All services up and running."
