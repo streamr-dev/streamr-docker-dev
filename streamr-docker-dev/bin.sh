@@ -179,7 +179,7 @@ wait() {
                 for s in "${waiting_for_services[@]}"; do echo "$s"; done
             fi
             sleep 1s
-            time_waited=$((time_waited+5))
+            time_waited=$((time_waited+1))
         else
             echo "All services up and running."
             break
