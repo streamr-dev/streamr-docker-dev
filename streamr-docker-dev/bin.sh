@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ORIG_FILENAME="$(readlink "$0" -f)"
+ORIG_FILENAME="$(greadlink "$0" -f)"
 ORIG_DIRNAME=$(dirname "$ORIG_FILENAME")
 ROOT_DIR="$ORIG_DIRNAME/.."
 CONTAINER_PREFIX="streamr-dev-"
