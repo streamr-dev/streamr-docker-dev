@@ -272,7 +272,7 @@ services:
                   nocopy: false
     postgres-fastchain:
         container_name: streamr-dev-postgres-fastchain
-        image: postgres
+        image: postgres:17
         restart: unless-stopped
         networks:
             - streamr-network
