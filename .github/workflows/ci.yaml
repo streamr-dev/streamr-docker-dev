@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4.1.7
       - name: Run YAML Lint
         uses: ibiqlik/action-yamllint@v3.1
         with:
@@ -45,7 +45,7 @@ jobs:
           - ubuntu-24.04
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4.1.7
       - name: Start Streamr Docker Stack
         run: ./streamr-docker-dev/bin.sh start --wait --timeout 600
       - name: Collect docker logs on failure
